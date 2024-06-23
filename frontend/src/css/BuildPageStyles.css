@@ -1,0 +1,184 @@
+.BuildPage_header-container {
+    background: #222020;
+}
+
+.BuildPage_budget-header {
+    font-weight: 300;
+    color: #c1c1c1;
+}
+
+.BuildPage_title {
+    color: white;
+    font-weight: 400 !important;
+}
+
+.BuildPage_table-header {
+    width: 100%;
+}
+
+.BuildPage_build-info-container h3 {
+    color: #ffffff;
+    font-size: 2em;
+}
+
+.BuildPage_table {
+    width: 75% !important;
+    background: #1d1d20 !important;
+    border: 1px solid #3c3c3c;
+    border-collapse: collapse;
+}
+
+.BuildPage_table th {
+    background: #161616;
+    color: white;
+    padding: 2rem;
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+.BuildPage_table td {
+    color: white;
+    padding: 0.675rem 1rem 0.675rem 1.35rem;
+    font-size: 1.15rem;
+    font-weight: 200;
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.BuildPage_remove-icon, .BuildPage_add-icon  {
+    width: 1.85rem;
+    cursor: pointer;
+}
+
+td[data-cell="category"] {
+    font-weight: 600;
+    font-size: 1.35rem;
+    width: 20rem;
+}
+
+td[data-cell="chosen-product"] {
+    width: 30rem;
+}
+
+td[data-cell="base-price"], td[data-cell="vendor-price"] {
+    padding-left: 2.5rem;
+}
+
+.BuildPage_vendor-product-link {
+    text-decoration: none;
+    color: white;
+}
+
+.BuildPage_product-img {
+    width: 2.5rem;
+    height: 2.5rem !important;
+}
+
+.BuildPage_product-vendor-logo {
+    width: 2rem;
+    height: 2rem !important;
+}
+
+.BuildPage_grand-total-container {
+    background: #141416;
+    font-weight: 700;
+    padding: 0.65rem;
+}
+
+@media screen and (max-width: 1600px) {
+    td[data-cell="action"] {
+        padding-right: 7rem;
+    }
+    .BuildPage_remove-icon, .BuildPage_add-icon {
+        width: 1.5rem !important;
+        height: 1.5rem !important;
+    }
+
+    .BuildPage_build-info-container h3 {
+        font-size: 1.2rem;
+    }
+    .BuildPage_table th {
+        font-size: 0.8rem;
+    }
+    .BuildPage_table td {
+        font-size: 0.7rem;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .BuildPage_info-container {
+        width: 11rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .BuildPage_table {
+        width: 100% !important;
+    }
+
+    .BuildPage_table th {
+        display: none;
+    }
+
+    .BuildPage_table th, .BuildPage_table td {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+
+    .BuildPage_info-container {
+        margin-top: 1.2rem;
+        margin-bottom: 1.2rem;
+    }
+
+    td[data-cell="chosen-product"]::before {
+        content: "Chosen Product: "
+    }
+
+    td[data-cell="base-price"]::before {
+        content: "Base Price: "
+    }
+
+    td[data-cell="vendor-price"]::before {
+        content: "Vendor Price: "
+    }
+
+    .BuildPage_table td:not([data-cell])::before {
+        content: none;
+    }
+
+    td[data-cell="category"] {
+        font-weight: 600;
+    }
+
+    td[data-cell="category"], td[data-cell="chosen-product"], td[data-cell="base-price"], td[data-cell="vendor-price"], td[data-cell="action"] {
+        display: block;
+        width: 100%;
+    }
+
+    .BuildPage_remove-icon {
+        width: 1.2rem !important;
+        margin-top: 0.5rem;
+    }
+
+    .BuildPage_build-info-container h3 {
+        font-size: 1rem;
+    }
+
+    td[data-cell="category"] {
+        font-size: 1rem;
+    }
+
+    td[data-cell="chosen-product"], td[data-cell="base-price"], td[data-cell="vendor-price"] {
+        padding-left: 1rem;
+    }
+
+    .BuildPage_grand-total-container {
+        padding: 0.5rem;
+    }
+}
+
+
+
+
+
+
+

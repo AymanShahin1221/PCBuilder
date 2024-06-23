@@ -1,0 +1,26 @@
+.HomePage_build-button {
+    background: #0055ff !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 2px !important;
+}
+
+.HomePage_build-button:hover {
+    background: #003baf !important;
+}
+
+.HomePage_sub1 {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.HomePage_sub2 {
+    color: #ffffff;
+    opacity: 0.8;
+    font-weight: 250;
+}
+
+.HomePage_machine-icon {
+    height: 1.35em;
+    width: 1.35em;
+}

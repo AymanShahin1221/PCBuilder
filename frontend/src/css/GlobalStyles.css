@@ -1,0 +1,94 @@
+body {
+  margin: 0;
+  font-family: BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  background: rgb(26, 26, 31) !important;
+}
+
+.main-header-href {
+  text-decoration: none;
+}
+
+#main-content {
+  align-items: center;
+  justify-content: center;
+  padding: 1.5em;
+  margin-left: 1em;
+}
+
+.site-title-container {
+  background: #141414;
+  width: 100%;
+}
+
+.title-section1 {
+  color: #59bbff;
+}
+
+.title-section2 {
+  color: #ff9500;
+}
+
+.title-big img {
+  border: 0;
+}
+
+.logo {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+@media (max-width: 768px) {
+  .logo {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .title-big {
+    font-size: 1.5rem;
+  }
+}
+
+.container-custom {
+  width: 100%;
+  top: 0;
+}
+
+.navbar-main {
+  background: #191818;
+}
+
+.nav-link {
+  color: white !important;
+}
+
+.nav-link:hover {
+  color: #a5a5a5 !important;
+}
+
+.items li {
+  font-size: 1.25em;
+}
+
+.login-link, .register-link {
+  text-decoration: none;
+  color: white;
+  font-weight: 300;
+  font-size: 0.55em;
+}
+
+.login-link:hover, .register-link:hover {
+  color: #a5a5a5 !important;
+}
+
+.navbar-icon {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+.register-icon, .login-icon {
+  width: 1em;
+  height: 1em;
+  margin-right: 1em !important;
+}
