@@ -17,7 +17,7 @@ function BuildTable() {
                     <td data-cell="chosen-product">
                         <div className="BuildPage_info-container d-flex flex-row">
                             {/*<img className="BuildPage_product-img img-fluid me-3" src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            <p>Intel Core i9 14900k</p>
+                            {/*<p>Intel Core i9 14900k</p>*/}
                         </div>
                     </td>
 
@@ -40,7 +40,7 @@ function BuildTable() {
                         <div className="BuildPage_info-container d-flex flex-row">
                             {/*<img className="BuildPage_product-img img-fluid me-3"*/}
                             {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            <p>MSI RTX 4070 TI</p>
+                            {/*<p>MSI RTX 4070 TI</p>*/}
                         </div>
                     </td>
 
