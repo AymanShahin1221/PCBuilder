@@ -1,22 +1,20 @@
 package com.app.service.db;
 
-import com.app.entity.model.CPU;
-import com.app.repository.CPURepository;
+import com.app.entity.model.PCPart;
+import com.app.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class PartService {
-    private final CPURepository cpuRepository;
+    private final GenericRepository genericRepository;
 
     @Autowired
-    public PartService(CPURepository cpuRepository) {
-        this.cpuRepository = cpuRepository;
+    public PartService(GenericRepository genericRepository) {
+        this.genericRepository = genericRepository;
     }
 
-    public List<CPU> getCPUs() {
-        return cpuRepository.findAll();
+    public <T extends PCPart> Object getAllParts(Class<T> tClass) {
+        return genericRepository.getAll(tClass);
     }
 }

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class Keyboard {
+public class Keyboard extends PCPart {
 
     @Id
     private UUID pid;

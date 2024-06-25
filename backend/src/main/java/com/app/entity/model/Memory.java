@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class Memory {
+public class Memory extends PCPart {
 
     @Id
     private UUID pid;

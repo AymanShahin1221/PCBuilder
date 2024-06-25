@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class Monitor {
+public class Monitor extends PCPart {
 
     @Id
     private UUID pid;

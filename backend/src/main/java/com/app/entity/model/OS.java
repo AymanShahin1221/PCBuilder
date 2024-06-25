@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class OS {
+public class OS extends PCPart {
 
     @Id
     private UUID pid;
