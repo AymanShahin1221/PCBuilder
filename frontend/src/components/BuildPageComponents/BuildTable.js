@@ -97,11 +97,7 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">GPU</td>
                     <td data-cell="chosen-product">
-                        <div className="BuildPage_info-container d-flex flex-row">
-                            {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                            {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            {/*<p>MSI RTX 4070 TI</p>*/}
-                        </div>
+                        {conditionallyRenderProductDetails("GPU")}
                     </td>
 
                     <td data-cell="base-price"></td>
@@ -122,9 +118,7 @@ function BuildTable() {
                     <td data-cell="category">Memory</td>
                     <td data-cell="chosen-product">
                         <div className="BuildPage_info-container d-flex flex-row">
-                            {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                            {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            {/*<p>Intel Core i9 14900k</p>*/}
+                            {conditionallyRenderProductDetails("Memory")}
                         </div>
                     </td>
 
@@ -146,9 +140,7 @@ function BuildTable() {
                     <td data-cell="category">Storage</td>
                     <td data-cell="chosen-product">
                         <div className="BuildPage_info-container d-flex flex-row">
-                            {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                            {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            {/*<p>Intel Core i9 14900k</p>*/}
+                            {conditionallyRenderProductDetails("Storage")}
                         </div>
                     </td>
 
@@ -169,11 +161,7 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Cooler</td>
                     <td data-cell="chosen-product">
-                        <div className="BuildPage_info-container d-flex flex-row">
-                            {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                            {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            {/*<p>Intel Core i9 14900k</p>*/}
-                        </div>
+                        {conditionallyRenderProductDetails("Cooler")}
                     </td>
 
                     <td data-cell="base-price"></td>
@@ -193,11 +181,7 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Power Supply</td>
                     <td data-cell="chosen-product">
-                        <div className="BuildPage_info-container d-flex flex-row">
-                            {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                            {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            {/*<p>Intel Core i9 14900k</p>*/}
-                        </div>
+                        {conditionallyRenderProductDetails("PowerSupply")}
                     </td>
 
                     <td data-cell="base-price"></td>
@@ -217,11 +201,7 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Motherboard</td>
                     <td data-cell="chosen-product">
-                        <div className="BuildPage_info-container d-flex flex-row">
-                            {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                            {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            {/*<p>Intel Core i9 14900k</p>*/}
-                        </div>
+                        {conditionallyRenderProductDetails("Motherboard")}
                     </td>
 
                     <td data-cell="base-price"></td>
@@ -241,11 +221,7 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Case</td>
                     <td data-cell="chosen-product">
-                        <div className="BuildPage_info-container d-flex flex-row">
-                            {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                            {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            {/*<p>Intel Core i9 14900k</p>*/}
-                        </div>
+                        {conditionallyRenderProductDetails("Case")}
                     </td>
 
                     <td data-cell="base-price"></td>
@@ -265,11 +241,7 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Keyboard</td>
                     <td data-cell="chosen-product">
-                        <div className="BuildPage_info-container d-flex flex-row">
-                            {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                            {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            {/*<p>Intel Core i9 14900k</p>*/}
-                        </div>
+                        {conditionallyRenderProductDetails("Keyboard")}
                     </td>
 
                     <td data-cell="base-price"></td>
@@ -289,11 +261,7 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">OS</td>
                     <td data-cell="chosen-product">
-                        <div className="BuildPage_info-container d-flex flex-row">
-                            {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                            {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                            {/*<p>Intel Core i9 14900k</p>*/}
-                        </div>
+                        {conditionallyRenderProductDetails("OS")}
                     </td>
 
                     <td data-cell="base-price"></td>
@@ -313,11 +281,7 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Monitor</td>
                     <td data-cell="chosen-product">
-                        <div className="BuildPage_info-container d-flex flex-row">
-                                {/*<img className="BuildPage_product-img img-fluid me-3"*/}
-                                {/*     src="https://m.media-amazon.com/images/I/61jRMCAX4CL.__AC_SX300_SY300_QL70_FMwebp_.jpg"/>*/}
-                                {/*<p>Intel Core i9 14900k</p>*/}
-                        </div>
+                        {conditionallyRenderProductDetails("Monitor")}
                     </td>
 
                     <td data-cell="base-price"></td>
