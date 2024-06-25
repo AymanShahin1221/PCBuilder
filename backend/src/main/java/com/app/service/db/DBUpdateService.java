@@ -20,6 +20,12 @@ import static com.app.service.util.DBUtils.initDBConnection;
 @Service
 public class DBUpdateService {
 
+    /**
+     * Service class responsible for performing daily database update (currently set to update everyday at 12 am --> daily_db_update=0 0 0 * * *
+     * Parses JSON data retrieved from https://github.com/docyx/pc-part-dataset/tree/main/data/json and upserts parts into their respective tables
+     * Since the name column is marked as unique, the upsert will update conflicting records with new values
+     */
+
     private static Connection connection;
 
     @Autowired

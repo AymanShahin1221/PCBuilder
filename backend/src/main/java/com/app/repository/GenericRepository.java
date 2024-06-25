@@ -11,6 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Generic Repository that fetches parts from database
+ */
+
 @Component
 @Transactional
 public class GenericRepository {
@@ -18,6 +22,12 @@ public class GenericRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Retrieves all entities of a specified class from the database.
+     * @param entityClass class of entities to retrieve
+     * @return <T> list containing entities of specified class
+     * @param <T> type of entity - must extend PCPart superclass
+     */
     public <T extends PCPart> List<T> getAll(Class<T> entityClass) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);

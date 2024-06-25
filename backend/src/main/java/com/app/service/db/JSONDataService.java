@@ -4,10 +4,17 @@ import org.springframework.web.client.RestTemplate;
 
 public class JSONDataService {
 
+    /**
+     * Service class that fetches JSON data using RestTemplate
+     */
+
     private static final RestTemplate restTemplate = new RestTemplate();
 
     public enum ProductCategory {
 
+        /**
+         * Enum representing all categories and their corresponding JSON data URLs
+         */
         CPU("https://raw.githubusercontent.com/docyx/pc-part-dataset/main/data/json/cpu.json"),
         GPU("https://raw.githubusercontent.com/docyx/pc-part-dataset/main/data/json/video-card.json"),
         MOTHERBOARD("https://raw.githubusercontent.com/docyx/pc-part-dataset/main/data/json/motherboard.json"),
@@ -23,6 +30,11 @@ public class JSONDataService {
         private final String url;
         ProductCategory(String url) { this.url = url; }
 
+        /**
+         *
+         * @param category category enum representing the specified product category
+         * @return a string containing the JSON data for the specified category
+         */
         public static String fetchJsonData(ProductCategory category) { return restTemplate.getForObject(category.url, String.class); }
     }
 }
