@@ -84,6 +84,18 @@ td[data-cell="base-price"], td[data-cell="vendor-price"] {
     padding: 0.65rem;
 }
 
+.BuildPage_add-item-button {
+    background: #0055ff !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 2px !important;
+    color: white;
+}
+
+.BuildPage_add-item-button:hover {
+    background: #003baf !important;
+}
+
 @media screen and (max-width: 1600px) {
     td[data-cell="action"] {
         padding-right: 7rem;
