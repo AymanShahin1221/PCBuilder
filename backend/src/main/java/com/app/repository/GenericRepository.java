@@ -28,7 +28,7 @@ public class GenericRepository {
      * @return <T> list containing entities of specified class
      * @param <T> type of entity ---> must extend PCPart superclass
      */
-    public <T extends PCPart> List<T> getAll(Class<T> entityClass) {
+    public <T extends PCPart> List<T> getAllPartsByCategory(Class<T> entityClass) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
         Root<T> rootEntry = criteriaQuery.from(entityClass);

@@ -17,6 +17,6 @@ public class PartService {
     }
 
     public <T extends PCPart> List<T> getAllParts(Class<T> tClass) {
-        return genericRepository.getAll(tClass);
+        return genericRepository.getAllPartsByCategory(tClass);
     }
 }
