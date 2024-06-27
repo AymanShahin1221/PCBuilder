@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.app.controller.PartCategory.*;
@@ -40,7 +41,7 @@ public class PartController {
     }
 
     @GetMapping("/api/partCategory/{categoryName}")
-    public Object getAllParts(@PathVariable("categoryName") String categoryName) {
+    public List<PCPart> getAllParts(@PathVariable("categoryName") String categoryName) {
         Class<PCPart> partClass = getClassInstance(categoryName);
         return partService.getAllParts(partClass);
     }
