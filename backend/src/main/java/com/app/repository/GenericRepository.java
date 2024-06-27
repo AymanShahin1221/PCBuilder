@@ -36,4 +36,5 @@ public class GenericRepository {
 
         return entityManager.createQuery(all).getResultList();
     }
+    
 }
