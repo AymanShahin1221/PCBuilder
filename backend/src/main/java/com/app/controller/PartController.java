@@ -40,7 +40,7 @@ public class PartController {
         return (Class<T>) categoryClassMap.get(PartCategory.valueOf(categoryName.toUpperCase()));
     }
 
-    @GetMapping("/api/partCategory/{categoryName}")
+    @GetMapping("/api/v1/getAllParts/{categoryName}")
     public List<PCPart> getAllParts(@PathVariable("categoryName") String categoryName) {
         Class<PCPart> partClass = getClassInstance(categoryName);
         return partService.getAllParts(partClass);
