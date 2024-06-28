@@ -29,8 +29,9 @@ public class DBUpdateService {
     private static Connection connection;
 
     @Autowired
-    public DBUpdateService() {
+    public DBUpdateService() throws SQLException {
         connection = initDBConnection();
+        connection.setAutoCommit(false);
     }
 
     private void upsertCPUTable(CPU cpu) throws SQLException {
@@ -445,6 +446,7 @@ public class DBUpdateService {
 
                 CPU cpu = new CPU(pid, name, price, core_count, core_clock, boost_clock, tdp, graphics, stmt);
                 upsertCPUTable(cpu);
+                connection.commit();
             }
         }
         catch (JSONException e)
@@ -480,6 +482,7 @@ public class DBUpdateService {
 
                 GPU gpu = new GPU(pid, name, price, chipset, memory, core_clock, boost_clock, color, length);
                 upsertGPUTable(gpu);
+                connection.commit();
             }
         }
         catch(JSONException e)
@@ -514,6 +517,7 @@ public class DBUpdateService {
 
                 Case case_ = new Case(pid, name, price, type, color, psu, sidePanel, external_volume, internal_35_bays);
                 upsertCaseTable(case_);
+                connection.commit();
             }
         }
         catch(JSONException e)
@@ -544,6 +548,7 @@ public class DBUpdateService {
                 
                 Cooler cooler = new Cooler(pid, name, price, color, size);
                 upsertCoolerTable(cooler);
+                connection.commit();
             }
         }
         catch(JSONException e)
@@ -578,6 +583,7 @@ public class DBUpdateService {
 
                 Keyboard keyboard = new Keyboard(pid, name, price, style, switches, backlit, tenkeyless, connection_type, color);
                 upsertKeyboardTable(keyboard);
+                connection.commit();
             }
         }
         catch(JSONException e)
@@ -627,6 +633,7 @@ public class DBUpdateService {
 
                 Memory memory = new Memory(pid, name, price, speed, modules, price_per_gb, color, first_word_latency, cas_latency);
                 upsertMemoryTable(memory);
+                connection.commit();
             }
         }
         catch(JSONException e)
@@ -661,6 +668,7 @@ public class DBUpdateService {
 
                 Monitor monitor = new Monitor(pid, name, price, screen_size, resolution, refresh_rate, response_time, panel_type, aspect_ratio);
                 upsertMonitorTable(monitor);
+                connection.commit();
             }
         }
         catch(JSONException e)
@@ -694,6 +702,7 @@ public class DBUpdateService {
 
                 Motherboard motherboard = new Motherboard(pid, name, price, socket, form_factor, max_memory, memory_slots, color);
                 upsertMotherboardTable(motherboard);
+                connection.commit();
             }
         }
         catch(JSONException e)
@@ -723,6 +732,7 @@ public class DBUpdateService {
 
                 OS os = new OS(pid, name, price, max_memory);
                 upsertOSTable(os);
+                connection.commit();
             }
         }
         catch(JSONException e)
@@ -768,6 +778,7 @@ public class DBUpdateService {
 
                 PowerSupply powerSupply = new PowerSupply(pid, name, price, type, efficiency, wattage, modular, color);
                 upsertPowerSupplyTable(powerSupply);
+                connection.commit();
             }
         }
         catch(JSONException e)
@@ -825,6 +836,7 @@ public class DBUpdateService {
 
                 Storage storage = new Storage(pid, name, price, capacity, price_per_gb, type, cache, form_factor, interface_);
                 upsertStorageTable(storage);
+                connection.commit();
             }
         }
         catch(JSONException e)
