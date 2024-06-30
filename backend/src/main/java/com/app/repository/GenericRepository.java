@@ -45,7 +45,7 @@ public class GenericRepository {
         // SELECT * FROM entityClass (table)
         List<T> resultSet = entityManager.createQuery(all).getResultList();
 
-        // convert List to JsonArray
+        // convert List<T> to JsonArray
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData;
         try
