@@ -30,7 +30,7 @@ public class PartImageService {
 
     private final ApiService apiService;
     private final int MAX_API_CALLS_PER_DAY;
-    private static LocalTime resetTime = null;
+    private static LocalTime resetTime;
     private static int currentApiCallCount = 0;
 
 

@@ -2,10 +2,10 @@ package com.app.service.db;
 
 import com.app.entity.model.PCPart;
 import com.app.repository.*;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class PartService {
@@ -16,7 +16,7 @@ public class PartService {
         this.genericRepository = genericRepository;
     }
 
-    public <T extends PCPart> List<T> getAllParts(Class<T> tClass) {
-        return genericRepository.getAllPartsByCategory(tClass);
+    public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass) {
+        return genericRepository.getAllPartsByCategory(entityClass);
     }
 }
