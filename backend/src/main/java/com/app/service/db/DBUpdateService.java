@@ -1,6 +1,7 @@
 package com.app.service.db;
 
 import com.app.entity.model.*;
+import com.app.service.kafka.KafkaProducerService;
 import com.app.service.util.DBUtils;
 import jakarta.annotation.PreDestroy;
 import org.json.JSONArray;
@@ -26,15 +27,16 @@ public class DBUpdateService {
      * Since the name column is marked as unique, the upsert will update conflicting records with new values
      */
 
-    private static Connection connection;
+    private final Connection connection = initDBConnection();
+    private final KafkaProducerService kafkaProducerService;
 
     @Autowired
-    public DBUpdateService() throws SQLException {
-        connection = initDBConnection();
+    public DBUpdateService(KafkaProducerService kafkaProducerService) throws SQLException {
         connection.setAutoCommit(false);
+        this.kafkaProducerService = kafkaProducerService;
     }
 
-    private void upsertCPUTable(CPU cpu) throws SQLException {
+    public void upsertCPUTable(CPU cpu) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -70,7 +72,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertGPUTable(GPU gpu) throws SQLException {
+    public void upsertGPUTable(GPU gpu) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -106,7 +108,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertCaseTable(Case case_) throws SQLException {
+    public void upsertCaseTable(Case case_) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -142,7 +144,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertCoolerTable(Cooler cooler) throws SQLException {
+    public void upsertCoolerTable(Cooler cooler) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -174,7 +176,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertKeyboardTable(Keyboard keyboard) throws SQLException {
+    public void upsertKeyboardTable(Keyboard keyboard) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -210,7 +212,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertMemoryTable(Memory memory) throws SQLException {
+    public void upsertMemoryTable(Memory memory) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -250,7 +252,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertMotherboardTable(Motherboard motherboard) throws SQLException {
+    public void upsertMotherboardTable(Motherboard motherboard) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -285,7 +287,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertMonitorTable(Monitor monitor) throws SQLException {
+    public void upsertMonitorTable(Monitor monitor) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -321,7 +323,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertOSTable(OS os) throws SQLException {
+    public void upsertOSTable(OS os) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -351,7 +353,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertPowerSupplyTable(PowerSupply powerSupply) throws SQLException {
+    public void upsertPowerSupplyTable(PowerSupply powerSupply) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -386,7 +388,7 @@ public class DBUpdateService {
         }
     }
 
-    private void upsertStorageTable(Storage storage) throws SQLException {
+    public void upsertStorageTable(Storage storage) throws SQLException {
         PreparedStatement preparedStatement = null;
         try
         {
@@ -423,7 +425,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processCPUData() throws SQLException {
+    private void processCPUData() throws SQLException {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.CPU);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -445,8 +447,7 @@ public class DBUpdateService {
                 Boolean stmt = jsonObject.isNull("smt") ? null : jsonObject.getBoolean("smt");
 
                 CPU cpu = new CPU(pid, name, price, core_count, core_clock, boost_clock, tdp, graphics, stmt);
-                upsertCPUTable(cpu);
-                connection.commit();
+                kafkaProducerService.send("cpuPartsTopic", cpu);
             }
         }
         catch (JSONException e)
@@ -459,7 +460,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processGPUData() throws SQLException {
+    private void processGPUData() throws SQLException {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.GPU);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -481,8 +482,7 @@ public class DBUpdateService {
                 Double price = jsonObject.isNull("price") ? null : jsonObject.getDouble("price");
 
                 GPU gpu = new GPU(pid, name, price, chipset, memory, core_clock, boost_clock, color, length);
-                upsertGPUTable(gpu);
-                connection.commit();
+                kafkaProducerService.send("gpuPartsTopic", gpu);
             }
         }
         catch(JSONException e)
@@ -494,7 +494,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processCaseData() throws SQLException {
+    private void processCaseData() throws SQLException {
         
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.CASE);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -516,8 +516,7 @@ public class DBUpdateService {
                 String type = jsonObject.isNull("type") ? null : jsonObject.getString("type");
 
                 Case case_ = new Case(pid, name, price, type, color, psu, sidePanel, external_volume, internal_35_bays);
-                upsertCaseTable(case_);
-                connection.commit();
+                kafkaProducerService.send("casePartsTopic", case_);
             }
         }
         catch(JSONException e)
@@ -529,7 +528,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processCoolerData() throws SQLException {
+    private void processCoolerData() throws SQLException {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.COOLER);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -547,8 +546,7 @@ public class DBUpdateService {
                 Integer size = jsonObject.isNull("size") ? null : jsonObject.getInt("size");
                 
                 Cooler cooler = new Cooler(pid, name, price, color, size);
-                upsertCoolerTable(cooler);
-                connection.commit();
+                kafkaProducerService.send("coolerPartsTopic", cooler);
             }
         }
         catch(JSONException e)
@@ -560,7 +558,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processKeyboardData() throws SQLException {
+    private void processKeyboardData() throws SQLException {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.KEYBOARD);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -582,8 +580,7 @@ public class DBUpdateService {
                 Boolean tenkeyless = jsonObject.isNull("tenkeyless") ? null : jsonObject.getBoolean("tenkeyless");
 
                 Keyboard keyboard = new Keyboard(pid, name, price, style, switches, backlit, tenkeyless, connection_type, color);
-                upsertKeyboardTable(keyboard);
-                connection.commit();
+                kafkaProducerService.send("keyboardPartsTopic", keyboard);
             }
         }
         catch(JSONException e)
@@ -595,7 +592,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processMemoryData() throws SQLException {
+    private void processMemoryData() throws SQLException {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.MEMORY);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -632,8 +629,7 @@ public class DBUpdateService {
                 }
 
                 Memory memory = new Memory(pid, name, price, speed, modules, price_per_gb, color, first_word_latency, cas_latency);
-                upsertMemoryTable(memory);
-                connection.commit();
+                kafkaProducerService.send("memoryPartsTopic", memory);
             }
         }
         catch(JSONException e)
@@ -645,7 +641,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processMonitorData() throws SQLException {
+    private void processMonitorData() throws SQLException {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.MONITOR);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -667,8 +663,7 @@ public class DBUpdateService {
                 Double screen_size = jsonObject.isNull("screen_size") ? null : jsonObject.getDouble("screen_size");
 
                 Monitor monitor = new Monitor(pid, name, price, screen_size, resolution, refresh_rate, response_time, panel_type, aspect_ratio);
-                upsertMonitorTable(monitor);
-                connection.commit();
+                kafkaProducerService.send("monitorPartsTopic", monitor);
             }
         }
         catch(JSONException e)
@@ -680,7 +675,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processMotherboardData() throws SQLException {
+    private void processMotherboardData() throws SQLException {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.MOTHERBOARD);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -701,8 +696,7 @@ public class DBUpdateService {
                 String socket = jsonObject.isNull("socket") ? null : jsonObject.getString("socket");
 
                 Motherboard motherboard = new Motherboard(pid, name, price, socket, form_factor, max_memory, memory_slots, color);
-                upsertMotherboardTable(motherboard);
-                connection.commit();
+                kafkaProducerService.send("motherboardPartsTopic", motherboard);
             }
         }
         catch(JSONException e)
@@ -714,7 +708,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processOSData() throws SQLException {
+    private void processOSData() throws SQLException {
         
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.OS);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -731,8 +725,7 @@ public class DBUpdateService {
                 Double price = jsonObject.isNull("price") ? null : jsonObject.getDouble("price");
 
                 OS os = new OS(pid, name, price, max_memory);
-                upsertOSTable(os);
-                connection.commit();
+                kafkaProducerService.send("osPartsTopic", os);
             }
         }
         catch(JSONException e)
@@ -744,7 +737,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processPowerSupplyData() throws SQLException {
+    private void processPowerSupplyData() throws SQLException {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.POWER_SUPPLY);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -777,8 +770,7 @@ public class DBUpdateService {
                 Integer wattage = jsonObject.isNull("wattage") ? null : jsonObject.getInt("wattage");
 
                 PowerSupply powerSupply = new PowerSupply(pid, name, price, type, efficiency, wattage, modular, color);
-                upsertPowerSupplyTable(powerSupply);
-                connection.commit();
+                kafkaProducerService.send("powerSupplyPartsTopic", powerSupply);
             }
         }
         catch(JSONException e)
@@ -790,7 +782,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    public void processStorageData() throws SQLException {
+    private void processStorageData() throws SQLException {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.STORAGE);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -835,8 +827,7 @@ public class DBUpdateService {
                 }
 
                 Storage storage = new Storage(pid, name, price, capacity, price_per_gb, type, cache, form_factor, interface_);
-                upsertStorageTable(storage);
-                connection.commit();
+                kafkaProducerService.send("storagePartsTopic", storage);
             }
         }
         catch(JSONException e)
