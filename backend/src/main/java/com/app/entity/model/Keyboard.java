@@ -1,12 +1,14 @@
 package com.app.entity.model;
 
+import com.app.service.db.DBUpdateService;
 import jakarta.persistence.*;
 
+import java.sql.SQLException;
 import java.util.UUID;
 
 @Entity
 @Table
-public class Keyboard extends PCPart {
+public class Keyboard extends PCPart implements Upsertable {
 
     @Id
     private UUID pid;
@@ -148,5 +150,10 @@ public class Keyboard extends PCPart {
                 ", connection_type='" + connection_type + '\'' +
                 ", color='" + color + '\'' +
                 '}';
+    }
+
+    @Override
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+        dbUpdateService.upsertKeyboardTable(this);
     }
 }

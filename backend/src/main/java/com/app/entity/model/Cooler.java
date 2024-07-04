@@ -1,12 +1,14 @@
 package com.app.entity.model;
 
+import com.app.service.db.DBUpdateService;
 import jakarta.persistence.*;
 
+import java.sql.SQLException;
 import java.util.UUID;
 
 @Entity
 @Table
-public class Cooler extends PCPart {
+public class Cooler extends PCPart implements Upsertable {
 
     @Id
     private UUID pid;
@@ -97,5 +99,10 @@ public class Cooler extends PCPart {
                 ", color='" + color + '\'' +
                 ", size=" + size +
                 '}';
+    }
+
+    @Override
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+        dbUpdateService.upsertCoolerTable(this);
     }
 }

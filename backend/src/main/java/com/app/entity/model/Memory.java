@@ -1,13 +1,15 @@
 package com.app.entity.model;
 
+import com.app.service.db.DBUpdateService;
 import jakarta.persistence.*;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table
-public class Memory extends PCPart {
+public class Memory extends PCPart implements Upsertable {
 
     @Id
     private UUID pid;
@@ -149,5 +151,10 @@ public class Memory extends PCPart {
                 ", first_word_latency=" + first_word_latency +
                 ", cas_latency=" + cas_latency +
                 '}';
+    }
+
+    @Override
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+        dbUpdateService.upsertMemoryTable(this);
     }
 }

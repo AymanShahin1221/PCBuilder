@@ -1,12 +1,14 @@
 package com.app.entity.model;
 
+import com.app.service.db.DBUpdateService;
 import jakarta.persistence.*;
 
+import java.sql.SQLException;
 import java.util.UUID;
 
 @Entity
 @Table
-public class Motherboard extends PCPart {
+public class Motherboard extends PCPart implements Upsertable {
 
     @Id
     private UUID pid;
@@ -135,5 +137,10 @@ public class Motherboard extends PCPart {
                 ", memory_slots=" + memory_slots +
                 ", color='" + color + '\'' +
                 '}';
+    }
+
+    @Override
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+        dbUpdateService.upsertMotherboardTable(this);
     }
 }

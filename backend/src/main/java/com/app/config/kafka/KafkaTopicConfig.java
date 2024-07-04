@@ -12,17 +12,18 @@ import java.util.List;
 public class KafkaTopicConfig {
 
     private static final String[] TOPIC_NAMES = {
-            "case_parts_topic",
-            "cooler_parts_topic",
-            "cpu_parts_topic",
-            "gpu_parts_topic",
-            "keyboard_parts_topic",
-            "memory_parts_topic",
-            "monitor_parts_topic",
-            "motherboard_parts_topic",
-            "os_parts_topic",
-            "power_supply_parts_topic",
-            "storage_parts_topic"
+            "casePartsTopic",
+            "coolerPartsTopic",
+            "cpuPartsTopic",
+            "gpuPartsTopic",
+            "keyboardPartsTopic",
+            "memoryPartsTopic",
+            "monitorPartsTopic",
+            "motherboardPartsTopic",
+            "osPartsTopic",
+            "powerSupplyPartsTopic",
+            "storagePartsTopic",
+            "testTopic"
     };
 
     @Bean

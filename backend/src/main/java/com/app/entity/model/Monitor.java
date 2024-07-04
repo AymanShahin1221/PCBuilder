@@ -1,13 +1,15 @@
 package com.app.entity.model;
 
+import com.app.service.db.DBUpdateService;
 import jakarta.persistence.*;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table
-public class Monitor extends PCPart {
+public class Monitor extends PCPart implements Upsertable {
 
     @Id
     private UUID pid;
@@ -149,5 +151,10 @@ public class Monitor extends PCPart {
                 ", panel_type='" + panel_type + '\'' +
                 ", aspect_ratio='" + aspect_ratio + '\'' +
                 '}';
+    }
+
+    @Override
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+        dbUpdateService.upsertMonitorTable(this);
     }
 }

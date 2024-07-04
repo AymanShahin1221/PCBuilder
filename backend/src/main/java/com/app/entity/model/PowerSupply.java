@@ -1,12 +1,14 @@
 package com.app.entity.model;
 
+import com.app.service.db.DBUpdateService;
 import jakarta.persistence.*;
 
+import java.sql.SQLException;
 import java.util.UUID;
 
 @Entity
 @Table
-public class PowerSupply extends PCPart {
+public class PowerSupply extends PCPart implements Upsertable {
 
     @Id
     private UUID pid;
@@ -135,5 +137,10 @@ public class PowerSupply extends PCPart {
                 ", modular='" + modular + '\'' +
                 ", color='" + color + '\'' +
                 '}';
+    }
+
+    @Override
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+        dbUpdateService.upsertPowerSupplyTable(this);
     }
 }

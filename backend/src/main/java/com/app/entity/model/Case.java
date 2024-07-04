@@ -1,12 +1,14 @@
 package com.app.entity.model;
 
+import com.app.service.db.DBUpdateService;
 import jakarta.persistence.*;
 
+import java.sql.SQLException;
 import java.util.UUID;
 
 @Entity
 @Table(name = "cases")
-public class Case extends PCPart {
+public class Case extends PCPart implements Upsertable {
 
     @Id
     private UUID pid;
@@ -148,5 +150,10 @@ public class Case extends PCPart {
                 ", external_volume=" + external_volume +
                 ", internal_35_bays=" + internal_35_bays +
                 '}';
+    }
+
+    @Override
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+        dbUpdateService.upsertCaseTable(this);
     }
 }
