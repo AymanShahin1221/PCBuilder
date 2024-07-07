@@ -1,5 +1,6 @@
 package com.app.config.kafka;
 
+import com.app.entity.model.PCPart;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,12 +30,12 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
+    public ProducerFactory<String, PCPart> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> producerFactory) {
+    public KafkaTemplate<String, PCPart> kafkaTemplate(ProducerFactory<String, PCPart> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 }
