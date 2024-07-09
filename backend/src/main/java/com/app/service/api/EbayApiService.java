@@ -46,6 +46,36 @@ public class EbayApiService implements ApiService {
         return headers;
     }
 
+    private boolean validateJSONResponse(JSONObject jsonObject, String keywords) {
+        try
+        {
+            JSONArray errors = jsonObject.getJSONArray("Errors");
+            JSONObject error = errors.getJSONObject(0);
+
+            if(error.getString("ShortMessage").equals("No match found."))
+            {
+                System.out.println("No match found for " + keywords);
+                return false;
+            }
+            else if(error.getString("ShortMessage").equals("IP limit exceeded."))
+            {
+                System.out.println("Max calls reached. Delaying...");
+                PartImageService.delayImagesRetrieval();
+            }
+
+        }
+        catch(JSONException ignored)
+        {
+            System.out.println("FOUND");
+            return true;
+        }
+        catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
     /**
      * Returns a string url of a product image
      * @param keywords search term for product
@@ -70,32 +100,8 @@ public class EbayApiService implements ApiService {
             if (response.getStatusCode().is2xxSuccessful())
             {
                 JSONObject jsonData = JsonUtils.stringToJsonObject(response.getBody());
-
-                try
-                {
-                    JSONArray errors = jsonData.getJSONArray("Errors");
-                    JSONObject error = errors.getJSONObject(0);
-
-                    if(error.getString("ShortMessage").equals("No match found."))
-                    {
-                        System.out.println("No match found for " + keywords);
-                        return null;
-                    }
-                    else if(error.getString("ShortMessage").equals("IP limit exceeded."))
-                    {
-                        System.out.println("Max calls reached. Delaying...");
-                        PartImageService.delayImagesRetrieval();
-                    }
-
-                }
-                catch(JSONException ignored)
-                {
-                    System.out.println("FOUND");
-                }
-                catch (InterruptedException e)
-                {
-                    throw new RuntimeException(e);
-                }
+                if(!validateJSONResponse(jsonData, keywords))
+                    return null;
 
                 JSONArray products = jsonData.getJSONArray("Product");
                 JSONObject product = products.getJSONObject(0);
