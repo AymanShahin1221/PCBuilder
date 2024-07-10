@@ -36,7 +36,7 @@ class GenericRepositoryTest {
         return UUID.randomUUID();
     }
 
-    private String generateRandomString(int n) {
+    private static String generateRandomString(int n) {
 
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
@@ -53,12 +53,12 @@ class GenericRepositoryTest {
         return sb.toString();
     }
 
-    private Double generateRandomDouble() {
+    private static Double generateRandomDouble() {
         Random random = new Random();
         return random.nextDouble();
     }
 
-    private int generateRandomInteger() {
+    private static int generateRandomInteger() {
         Random random = new Random();
         return random.nextInt();
     }
@@ -79,7 +79,7 @@ class GenericRepositoryTest {
     }
 
     @Test
-    void getAllPartsByCategory() {
+    void testGetAllPartsByCategory() {
         JSONArray parts = genericRepository.getAllPartsByCategory(CPU.class);
         assertNotNull(parts);
         assertEquals(926, parts.length());
