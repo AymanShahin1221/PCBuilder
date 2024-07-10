@@ -5,6 +5,7 @@ import com.app.service.util.DBUtils;
 import com.app.service.util.ImageDownloader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,8 +31,8 @@ public class PartImageService {
 
     private final ApiService apiService;
     private final int MAX_API_CALLS_PER_DAY;
-    private static LocalTime resetTime;
-    private static int currentApiCallCount = 0;
+    private final LocalTime resetTime;
+    private int currentApiCallCount = 0;
 
 
     @Autowired
@@ -39,7 +40,7 @@ public class PartImageService {
         this.connection = DBUtils.initDBConnection();
         this.apiService = apiService;
         this.MAX_API_CALLS_PER_DAY = apiService.getRateLimit();
-        resetTime = apiService.getResetTime();
+        this.resetTime = apiService.getResetTime();
     }
 
     /**
@@ -47,7 +48,7 @@ public class PartImageService {
      * If delay occurs before time of reset, delay will occur until that time
      * If not, delay will occur until the next day, same time
      */
-    public static void delayImagesRetrieval() throws InterruptedException {
+    public void delayImagesRetrieval() throws InterruptedException {
 
         System.out.println("Delaying...");
         currentApiCallCount = 0;
