@@ -1,6 +1,7 @@
 package com.app.service.api;
 
 import com.app.service.db.PartImageService;
+import com.app.service.util.DelayUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,14 +61,18 @@ public class EbayApiService implements ApiService {
             else if(error.getString("ShortMessage").equals("IP limit exceeded."))
             {
                 System.out.println("Max calls reached. Delaying...");
+                DelayUtils.delayImagesRetrieval(getResetTime());
                 return false;
             }
-
         }
         catch(JSONException ignored)
         {
             System.out.println("FOUND");
             return true;
+        }
+        catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
         }
         return true;
     }

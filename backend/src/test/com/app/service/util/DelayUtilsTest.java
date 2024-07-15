@@ -1,27 +1,24 @@
-package com.app.service.db;
+package com.app.service.util;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ComponentScan("com.app.service")
-class PartImageServiceTest {
-
-    @Autowired
-    private PartImageService partImageService;
+class DelayUtilsTest {
 
     @BeforeEach
-    void setUp() {  }
+    void setUp() {
+    }
 
     private LocalDateTime getResetTime() throws InterruptedException {
 
