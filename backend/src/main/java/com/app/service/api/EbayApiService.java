@@ -21,16 +21,13 @@ import com.app.service.util.JsonUtils;
 @Qualifier("ebayApiService")
 public class EbayApiService implements ApiService {
 
-    private final PartImageService partImageService;
-
     private static final String API_TOKEN = "v^1.1#i^1#I^3#r^0#p^1#f^0#t^H4sIAAAAAAAAAOVYa2wUVRTe3W5BhEoCiFj8sQwaTWFn587sc9Jd3T6wCwtburUpFUPmcbcdO49l7h22izZpyiPBd8LrB0hAo0RMiPrDSCgQio/0BwSMiaCGkAgBGxNIo4FEI97ZlrKtBJBuYhP3z2bOPffc833nnHvPvUzPlGlVmxs2X69wTnXt7WF6XE4nmM5Mm1K+6JEyV2W5gylScO7tebLH3Vt2pRoJmprlmyDKGjqCni5N1RFfEEYpy9R5Q0AK4nVBg4jHEp+OL0/yLM3wWdPAhmSolCdRF6VE0e8HYVEGQIww/ghLpPotm81GlAoHRRiRg6EAkEVOAgIZR8iCCR1hQcdRimVYv5cJelm2mQnxXIDnAB2KsG2UpwWaSDF0okIzVKzgLl+Yaxb5endXBYSgiYkRKpaIL0mn4om6+hXN1b4iW7ERHtJYwBYa+1VryNDTIqgWvPsyqKDNpy1JgghRvtjwCmON8vFbzjyA+wWqZb9AKBQBGwrKQAKgJFQuMUxNwHf3w5YosjdTUOWhjhWcvxejhA3xZSjhka8VxESizmP/rbQEVcko0IxS9TXxVfHGRioWz2uCnu4QvI21NZaiytDb2FTnDcBASI7I4YCXEyWJBX5hZKFhayM0j1up1tBlxSYNeVYYuAYSr+F4btgibohSSk+Z8Qy2PSrWi9ziMBxus4M6HEULd+h2XKFGiPAUPu8dgdHZGJuKaGE4amH8QIGiKCVks4pMjR8s5OJI+nShKNWBcZb3+XK5HJ3jaMNs97EMA3yty5NpqQNqpNi6NLvWh/WVe0/wKgUoEiQzkcLjfJb40kVylTigt1MxfyQMAmCE97FuxcZL/yEowuwbWxGlqhABhDMRMZMhYWCg7C9JhcRGktRn+wFFIe/VBLMT4qwqSNArkTyzNGgqMjGXYblwBnrlYCTj9UcyGa8YkINekIGQgVAUpUj4/1Qo95vqaSiZEJck10uW5yvXt4s18fomsynPdsE6BbXAvK9e8LeFlq5btnZVetmq9XgtSoJgAkXvtxruCL5WVQgzzWT9UhBg13rpSGgwEIbyhOClJSMLGw1VkfKTK8CcKTcKJs6noaoSwYRAxrPZRGn26pLB+5fbxIPhLt0Z9R+dT3dEheyUnVyo7PmIGBCyCm2fQLRkaD671g2BtB+2eE3B6wnhVkjnOqlQE5DDaBV5uOWkC3BptE6iTYgMyyTdNp2yO7BmoxPq5DzDpqGq0GyZWAbY9axpFhZEFU62wi5BgivCJDtsQQiQqyMIcRPDJRWO0jWTbUsqxVbsfv4B22rf2Et+zFH4gV5nP9PrPOpyOplq5imwkFkwpewFd9mMSqRgSCtChkZKu07uriakO2E+Kyima7Zj6L3tDbWV9akdVa8050/v+sYxo+iNYe9LzLzRV4ZpZWB60ZMD88TtkXIw87EK0p4HWZYJcQEOtDELb4+6wVz3nHP7/ohx4KHq+ZtF5VDqh8FWru9npmJUyeksd7h7nY5HN+xJKAfOybt2Un3VA29/der0GwPW4orano+OHequGhjY3+g7PHTT813ZiZ4byZ3J1p/Y7jPah/KuVy/MO3t4w0VuS/8zn3Xntq0uP/77b8bnQ2eObnnc+X26Hi14jjs2c7G0g6u9HHh63eLkO/veki5vv2JtmQmuft19dNPSnPPSj1vxLDO/aOoHg9tSFxY5n7XK4jeGVr+5hzt4NZDqH/x41vsHXqt8ff4vZ6uvDc65KVoHXtxgQLVzfn9f1SPJk5s+9Xhav8xfaLrY29v/7vVK7fpW9/mHO37NHA9+ccq47NAWutiOrhNB18nzsw/u1uhv++b+tXvj3EsNFUeO/Ll/weyNV9RPruWGY/k3WT83jP0RAAA=";
     private final RestTemplate restTemplate;
 
     private static final String BASE_URL = "https://open.api.ebay.com/shopping?";
 
     @Autowired
-    public EbayApiService(PartImageService partImageService, RestTemplate restTemplate) {
-        this.partImageService = partImageService;
+    public EbayApiService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
@@ -63,7 +60,7 @@ public class EbayApiService implements ApiService {
             else if(error.getString("ShortMessage").equals("IP limit exceeded."))
             {
                 System.out.println("Max calls reached. Delaying...");
-                partImageService.delayImagesRetrieval();
+                return false;
             }
 
         }
@@ -71,10 +68,6 @@ public class EbayApiService implements ApiService {
         {
             System.out.println("FOUND");
             return true;
-        }
-        catch (InterruptedException e)
-        {
-            throw new RuntimeException(e);
         }
         return true;
     }
