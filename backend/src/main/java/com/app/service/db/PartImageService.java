@@ -69,6 +69,7 @@ public class PartImageService {
         else
         {
             LocalDateTime nextDayEndDateTime = LocalDateTime.of(LocalDate.now().plusDays(1), endTime);
+            
             Duration duration = Duration.between(currentDateTime, nextDayEndDateTime);
             long delayDuration = duration.toMillis();
 
