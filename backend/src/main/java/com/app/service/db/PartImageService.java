@@ -5,18 +5,15 @@ import com.app.service.util.DBUtils;
 import com.app.service.util.ImageDownloader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.app.service.util.DelayUtils.delayImagesRetrieval;
 
 /**
  * This service class is responsible for updating the img_location column for every category table in the databse.
@@ -31,7 +28,6 @@ public class PartImageService {
 
     private final ApiService apiService;
     private final int MAX_API_CALLS_PER_DAY;
-    private final LocalTime resetTime;
     private int currentApiCallCount = 0;
 
 
@@ -40,44 +36,6 @@ public class PartImageService {
         this.connection = DBUtils.initDBConnection();
         this.apiService = apiService;
         this.MAX_API_CALLS_PER_DAY = apiService.getRateLimit();
-        this.resetTime = apiService.getResetTime();
-    }
-
-    /**
-     * Delays retrieval of images until time reset of API
-     * If delay occurs before time of reset, delay will occur until that time
-     * If not, delay will occur until the next day, same time
-     */
-    public void delayImagesRetrieval() throws InterruptedException {
-
-        System.out.println("Delaying...");
-        currentApiCallCount = 0;
-
-        LocalTime currentTime = LocalTime.now();
-        LocalTime endTime = resetTime;
-
-        LocalDateTime currentDateTime = LocalDateTime.of(LocalDate.now(), currentTime);
-        LocalDateTime endDateTimeToday = LocalDateTime.of(LocalDate.now(), endTime);
-
-        if (currentDateTime.isBefore(endDateTimeToday))
-        {
-            Duration duration = Duration.between(currentDateTime, endDateTimeToday);
-            long delayDuration = duration.toMillis();
-
-            Thread.sleep(delayDuration);
-        }
-        else
-        {
-            LocalDateTime nextDayEndDateTime = LocalDateTime.of(LocalDate.now().plusDays(1), endTime);
-            
-            Duration duration = Duration.between(currentDateTime, nextDayEndDateTime);
-            long delayDuration = duration.toMillis();
-
-            System.out.println(delayDuration);
-
-            Thread.sleep(delayDuration);
-        }
-        System.out.println("Resuming...");
     }
 
     /**
@@ -185,7 +143,7 @@ public class PartImageService {
                 {
                     System.out.println("Max calls reached while updating " + table);
                     currentApiCallCount = 0;
-                    delayImagesRetrieval();
+                    delayImagesRetrieval(apiService.getResetTime());
                 }
             }
         }
