@@ -1,7 +1,6 @@
 package com.app.service.api;
 
-import com.app.service.db.PartImageService;
-import com.app.service.util.DelayUtils;
+import com.app.exception.MaxCallsReachedException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +46,14 @@ public class EbayApiService implements ApiService {
         return headers;
     }
 
-    private boolean validateJSONResponse(JSONObject jsonObject, String keywords) {
+    /**
+     *
+     * @param jsonObject json response object
+     * @param keywords keywords search
+     * @return a boolean representing whether the JSON response is valid
+     * @throws MaxCallsReachedException if the response indicates max call limit has been exceeded
+     */
+    private boolean validateJSONResponse(JSONObject jsonObject, String keywords) throws MaxCallsReachedException {
         try
         {
             JSONArray errors = jsonObject.getJSONArray("Errors");
@@ -60,19 +66,14 @@ public class EbayApiService implements ApiService {
             }
             else if(error.getString("ShortMessage").equals("IP limit exceeded."))
             {
-                System.out.println("Max calls reached. Delaying...");
-                DelayUtils.delayImagesRetrieval(getResetTime());
-                return false;
+                throw new MaxCallsReachedException("Max api calls reached.");
             }
         }
+
         catch(JSONException ignored)
         {
-            System.out.println("FOUND");
+            System.out.println("FOUND a match");
             return true;
-        }
-        catch (InterruptedException e)
-        {
-            throw new RuntimeException(e);
         }
         return true;
     }
@@ -81,7 +82,7 @@ public class EbayApiService implements ApiService {
      * Returns a string url of a product image
      * @param keywords search term for product
      */
-    public String getImgUrl(String keywords) {
+    public String getImgUrl(String keywords) throws MaxCallsReachedException {
         String encodedKeywords = keywords.replace(' ', '&');
 
         String endpoint = BASE_URL + "callname=FindProducts&" +
@@ -101,6 +102,7 @@ public class EbayApiService implements ApiService {
             if (response.getStatusCode().is2xxSuccessful())
             {
                 JSONObject jsonData = JsonUtils.stringToJsonObject(response.getBody());
+
                 if(!validateJSONResponse(jsonData, keywords))
                     return null;
 
@@ -113,20 +115,17 @@ public class EbayApiService implements ApiService {
             }
             else
                 System.out.println("Request to " + endpoint + " failed");
-
-            return null;
         }
         catch (RestClientException e)
         {
             System.out.println("Could not send request for keywords " + keywords);
             System.out.println("Reason: invalid request or max api call limit reached.");
-            return null;
         }
         catch(JSONException e)
         {
             System.out.println("No results found for " + keywords);
-            return null;
         }
+        return null;
     }
 
     /**
