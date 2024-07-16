@@ -1,5 +1,6 @@
 package com.app.service.db;
 
+import com.app.exception.MaxCallsReachedException;
 import com.app.service.api.ApiService;
 import com.app.service.util.DBUtils;
 import com.app.service.util.ImageDownloader;
@@ -13,7 +14,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.app.service.util.DelayUtils.delayImagesRetrieval;
+import static com.app.service.util.DelayUtils.delay;
 
 /**
  * This service class is responsible for updating the img_location column for every category table in the databse.
@@ -114,8 +115,8 @@ public class PartImageService {
      * Also keeps track of current API call count
      * If this limit is exceed, the delay will be invoked
      */
-    public void updateImagesInTables() throws SQLException, InterruptedException, IOException {
-        System.out.println("Max calls: " + this.MAX_API_CALLS_PER_DAY);
+    public void updateImagesInTables() throws SQLException, InterruptedException, IOException, MaxCallsReachedException {
+
         for(String table : DBUtils.CATEGORY_TABLES)
         {
             Map<String, String> partsMap = getParts(table);
@@ -123,8 +124,21 @@ public class PartImageService {
             {
                 String partName = partsMap.get(pid);
 
-                String imgUrl = apiService.getImgUrl(partName);
-                currentApiCallCount++;
+                String imgUrl;
+                try
+                {
+                    imgUrl = apiService.getImgUrl(partName);
+                    currentApiCallCount++;
+                }
+                catch(MaxCallsReachedException mcre)
+                {
+                    System.out.println("Max calls reached while updating " + table);
+                    delay(apiService.getResetTime());
+                    currentApiCallCount = 0;
+
+                    imgUrl = apiService.getImgUrl(partName);
+                    currentApiCallCount++;
+                }
 
                 if(imgUrl == null)
                     updateTable(table, partName, null);
@@ -143,10 +157,10 @@ public class PartImageService {
                 {
                     System.out.println("Max calls reached while updating " + table);
                     currentApiCallCount = 0;
-                    delayImagesRetrieval(apiService.getResetTime());
+                    delay(apiService.getResetTime());
                 }
             }
         }
-        System.out.println("------------------------------DONE UPDATING IMAGES------------------------------");
+        System.out.println("------------------------------Finished UPDATING IMAGES------------------------------");
     }
 }
