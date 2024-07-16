@@ -4,6 +4,8 @@ import com.app.exception.MaxCallsReachedException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
@@ -25,6 +27,8 @@ public class EbayApiService implements ApiService {
     private final RestTemplate restTemplate;
 
     private static final String BASE_URL = "https://open.api.ebay.com/shopping?";
+
+    private static final Logger logger = LoggerFactory.getLogger(EbayApiService.class);
 
     @Autowired
     public EbayApiService(RestTemplate restTemplate) {
@@ -54,26 +58,26 @@ public class EbayApiService implements ApiService {
      * @throws MaxCallsReachedException if the response indicates max call limit has been exceeded
      */
     private boolean validateJSONResponse(JSONObject jsonObject, String keywords) throws MaxCallsReachedException {
-        try
+
+        if(jsonObject.has("Errors"))
         {
+
             JSONArray errors = jsonObject.getJSONArray("Errors");
             JSONObject error = errors.getJSONObject(0);
 
-            if(error.getString("ShortMessage").equals("No match found."))
+            if (error.getString("ShortMessage").equals("No match found."))
             {
                 System.out.println("No match found for " + keywords);
                 return false;
             }
-            else if(error.getString("ShortMessage").equals("IP limit exceeded."))
-            {
+            else if (error.getString("ShortMessage").equals("IP limit exceeded."))
                 throw new MaxCallsReachedException("Max api calls reached.");
-            }
-        }
 
-        catch(JSONException ignored)
-        {
-            System.out.println("FOUND a match");
-            return true;
+            else
+            {
+                System.out.println("JSON response contains error(s).");
+                return false;
+            }
         }
         return true;
     }
