@@ -8,6 +8,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,8 @@ public class GenericRepository {
         this.entityManager = entityManager;
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(GenericRepository.class);
+
     /**
      * Retrieves all entities of a specified class from the database.
      * @param entityClass class of entities to retrieve
@@ -37,6 +41,7 @@ public class GenericRepository {
      * @param <T> type of entity ---> must extend PCPart superclass
      */
     public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass) {
+
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
         Root<T> rootEntry = criteriaQuery.from(entityClass);
@@ -54,6 +59,7 @@ public class GenericRepository {
         }
         catch (JsonProcessingException e)
         {
+            logger.error("Could not convert entity resultset list to String.");
             throw new RuntimeException(e);
         }
 
