@@ -1,5 +1,8 @@
 package com.app.service.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -10,7 +13,13 @@ import java.net.URL;
  */
 public class ImageDownloader {
 
-    private static final String baseImagesDirectory = "frontend\\public\\images\\";
+    private static final String BASE_IMAGES_DIRECTORY = "frontend\\public\\images\\";
+
+    private static final Logger logger = LoggerFactory.getLogger(ImageDownloader.class);
+
+    private ImageDownloader() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      *
@@ -22,13 +31,19 @@ public class ImageDownloader {
         try
         {
             if(imgUrl == null)
+            {
+                logger.info("Image URL is null. Skipping download.");
                 return;
+            }
 
-            String destination = baseImagesDirectory + categoryDirectoryName + "\\";
+            String destination = BASE_IMAGES_DIRECTORY + categoryDirectoryName + "\\";
             File file = new File(destination + fname);
 
             if(file.exists())
+            {
+                logger.info("File already exists. Skipping download.");
                 return;
+            }
 
             URL url = new URL(imgUrl);
             InputStream inputStream = url.openStream();
@@ -44,7 +59,7 @@ public class ImageDownloader {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            logger.error("Could not download image.");
         }
     }
 }
