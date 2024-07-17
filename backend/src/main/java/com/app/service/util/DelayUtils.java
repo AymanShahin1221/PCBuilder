@@ -1,5 +1,8 @@
 package com.app.service.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,14 +10,20 @@ import java.time.LocalTime;
 
 public class DelayUtils {
 
+    private static final Logger logger = LoggerFactory.getLogger(DelayUtils.class);
+
+    private DelayUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Delays retrieval of images until time reset of API
      * If delay occurs before time of reset, delay will occur until that time
      * If not, delay will occur until the next day, same time
      */
-    public static void delayImagesRetrieval(LocalTime resetTime) throws InterruptedException {
+    public static void delay(LocalTime resetTime) throws InterruptedException {
 
-        System.out.println("Delaying...");
+        logger.info("Delaying...");
 
         LocalTime currentTime = LocalTime.now();
 
@@ -39,6 +48,6 @@ public class DelayUtils {
 
             Thread.sleep(delayDuration);
         }
-        System.out.println("Resuming...");
+        logger.info("Resuming...");
     }
 }
