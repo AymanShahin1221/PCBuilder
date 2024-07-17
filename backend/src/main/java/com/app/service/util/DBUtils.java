@@ -1,5 +1,8 @@
 package com.app.service.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.*;
 
 /**
@@ -16,6 +19,12 @@ public class DBUtils {
 
     public static final String[] CATEGORY_TABLES = {"os", "cpu", "storage", "power_supply", "cooler", "keyboard", "memory", "gpu", "case_", "motherboard", "monitor"};
 
+    private static final Logger logger = LoggerFactory.getLogger(DBUtils.class);
+
+    private DBUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static Connection initDBConnection() {
         Connection conn = null;
         try
@@ -24,8 +33,7 @@ public class DBUtils {
         }
         catch (SQLException e)
         {
-            System.err.println("Connection to PostgreSQL failed.");
-            e.printStackTrace();
+            logger.error("Connection to PostgreSQL failed.");
         }
         return conn;
     }
@@ -38,7 +46,7 @@ public class DBUtils {
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
+            logger.error("Could not close prepared statement.");
         }
     }
 
@@ -53,7 +61,7 @@ public class DBUtils {
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
+            logger.error("Could not close prepared statement or resultset.");
         }
     }
 }
