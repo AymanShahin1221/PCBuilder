@@ -7,6 +7,8 @@ import jakarta.annotation.PreDestroy;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ public class DBUpdateService {
 
     private final Connection connection = initDBConnection();
     private final KafkaProducerService kafkaProducerService;
+
+    private static final Logger logger = LoggerFactory.getLogger(DBUpdateService.class);
 
     @Autowired
     public DBUpdateService(KafkaProducerService kafkaProducerService) throws SQLException {
@@ -63,8 +67,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table CPU");
-            e.printStackTrace();
+            logger.error("Error while updating table CPU");
         }
         finally
         {
@@ -99,8 +102,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table GPU");
-            e.printStackTrace();
+            logger.error("Error while updating table GPU");
         }
         finally
         {
@@ -135,8 +137,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table Case_");
-            e.printStackTrace();
+            logger.error("Error while updating table Case");
         }
         finally
         {
@@ -167,8 +168,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table Cooler");
-            e.printStackTrace();
+            logger.error("Error while updating table Cooler");
         }
         finally
         {
@@ -203,8 +203,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table Keyboard");
-            e.printStackTrace();
+            logger.error("Error while updating table Keyboard");
         }
         finally
         {
@@ -243,8 +242,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table Memory");
-            e.printStackTrace();
+            logger.error("Error while updating table Memory");
         }
         finally
         {
@@ -278,8 +276,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table Motherboard");
-            e.printStackTrace();
+            logger.error("Error while updating table Motherboard");
         }
         finally
         {
@@ -314,8 +311,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table Monitor");
-            e.printStackTrace();
+            logger.error("Error while updating table Monitor");
         }
         finally
         {
@@ -344,8 +340,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table OS");
-            e.printStackTrace();
+            logger.error("Error while updating table OS");
         }
         finally
         {
@@ -379,8 +374,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table Power_Supply");
-            e.printStackTrace();
+            logger.error("Error while updating table Power_Supply");
         }
         finally
         {
@@ -415,8 +409,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating table Storage");
-            e.printStackTrace();
+            logger.error("Error while updating table Storage");
         }
         finally
         {
@@ -425,7 +418,7 @@ public class DBUpdateService {
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processCPUData() throws SQLException {
+    private void processCPUData() {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.CPU);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -452,15 +445,13 @@ public class DBUpdateService {
         }
         catch (JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
-
+            logger.error("Error parsing CPU parts JSON Data");
         }
-        System.out.println("Successfully updated table CPU");
+        logger.info("Successfully updated table CPU");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processGPUData() throws SQLException {
+    private void processGPUData() {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.GPU);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -487,14 +478,13 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing GPU parts JSON Data");
         }
-        System.out.println("Successfully updated table GPU");
+        logger.info("Successfully updated table GPU");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processCaseData() throws SQLException {
+    private void processCaseData() {
         
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.CASE);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -521,14 +511,13 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing Case parts JSON Data");
         }
-        System.out.println("Successfully updated table Case");
+        logger.info("Successfully updated table Case");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processCoolerData() throws SQLException {
+    private void processCoolerData() {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.COOLER);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -551,14 +540,13 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing Cooler parts JSON Data");
         }
-        System.out.println("Successfully updated table Cooler");
+        logger.info("Successfully updated table Cooler");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processKeyboardData() throws SQLException {
+    private void processKeyboardData() {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.KEYBOARD);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -585,14 +573,13 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing Keyboard parts JSON Data");
         }
-        System.out.println("Successfully updated table Keyboard");
+        logger.info("Successfully updated table Keyboard");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processMemoryData() throws SQLException {
+    private void processMemoryData() {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.MEMORY);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -634,14 +621,13 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing Memory parts JSON Data");
         }
-        System.out.println("Successfully updated table Memory");
+        logger.info("Successfully updated table Memory");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processMonitorData() throws SQLException {
+    private void processMonitorData() {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.MONITOR);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -668,14 +654,13 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing Monitor parts JSON Data");
         }
-        System.out.println("Successfully updated table Monitor");
+        logger.info("Successfully updated table Monitor");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processMotherboardData() throws SQLException {
+    private void processMotherboardData() {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.MOTHERBOARD);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -701,14 +686,13 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing Motherboard parts JSON Data");
         }
-        System.out.println("Successfully updated table Motherboard");
+        logger.info("Successfully updated table Motherboard");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processOSData() throws SQLException {
+    private void processOSData() {
         
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.OS);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -730,14 +714,13 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing OS parts JSON Data");
         }
-        System.out.println("Successfully updated table OS");
+        logger.info("Successfully updated table OS");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processPowerSupplyData() throws SQLException {
+    private void processPowerSupplyData() {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.POWER_SUPPLY);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -775,14 +758,13 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing Power Supply parts JSON Data");
         }
-        System.out.println("Successfully updated table Power_Supply");
+        logger.info("Successfully updated table Power_Supply");
     }
 
     @Scheduled(cron="${daily_db_update}")
-    private void processStorageData() throws SQLException {
+    private void processStorageData() {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.STORAGE);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -832,10 +814,9 @@ public class DBUpdateService {
         }
         catch(JSONException e)
         {
-            System.err.println("Error parsing JSON Data");
-            e.printStackTrace();
+            logger.error("Error parsing Storage parts JSON Data");
         }
-        System.out.println("Successfully updated table Storage");
+        logger.info("Successfully updated table Storage");
     }
 
     @PreDestroy
@@ -847,8 +828,7 @@ public class DBUpdateService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error closing database connection");
-            e.printStackTrace();
+            logger.error("Error closing database connection");
         }
     }
 }
