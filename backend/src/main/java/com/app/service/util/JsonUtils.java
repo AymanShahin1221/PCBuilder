@@ -3,10 +3,18 @@ package com.app.service.util;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
 public class JsonUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
+
+    private JsonUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static JSONObject stringToJsonObject(String data) {
         JSONObject jsonObject = null;
@@ -16,8 +24,7 @@ public class JsonUtils {
         }
         catch (JSONException e)
         {
-            System.err.println("Error converting String to JSON Array");
-            e.printStackTrace();
+            logger.error("Error converting String to JSON Object");
         }
         return jsonObject;
     }
@@ -30,8 +37,7 @@ public class JsonUtils {
         }
         catch (JSONException e)
         {
-            System.err.println("Error converting String to JSON Array");
-            e.printStackTrace();
+            logger.error("Error converting String to JSON Array");
         }
         return jsonArray;
     }
@@ -45,23 +51,7 @@ public class JsonUtils {
         }
         catch(JSONException e)
         {
-            System.out.println("Error parsing JSON Array");
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static ArrayList<Double> getDoubleArrayList(JSONArray jsonArray) {
-        ArrayList<Double> result = new ArrayList<>();
-        try
-        {
-            for(int i = 0; i < jsonArray.length(); i++)
-                result.add(jsonArray.getDouble(i));
-        }
-        catch(JSONException e)
-        {
-            System.out.println("Error parsing JSON Array");
-            e.printStackTrace();
+            logger.error("Error parsing JSON Array");
         }
         return result;
     }
