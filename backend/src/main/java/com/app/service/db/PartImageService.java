@@ -4,6 +4,8 @@ import com.app.exception.MaxCallsReachedException;
 import com.app.service.api.ApiService;
 import com.app.service.util.DBUtils;
 import com.app.service.util.ImageDownloader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ public class PartImageService {
     private final int MAX_API_CALLS_PER_DAY;
     private int currentApiCallCount = 0;
 
+    private static final Logger logger = LoggerFactory.getLogger(PartImageService.class);
 
     @Autowired
     public PartImageService(@Qualifier("ebayApiService") ApiService apiService) {
@@ -62,11 +65,10 @@ public class PartImageService {
                 String name = resultSet.getString("name");
                 partsMap.put(pid, name);
             }
-
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
+            logger.error("Unable to retrieve parts from table {}", table);
         }
         finally
         {
@@ -97,12 +99,12 @@ public class PartImageService {
         }
         catch (SQLException e)
         {
-            System.err.println("Error while updating image locations in table " + table);
-            e.printStackTrace();
+            logger.error("Error while updating image locations in table {}", table);
         }
         finally
         {
-            preparedStatement.close();
+            if (preparedStatement != null)
+                preparedStatement.close();
         }
     }
 
@@ -132,7 +134,8 @@ public class PartImageService {
                 }
                 catch(MaxCallsReachedException mcre)
                 {
-                    System.out.println("Max calls reached while updating " + table);
+                    logger.info("Max calls reached while updating {}", table);
+
                     delay(apiService.getResetTime());
                     currentApiCallCount = 0;
 
@@ -155,12 +158,13 @@ public class PartImageService {
 
                 if(currentApiCallCount > MAX_API_CALLS_PER_DAY)
                 {
-                    System.out.println("Max calls reached while updating " + table);
+                    logger.info("Max calls exceeded while updating {}", table);
+
                     currentApiCallCount = 0;
                     delay(apiService.getResetTime());
                 }
             }
         }
-        System.out.println("------------------------------Finished UPDATING IMAGES------------------------------");
+        logger.info("Finished updating product images");
     }
 }
