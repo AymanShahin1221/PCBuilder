@@ -2,7 +2,6 @@ package com.app.service.api;
 
 import com.app.exception.MaxCallsReachedException;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +34,6 @@ public class EbayApiService implements ApiService {
         this.restTemplate = restTemplate;
     }
 
-    public int getRateLimit() { return 5000; }
-
-
     private HttpHeaders createHeadersForRequest() {
         HttpHeaders headers = new HttpHeaders();
 
@@ -67,7 +63,7 @@ public class EbayApiService implements ApiService {
 
             if (error.getString("ShortMessage").equals("No match found."))
             {
-                System.out.println("No match found for " + keywords);
+                logger.info("No match found for {}", keywords);
                 return false;
             }
             else if (error.getString("ShortMessage").equals("IP limit exceeded."))
@@ -75,7 +71,7 @@ public class EbayApiService implements ApiService {
 
             else
             {
-                System.out.println("JSON response contains error(s).");
+                logger.error("JSON response contains error(s). Probable cause: invalid API token");
                 return false;
             }
         }
@@ -87,6 +83,7 @@ public class EbayApiService implements ApiService {
      * @param keywords search term for product
      */
     public String getImgUrl(String keywords) throws MaxCallsReachedException {
+
         String encodedKeywords = keywords.replace(' ', '&');
 
         String endpoint = BASE_URL + "callname=FindProducts&" +
@@ -102,6 +99,8 @@ public class EbayApiService implements ApiService {
 
         try
         {
+            logger.info("Fetching image url...");
+
             ResponseEntity<String> response = restTemplate.exchange(endpoint, HttpMethod.GET, entity, String.class);
             if (response.getStatusCode().is2xxSuccessful())
             {
@@ -115,22 +114,21 @@ public class EbayApiService implements ApiService {
                 boolean hasImage = product.getBoolean("DisplayStockPhotos");
 
                 if(hasImage)
+                {
+                    logger.info("Image URL found for keywords {}", keywords);
                     return product.getString("StockPhotoURL");
+                }
             }
-            else
-                System.out.println("Request to " + endpoint + " failed");
         }
         catch (RestClientException e)
         {
-            System.out.println("Could not send request for keywords " + keywords);
-            System.out.println("Reason: invalid request or max api call limit reached.");
-        }
-        catch(JSONException e)
-        {
-            System.out.println("No results found for " + keywords);
+            logger.error("Failed to send HTTP request.");
         }
         return null;
     }
+
+
+    public int getRateLimit() { return 5000; }
 
     /**
      * reset: T07:00:00.000Z
