@@ -44,8 +44,6 @@ public class DelayUtils {
             Duration duration = Duration.between(currentDateTime, nextDayEndDateTime);
             long delayDuration = duration.toMillis();
 
-            System.out.println(delayDuration);
-
             Thread.sleep(delayDuration);
         }
         logger.info("Resuming...");
