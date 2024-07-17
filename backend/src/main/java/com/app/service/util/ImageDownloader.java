@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 
 /**
@@ -45,7 +46,7 @@ public class ImageDownloader {
                 return;
             }
 
-            URL url = new URL(imgUrl);
+            URL url = new URI(imgUrl).toURL();
             InputStream inputStream = url.openStream();
             FileOutputStream fileOutputStream = new FileOutputStream(file);
 
