@@ -6,9 +6,9 @@
  */
 
 
-function GenericProductsTable(props) {
+function GenericProductsTable(props: any) {
 
-    function renderColumnsForTable(categoryName) {
+    function renderColumnsForTable(categoryName: string) {
 
     }
     

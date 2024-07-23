@@ -1,20 +1,36 @@
+import React from "react";
+
 function SetupForm() {
 
-    function setSuccess(field) {
-        const errorDiv = field.parentNode.querySelector(".BuildSetupPage_error-div");
-        field.style.border = "2px solid green";
-        errorDiv.textContent = "";
+    function setSuccess(field: HTMLElement): void {
+        const parentNode = field.parentNode;
+        if(parentNode)
+        {
+            const errorDiv = parentNode.querySelector(".BuildSetupPage_error-div");
+            field.style.border = "2px solid green";
+
+            if(errorDiv)
+                errorDiv.textContent = "";
+        }
     }
 
-    function setError(field, message) {
-        const errorDiv = field.parentNode.querySelector(".BuildSetupPage_error-div");
-        field.style.border = "2px solid red";
-        errorDiv.style.color = "#ff3a3a";
-        errorDiv.textContent = message;
+    function setError(field: HTMLElement, message: string): void {
+        const parentNode = field.parentNode;
+        if(parentNode)
+        {
+            const errorDiv = parentNode.querySelector(".BuildSetupPage_error-div") as HTMLElement;
+            field.style.border = "2px solid red";
+            if(errorDiv)
+            {
+                errorDiv.style.color = "#ff3a3a";
+                errorDiv.textContent = message;
+            }
+        }
     }
 
-    function validateNameField() {
-        const nameField = document.getElementById("BuildSetupPage_form-name");
+    function validateNameField(): boolean {
+        const nameField = document.getElementById("BuildSetupPage_form-name") as HTMLInputElement;
+
         let name = nameField.value;
         let len = name.length;
 
@@ -33,8 +49,8 @@ function SetupForm() {
         }
     }
 
-    function validateBudgetField() {
-        const budgetField = document.getElementById("BuildSetupPage_form-budget");
+    function validateBudgetField(): boolean {
+        const budgetField = document.getElementById("BuildSetupPage_form-budget") as HTMLInputElement;
         let budget = budgetField.value;
 
         if (budget === "")
@@ -42,7 +58,7 @@ function SetupForm() {
 
         else
         {
-            if (!isNaN(budget) && !isNaN(parseFloat(budget)))
+            if (!isNaN(Number(budget)) && !isNaN(parseFloat(budget)))
             {
                 const nonNumericRegex = /[^0-9.]/;
                 if (nonNumericRegex.test(budget))
@@ -59,8 +75,8 @@ function SetupForm() {
         }
     }
 
-    function validateDescriptionField() {
-        const descriptionField = document.getElementById("BuildSetupPage_form-description");
+    function validateDescriptionField(): boolean {
+        const descriptionField = document.getElementById("BuildSetupPage_form-description") as HTMLInputElement;
         let description = descriptionField.value;
 
         if (description === "")
@@ -79,7 +95,7 @@ function SetupForm() {
         }
     }
 
-    function handleSubmit(event) {
+    function handleSubmit(event: React.ChangeEvent<HTMLFormElement>): void {
         event.preventDefault();
 
         const isNameValid = validateNameField();
@@ -88,19 +104,30 @@ function SetupForm() {
 
         if (isNameValid && isBudgetValid && isDescriptionValid)
         {
-            const form = document.querySelector(".BuildSetupPage_form");
+            const form = document.querySelector(".BuildSetupPage_form") as HTMLFormElement;
 
-            const buildName = form.querySelector("#BuildSetupPage_form-name").value;
-            const budget = parseFloat(form.querySelector("#BuildSetupPage_form-budget").value);
-            const description = form.querySelector("#BuildSetupPage_form-description").value;
+            const buildNameInput = form.querySelector("#BuildSetupPage_form-name") as HTMLInputElement;
+            const buildName = buildNameInput.value;
 
-            const formData = {
-                buildName: buildName.trim() === "" ? null : buildName,
+            const budgetInput = form.querySelector("#BuildSetupPage_form-budget") as HTMLInputElement;
+            const budget : number = parseFloat(budgetInput.value);
+
+            const descriptionInput = form.querySelector("#BuildSetupPage_form-description") as HTMLInputElement;
+            const description = descriptionInput.value;
+
+            interface FormData {
+                buildName: string | null,
+                budget: number | null,
+                description: string | null
+            }
+
+            const formData: FormData = {
+                buildName: buildName.trim() === "" ? null : buildName as string,
                 budget: budget,
                 description: description.trim() === "" ? null : description
             };
             
-            const params = {
+            const params: RequestInit = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

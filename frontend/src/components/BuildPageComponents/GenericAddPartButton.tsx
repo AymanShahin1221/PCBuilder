@@ -4,9 +4,9 @@
  * @param {String} props.category - categoryName to be displayed on button
  */
 
-function GenericAddPartButton(props) {
+function GenericAddPartButton(props : any) {
 
-    function createPrefix(categoryName) {
+    function createPrefix(categoryName : string) {
         if(categoryName === "Memory" || categoryName === "Storage")
             return "Choose "
 

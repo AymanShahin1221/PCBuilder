@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 function BuildInfo() {
 
-    const [buildName, setBuildName] = useState(null);
-    const [budget, setBudget] = useState(null);
+    const [buildName, setBuildName] = useState<string>('');
+    const [budget, setBudget] = useState<string>('');
 
     function fetchBuildData() {
         fetch("http://localhost:8081/api/getBuildData", {

@@ -11,7 +11,7 @@ import "../css/BuildPageStyles.css";
  * @returns {JSX.Element}
  * @constructor
  */
-function BuildPage() {
+function BuildPage(): JSX.Element {
     return (
       <div>
           <Header/>

@@ -7,6 +7,18 @@ import GenericAddPartButton from "./GenericAddPartButton";
  */
 function BuildTable() {
 
+    interface ChosenProduct {
+        imgSrc: string | null;
+        description: string | null;
+    }
+
+    interface TableData {
+        category: string;
+        chosenProduct: ChosenProduct;
+        basePrice: number | null;
+        vendorPrice: number | null;
+    }
+
     /**
      * Table data fetched from database
      */
@@ -24,12 +36,8 @@ function BuildTable() {
         { category: "Storage", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
     ];
 
-    function getDataByCategory(categoryName) {
-        for(let i = 0; i < tableData.length; i++)
-        {
-            if(tableData[i].category === categoryName)
-                return tableData[i];
-        }
+    function getDataByCategory(categoryName : string) : TableData | undefined {
+        return tableData.find(item => item.category === categoryName);
     }
 
     /**
@@ -38,8 +46,11 @@ function BuildTable() {
      * If both the image source and description are not present in tableData, a default button will be displayed prompting the user to add an item
      * @returns {JSX.Element}
      */
-    function conditionallyRenderProductDetails(categoryName) {
+    function conditionallyRenderProductDetails(categoryName : string): JSX.Element {
         const product = getDataByCategory(categoryName);
+        if(!product)
+            return <div>Category not found</div>;
+
         const imgSrc = product.chosenProduct.imgSrc;
         const description = product.chosenProduct.description;
 
@@ -298,7 +309,7 @@ function BuildTable() {
                     </td>
                 </tr>
                 <tr className="BuildPage_grand-total-container">
-                    <td className="BuildPage_grand-total-col" colSpan="5">
+                    <td className="BuildPage_grand-total-col" colSpan={5}>
                         <div
                             className="BuildPage_grand-total-container d-flex flex-row justify-content-center mx-5">
                             Grand Total: $
