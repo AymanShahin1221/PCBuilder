@@ -31,8 +31,8 @@ function SetupForm() {
     function validateNameField(): boolean {
         const nameField = document.getElementById("BuildSetupPage_form-name") as HTMLInputElement;
 
-        let name = nameField.value;
-        let len = name.length;
+        let name: string = nameField.value;
+        let len: number = name.length;
 
         if (name === "")
             return true
@@ -51,7 +51,7 @@ function SetupForm() {
 
     function validateBudgetField(): boolean {
         const budgetField = document.getElementById("BuildSetupPage_form-budget") as HTMLInputElement;
-        let budget = budgetField.value;
+        let budget: string = budgetField.value;
 
         if (budget === "")
             return true;
@@ -77,7 +77,7 @@ function SetupForm() {
 
     function validateDescriptionField(): boolean {
         const descriptionField = document.getElementById("BuildSetupPage_form-description") as HTMLInputElement;
-        let description = descriptionField.value;
+        let description: string = descriptionField.value;
 
         if (description === "")
             return true;
@@ -98,22 +98,22 @@ function SetupForm() {
     function handleSubmit(event: React.ChangeEvent<HTMLFormElement>): void {
         event.preventDefault();
 
-        const isNameValid = validateNameField();
-        const isBudgetValid = validateBudgetField();
-        const isDescriptionValid = validateDescriptionField();
+        const isNameValid: boolean = validateNameField();
+        const isBudgetValid: boolean = validateBudgetField();
+        const isDescriptionValid: boolean = validateDescriptionField();
 
         if (isNameValid && isBudgetValid && isDescriptionValid)
         {
             const form = document.querySelector(".BuildSetupPage_form") as HTMLFormElement;
 
             const buildNameInput = form.querySelector("#BuildSetupPage_form-name") as HTMLInputElement;
-            const buildName = buildNameInput.value;
+            const buildName: string = buildNameInput.value;
 
             const budgetInput = form.querySelector("#BuildSetupPage_form-budget") as HTMLInputElement;
             const budget : number = parseFloat(budgetInput.value);
 
             const descriptionInput = form.querySelector("#BuildSetupPage_form-description") as HTMLInputElement;
-            const description = descriptionInput.value;
+            const description: string = descriptionInput.value;
 
             interface FormData {
                 buildName: string | null,
