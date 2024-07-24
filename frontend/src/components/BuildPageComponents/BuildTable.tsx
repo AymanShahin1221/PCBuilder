@@ -1,5 +1,18 @@
 import removeIcon from "../../assets/svgs/BuildPage/remove-icon.svg";
+import useBuildData from "../../hooks/BuildPageHooks/useBuildData";
 import GenericAddPartButton from "./GenericAddPartButton";
+import { BuildData, ChosenProduct } from "../../types/BuildPageTypes/Types";
+
+
+function renderProductsNamesImages(chosenProducts: ChosenProduct[]): JSX.Element[] {
+    return chosenProducts.map(
+        product =>
+            <div className="BuildPage_info-container d-flex flex-row my-4" key={product.name}>
+                <img className="BuildPage_product-img img-fluid me-2" src={product.imgSrc!} alt={product.name || 'Product Image'} />
+                <p>{product.name}</p>
+            </div>
+    );
+}
 
 /**
  * BuildTable component manages a table for selecting and displaying various PC components.
@@ -7,70 +20,21 @@ import GenericAddPartButton from "./GenericAddPartButton";
  */
 function BuildTable() {
 
-    interface ChosenProduct {
-        imgSrc: string | null;
-        description: string | null;
+    const buildData: BuildData[] = useBuildData();
+
+    function getBuildDataByCategory(category: string) {
+        return buildData.find(item => item.productCategory === category);
     }
 
-    interface TableData {
-        category: string;
-        chosenProduct: ChosenProduct;
-        basePrice: number | null;
-        vendorPrice: number | null;
-    }
+    function renderUserBuildDataByCategory(categoryName: string) {
+        const buildDataForCategory = getBuildDataByCategory(categoryName);
 
-    /**
-     * Table data fetched from database
-     */
-    let tableData = [
-        { category: "Case", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "Cooler", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "CPU", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "GPU", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "Keyboard", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "Memory", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "Monitor", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "Motherboard", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "OS", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "PowerSupply", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-        { category: "Storage", chosenProduct: { imgSrc: null, description: null }, basePrice: null, vendorPrice: null },
-    ];
+        if (buildDataForCategory && buildDataForCategory.chosenProducts.length !== 0)
+            return renderProductsNamesImages(buildDataForCategory.chosenProducts);
 
-    function getDataByCategory(categoryName : string) : TableData | undefined {
-        return tableData.find(item => item.category === categoryName);
-    }
-
-    /**
-     *
-     * @param categoryName represents category name of a particular field.
-     * If both the image source and description are not present in tableData, a default button will be displayed prompting the user to add an item
-     * @returns {JSX.Element}
-     */
-    function conditionallyRenderProductDetails(categoryName : string): JSX.Element {
-        const product = getDataByCategory(categoryName);
-        if(!product)
-            return <div>Category not found</div>;
-
-        const imgSrc = product.chosenProduct.imgSrc;
-        const description = product.chosenProduct.description;
-
-        if (imgSrc && description)
-        {
-            console.log("both are present")
-            return (
-                <div className="BuildPage_info-container d-flex flex-row">
-                    <img className="BuildPage_product-img img-fluid me-3" src={imgSrc}/>
-                    <p>{description}</p>
-                </div>
-            );
-        }
         else
-        {
-            console.log("both are not present")
-            return (
-              <GenericAddPartButton category={categoryName}/>
-            );
-        }
+            return <GenericAddPartButton category={categoryName} />;
+
     }
 
     return (
@@ -88,14 +52,11 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">CPU</td>
                     <td data-cell="chosen-product">
-                        {conditionallyRenderProductDetails("CPU")}
+                        {renderUserBuildDataByCategory("CPU")}
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#"><img className="BuildPage_product-vendor-logo img-fluid me-3" />*/}
-                        {/*    <img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
 
                     </td>
                     <td data-cell="action">
@@ -108,14 +69,11 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">GPU</td>
                     <td data-cell="chosen-product">
-                        {conditionallyRenderProductDetails("GPU")}
+                        {renderUserBuildDataByCategory("GPU")}
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#">*/}
-                        {/*    <img className="BuildPage_product-vendor-logo img-fluid me-3" /><img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
                     </td>
                     <td data-cell="action">
                         <div className="BuildPage_actions-container d-flex flex-row">
@@ -129,15 +87,13 @@ function BuildTable() {
                     <td data-cell="category">Memory</td>
                     <td data-cell="chosen-product">
                         <div className="BuildPage_info-container d-flex flex-row">
-                            {conditionallyRenderProductDetails("Memory")}
+                            {renderUserBuildDataByCategory("Memory")}
                         </div>
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#">*/}
-                        {/*    <img className="BuildPage_product-vendor-logo img-fluid me-3" /><img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
+
                     </td>
                     <td data-cell="action">
                         <div className="BuildPage_actions-container d-flex flex-row">
@@ -151,15 +107,13 @@ function BuildTable() {
                     <td data-cell="category">Storage</td>
                     <td data-cell="chosen-product">
                         <div className="BuildPage_info-container d-flex flex-row">
-                            {conditionallyRenderProductDetails("Storage")}
+                            {renderUserBuildDataByCategory("Storage")}
                         </div>
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#">*/}
-                        {/*    <img className="BuildPage_product-vendor-logo img-fluid me-3" /><img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
+
                     </td>
                     <td data-cell="action">
                         <div className="BuildPage_actions-container d-flex flex-row">
@@ -172,14 +126,12 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Cooler</td>
                     <td data-cell="chosen-product">
-                        {conditionallyRenderProductDetails("Cooler")}
+                        {renderUserBuildDataByCategory("Cooler")}
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#">*/}
-                        {/*    <img className="BuildPage_product-vendor-logo img-fluid me-3" /><img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
+
                     </td>
                     <td data-cell="action">
                         <div className="BuildPage_actions-container d-flex flex-row">
@@ -192,14 +144,12 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Power Supply</td>
                     <td data-cell="chosen-product">
-                        {conditionallyRenderProductDetails("PowerSupply")}
+                        {renderUserBuildDataByCategory("Power Supply")}
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#">*/}
-                        {/*    <img className="BuildPage_product-vendor-logo img-fluid me-3" /><img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
+
                     </td>
                     <td data-cell="action">
                         <div className="BuildPage_actions-container d-flex flex-row">
@@ -212,14 +162,12 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Motherboard</td>
                     <td data-cell="chosen-product">
-                        {conditionallyRenderProductDetails("Motherboard")}
+                        {renderUserBuildDataByCategory("Motherboard")}
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#">*/}
-                        {/*    <img className="BuildPage_product-vendor-logo img-fluid me-3" /><img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
+
                     </td>
                     <td data-cell="action">
                         <div className="BuildPage_actions-container d-flex flex-row">
@@ -232,14 +180,12 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Case</td>
                     <td data-cell="chosen-product">
-                        {conditionallyRenderProductDetails("Case")}
+                        {renderUserBuildDataByCategory("Case")}
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#">*/}
-                        {/*    <img className="BuildPage_product-vendor-logo img-fluid me-3" /><img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
+
                     </td>
                     <td data-cell="action">
                         <div className="BuildPage_actions-container d-flex flex-row">
@@ -252,14 +198,12 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Keyboard</td>
                     <td data-cell="chosen-product">
-                        {conditionallyRenderProductDetails("Keyboard")}
+                        {renderUserBuildDataByCategory("Keyboard")}
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#">*/}
-                        {/*    <img className="BuildPage_product-vendor-logo img-fluid me-3" /><img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
+
                     </td>
                     <td data-cell="action">
                         <div className="BuildPage_actions-container d-flex flex-row">
@@ -272,14 +216,12 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">OS</td>
                     <td data-cell="chosen-product">
-                        {conditionallyRenderProductDetails("OS")}
+                        {renderUserBuildDataByCategory("OS")}
                     </td>
 
                     <td data-cell="base-price"></td>
                     <td data-cell="vendor-price">
-                        {/*<a className="BuildPage_vendor-product-link" href="#">*/}
-                        {/*    <img className="BuildPage_product-vendor-logo img-fluid me-3" /><img className="BuildPage_link-icon mb-2 img-fluid ms-1" src={linkIcon}/>*/}
-                        {/*</a>*/}
+
                     </td>
                     <td data-cell="action">
                         <div className="BuildPage_actions-container d-flex flex-row">
@@ -292,7 +234,7 @@ function BuildTable() {
                 <tr>
                     <td data-cell="category">Monitor</td>
                     <td data-cell="chosen-product">
-                        {conditionallyRenderProductDetails("Monitor")}
+                        {renderUserBuildDataByCategory("Monitor")}
                     </td>
 
                     <td data-cell="base-price"></td>

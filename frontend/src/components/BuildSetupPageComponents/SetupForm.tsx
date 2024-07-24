@@ -4,27 +4,23 @@ function SetupForm() {
 
     function setSuccess(field: HTMLElement): void {
         const parentNode = field.parentNode;
-        if(parentNode)
-        {
-            const errorDiv = parentNode.querySelector(".BuildSetupPage_error-div");
-            field.style.border = "2px solid green";
 
-            if(errorDiv)
-                errorDiv.textContent = "";
-        }
+        const errorDiv = parentNode?.querySelector(".BuildSetupPage_error-div");
+        field.style.border = "2px solid green";
+
+        if(errorDiv)
+            errorDiv.textContent = "";
     }
 
-    function setError(field: HTMLElement, message: string): void {
+    function setError(field: HTMLElement, errorMessage: string): void {
         const parentNode = field.parentNode;
-        if(parentNode)
+
+        const errorDiv = parentNode?.querySelector(".BuildSetupPage_error-div") as HTMLElement;
+        field.style.border = "2px solid red";
+        if(errorDiv)
         {
-            const errorDiv = parentNode.querySelector(".BuildSetupPage_error-div") as HTMLElement;
-            field.style.border = "2px solid red";
-            if(errorDiv)
-            {
-                errorDiv.style.color = "#ff3a3a";
-                errorDiv.textContent = message;
-            }
+            errorDiv.style.color = "#ff3a3a";
+            errorDiv.textContent = errorMessage;
         }
     }
 
@@ -122,7 +118,7 @@ function SetupForm() {
             }
 
             const formData: FormData = {
-                buildName: buildName.trim() === "" ? null : buildName as string,
+                buildName: buildName.trim() === "" ? null : buildName,
                 budget: budget,
                 description: description.trim() === "" ? null : description
             };

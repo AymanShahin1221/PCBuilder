@@ -1,4 +1,4 @@
-import useBuildInfo from "../../hooks/useBuildInfo";
+import useBuildInfo from "../../hooks/BuildPageHooks/useBuildInfo";
 
 function BuildInfo() {
 
