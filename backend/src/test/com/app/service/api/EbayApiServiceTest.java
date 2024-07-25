@@ -1,5 +1,6 @@
 package com.app.service.api;
 
+import com.app.exception.InvalidApiResponseException;
 import com.app.exception.MaxCallsReachedException;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,7 +35,7 @@ class EbayApiServiceTest {
 
     @ParameterizedTest
     @MethodSource("provideMockKeywords")
-    void testGetImgUrl(String mockKeywords, String expectedImgURL) throws MaxCallsReachedException {
+    void testGetImgUrl(String mockKeywords, String expectedImgURL) throws MaxCallsReachedException, InvalidApiResponseException {
         String actualImgUrl = ebayApiService.getImgUrl(mockKeywords);
         assertEquals(expectedImgURL, actualImgUrl);
     }

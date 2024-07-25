@@ -1,6 +1,8 @@
 package com.app.service.api;
 
+import com.app.exception.InvalidApiResponseException;
 import com.app.exception.MaxCallsReachedException;
+import org.apache.kafka.common.metrics.stats.Max;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -53,7 +55,7 @@ public class EbayApiService implements ApiService {
      * @return a boolean representing whether the JSON response is valid
      * @throws MaxCallsReachedException if the response indicates max call limit has been exceeded
      */
-    private boolean validateJSONResponse(JSONObject jsonObject, String keywords) throws MaxCallsReachedException {
+    private boolean validateJSONResponse(JSONObject jsonObject, String keywords) throws MaxCallsReachedException, InvalidApiResponseException {
 
         if(jsonObject.has("Errors"))
         {
@@ -70,10 +72,8 @@ public class EbayApiService implements ApiService {
                 throw new MaxCallsReachedException("Max api calls reached.");
 
             else
-            {
-                logger.error("JSON response contains error(s). Probable cause: invalid API token");
-                return false;
-            }
+                throw new InvalidApiResponseException("JSON response contains error(s). Probable cause: invalid API token");
+
         }
         return true;
     }
@@ -82,7 +82,7 @@ public class EbayApiService implements ApiService {
      * Returns a string url of a product image
      * @param keywords search term for product
      */
-    public String getImgUrl(String keywords) throws MaxCallsReachedException {
+    public String getImgUrl(String keywords) throws MaxCallsReachedException, InvalidApiResponseException {
 
         String encodedKeywords = keywords.replace(' ', '&');
 

@@ -1,5 +1,6 @@
 package com.app.service.db;
 
+import com.app.exception.InvalidApiResponseException;
 import com.app.exception.MaxCallsReachedException;
 import com.app.service.api.ApiService;
 import com.app.service.util.DBUtils;
@@ -117,7 +118,7 @@ public class PartImageService {
      * Also keeps track of current API call count
      * If this limit is exceed, the delay will be invoked
      */
-    public void updateImagesInTables() throws SQLException, InterruptedException, IOException, MaxCallsReachedException {
+    public void updateImagesInTables() throws SQLException, InterruptedException, IOException, MaxCallsReachedException, InvalidApiResponseException {
 
         for(String table : DBUtils.CATEGORY_TABLES)
         {
@@ -141,6 +142,12 @@ public class PartImageService {
 
                     imgUrl = apiService.getImgUrl(partName);
                     currentApiCallCount++;
+                }
+
+                catch(InvalidApiResponseException iare)
+                {
+                    logger.error("Halting...");
+                    return;
                 }
 
                 if(imgUrl == null)

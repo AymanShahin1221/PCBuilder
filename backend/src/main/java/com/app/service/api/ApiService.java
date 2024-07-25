@@ -1,5 +1,6 @@
 package com.app.service.api;
 
+import com.app.exception.InvalidApiResponseException;
 import com.app.exception.MaxCallsReachedException;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public interface ApiService {
      * @param keywords search term to use when looking for corresponding image url
      * @return string representing url of image
      */
-    String getImgUrl(String keywords) throws IOException, InterruptedException, MaxCallsReachedException;
+    String getImgUrl(String keywords) throws IOException, InterruptedException, MaxCallsReachedException, InvalidApiResponseException;
 
     /**
      *
