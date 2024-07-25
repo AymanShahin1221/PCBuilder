@@ -1,24 +1,14 @@
-import {useEffect, useState} from "react";
-
-interface ChosenProduct {
-    name: string | null;
-    basePrice: number | null;
-    imgSrc: string | null;
-}
-
-interface BuildData {
-    productCategory: string;
-    chosenProducts: ChosenProduct[];
-}
+import { useEffect, useState } from "react";
+import { BuildDataType } from "../../types/BuildPageTypes/Types";
 
 function useBuildData() {
-    const [buildData, setBuildData] = useState<BuildData[]>([]);
+    const [buildData, setBuildData] = useState<BuildDataType[]>([]);
 
     function fetchBuildSetupData() {
         // make an api call
 
 
-        // hardcoded for now
+        // hardcoded build data for now
 
         // **************************************************************************************************************************************************
         setBuildData(
