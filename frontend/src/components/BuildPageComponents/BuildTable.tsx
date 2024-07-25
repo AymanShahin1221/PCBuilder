@@ -1,10 +1,10 @@
 import removeIcon from "../../assets/svgs/BuildPage/remove-icon.svg";
 import useBuildData from "../../hooks/BuildPageHooks/useBuildData";
 import GenericAddPartButton from "./GenericAddPartButton";
-import { BuildData, ChosenProduct } from "../../types/BuildPageTypes/Types";
+import {BuildDataType, ChosenProductType, TableRowProps } from "../../types/BuildPageTypes/Types";
+import {ReactElement} from "react";
 
-
-function renderProductsNamesImages(chosenProducts: ChosenProduct[]): JSX.Element[] {
+function renderProductsNamesAndImages(chosenProducts: ChosenProductType[]): ReactElement[] {
     return chosenProducts.map(
         product =>
             <div className="BuildPage_info-container d-flex flex-row my-4" key={product.name}>
@@ -14,27 +14,48 @@ function renderProductsNamesImages(chosenProducts: ChosenProduct[]): JSX.Element
     );
 }
 
+
 /**
- * BuildTable component manages a table for selecting and displaying various PC components.
+ * BuildTable component manages a table for selecting and displaying PC component chosen by the user
  * @component
  */
 function BuildTable() {
 
-    const buildData: BuildData[] = useBuildData();
+    const buildData = useBuildData();
 
-    function getBuildDataByCategory(category: string) {
+    function getBuildDataByCategory(category: string): BuildDataType | undefined {
         return buildData.find(item => item.productCategory === category);
     }
 
-    function renderUserBuildDataByCategory(categoryName: string) {
-        const buildDataForCategory = getBuildDataByCategory(categoryName);
+    function renderUserBuildDataByCategory(categoryName: string): ReactElement[] | ReactElement {
+        const categoryBuildData = getBuildDataByCategory(categoryName);
 
-        if (buildDataForCategory && buildDataForCategory.chosenProducts.length !== 0)
-            return renderProductsNamesImages(buildDataForCategory.chosenProducts);
+        if (categoryBuildData && categoryBuildData.chosenProducts.length !== 0)
+            return renderProductsNamesAndImages(categoryBuildData.chosenProducts);
 
         else
             return <GenericAddPartButton category={categoryName} />;
 
+    }
+
+    function TableRow({ categoryName } : TableRowProps): ReactElement {
+        return (
+            <tr>
+                <td data-cell="category">{categoryName}</td>
+                <td data-cell="chosen-product">
+                    {renderUserBuildDataByCategory(categoryName)}
+                </td>
+
+                <td data-cell="base-price">{}</td>
+                <td data-cell="vendor-price">{}</td>
+
+                <td data-cell="action">
+                    <div className="BuildPage_actions-container d-flex flex-row">
+                        <img className="BuildPage_remove-icon img-fluid ms-3" src={removeIcon}/>
+                    </div>
+                </td>
+            </tr>
+        );
     }
 
     return (
