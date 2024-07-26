@@ -10,15 +10,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.springframework.http.*;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertThrows;
 
-@ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@PrepareForTest({RequestUtils.class})
+@PrepareForTest(RequestUtils.class)
 class EbayApiServiceExceptionsTest {
 
     @Mock
@@ -28,9 +28,8 @@ class EbayApiServiceExceptionsTest {
     private EbayApiService ebayApiService;
 
     @Test
-    void testGetImgUrlInvalidApiResponse() {
-        try (var mockedStatic = Mockito.mockStatic(RequestUtils.class))
-        {
+    void testGetImgUrl_InvalidApiResponse() {
+        try (var mockedStatic = Mockito.mockStatic(RequestUtils.class)) {
             String searchTerm = "intel core 19-14900k";
             String mockJsonResponse = "{\"Errors\":[{\"ErrorClassification\":\"RequestError\",\"ShortMessage\":\"Invalid token.\",\"SeverityCode\":\"Error\",\"LongMessage\":\"Invalid token. Please specify a valid token as HTTP header.\",\"ErrorCode\":\"1.32\"}],\"Version\":\"1157\",\"Build\":\"E1157_CORE_APILW2_19110892_R1\",\"Ack\":\"Failure\",\"Timestamp\":\"2024-07-25T22:12:26.757Z\"}";
 
@@ -45,7 +44,7 @@ class EbayApiServiceExceptionsTest {
     }
 
     @Test
-    void testGetImgUrlMaxCallsReached() {
+    void testGetImgUrl_MaxCallsReached() {
         try (var mockedStatic = Mockito.mockStatic(RequestUtils.class))
         {
             String searchTerm = "intel core 19-14900k";
