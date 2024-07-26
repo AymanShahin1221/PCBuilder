@@ -1,7 +1,7 @@
 import removeIcon from "../../assets/svgs/BuildPage/remove-icon.svg";
 import useBuildData from "../../hooks/BuildPageHooks/useBuildData";
 import GenericAddPartButton from "./GenericAddPartButton";
-import {BuildDataType, ChosenProductType, TableRowProps } from "../../types/BuildPageTypes/Types";
+import {BuildDataType, ChosenProductType, TableRowProps } from "../../types/BuildPageTypes/types";
 import {ReactElement} from "react";
 
 function renderProductsNamesAndImages(chosenProducts: ChosenProductType[]): ReactElement[] {

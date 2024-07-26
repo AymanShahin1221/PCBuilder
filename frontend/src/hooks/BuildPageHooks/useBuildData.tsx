@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BuildDataType } from "../../types/BuildPageTypes/Types";
+import { BuildDataType } from "../../types/BuildPageTypes/types";
 
 function useBuildData() {
     const [buildData, setBuildData] = useState<BuildDataType[]>([]);
