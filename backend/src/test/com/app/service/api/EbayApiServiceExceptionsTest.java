@@ -34,7 +34,25 @@ class EbayApiServiceExceptionsTest {
             String mockJsonResponse = "{\"Errors\":[{\"ErrorClassification\":\"RequestError\",\"ShortMessage\":\"Invalid token.\",\"SeverityCode\":\"Error\",\"LongMessage\":\"Invalid token. Please specify a valid token as HTTP header.\",\"ErrorCode\":\"1.32\"}],\"Version\":\"1157\",\"Build\":\"E1157_CORE_APILW2_19110892_R1\",\"Ack\":\"Failure\",\"Timestamp\":\"2024-07-25T22:12:26.757Z\"}";
 
             ResponseEntity<String> mockResponse = new ResponseEntity<>(mockJsonResponse, HttpStatus.OK);
-            mockedStatic.when(() -> RequestUtils.makeGetRequest(Mockito.anyString(), Mockito.any(HttpHeaders.class), Mockito.any(RestTemplate.class)))
+            mockedStatic
+                    .when(() -> RequestUtils.makeGetRequest(Mockito.anyString(), Mockito.any(HttpHeaders.class), Mockito.any(RestTemplate.class)))
+                    .thenReturn(mockResponse);
+
+            assertThrows(InvalidApiResponseException.class, () -> {
+                ebayApiService.getImgUrl(searchTerm);
+            });
+        }
+    }
+
+    @Test
+    void testGetImgUrl_InvalidApiResponse_Generic_Error() {
+        try (var mockedStatic = Mockito.mockStatic(RequestUtils.class)) {
+            String searchTerm = "intel core 19-14900k";
+            String mockJsonResponse = "{\"Errors\":[{\"ErrorClassification\":\"RequestError\",\"ShortMessage\":\"This is a generic error.\",\"SeverityCode\":\"Error\",\"LongMessage\":\"Invalid token. Please specify a valid token as HTTP header.\",\"ErrorCode\":\"1.32\"}],\"Version\":\"1157\",\"Build\":\"E1157_CORE_APILW2_19110892_R1\",\"Ack\":\"Failure\",\"Timestamp\":\"2024-07-25T22:12:26.757Z\"}";
+
+            ResponseEntity<String> mockResponse = new ResponseEntity<>(mockJsonResponse, HttpStatus.OK);
+            mockedStatic
+                    .when(() -> RequestUtils.makeGetRequest(Mockito.anyString(), Mockito.any(HttpHeaders.class), Mockito.any(RestTemplate.class)))
                     .thenReturn(mockResponse);
 
             assertThrows(InvalidApiResponseException.class, () -> {
@@ -51,7 +69,8 @@ class EbayApiServiceExceptionsTest {
             String mockJsonResponse = "{\"Errors\":[{\"ErrorClassification\":\"RequestError\",\"ShortMessage\":\"IP limit exceeded.\",\"SeverityCode\":\"Error\",\"LongMessage\":\"Invalid token. Please specify a valid token as HTTP header.\",\"ErrorCode\":\"1.32\"}],\"Version\":\"1157\",\"Build\":\"E1157_CORE_APILW2_19110892_R1\",\"Ack\":\"Failure\",\"Timestamp\":\"2024-07-25T22:12:26.757Z\"}";
 
             ResponseEntity<String> mockResponse = new ResponseEntity<>(mockJsonResponse, HttpStatus.OK);
-            mockedStatic.when(() -> RequestUtils.makeGetRequest(Mockito.anyString(), Mockito.any(HttpHeaders.class), Mockito.any(RestTemplate.class)))
+            mockedStatic
+                    .when(() -> RequestUtils.makeGetRequest(Mockito.anyString(), Mockito.any(HttpHeaders.class), Mockito.any(RestTemplate.class)))
                     .thenReturn(mockResponse);
 
             assertThrows(MaxCallsReachedException.class, () -> {
