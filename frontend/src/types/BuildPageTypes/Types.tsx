@@ -10,5 +10,5 @@ export interface BuildData {
 }
 
 export interface TableRowProps {
-    categoryName: string;
+    categoryName: string,
 }
