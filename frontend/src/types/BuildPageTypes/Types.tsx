@@ -1,12 +1,12 @@
-export interface ChosenProductType {
+export interface ChosenProduct {
     name: string | null;
     basePrice: number | null;
     imgSrc: string | null;
 }
 
-export interface BuildDataType {
+export interface BuildData {
     productCategory: string;
-    chosenProducts: ChosenProductType[];
+    chosenProducts: ChosenProduct[];
 }
 
 export interface TableRowProps {

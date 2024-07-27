@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { BuildDataType } from "../../types/BuildPageTypes/types";
+import { BuildData } from "../../types/BuildPageTypes/Types";
 
 function useBuildData() {
-    const [buildData, setBuildData] = useState<BuildDataType[]>([]);
+    const [buildData, setBuildData] = useState<BuildData[]>([]);
 
     function fetchBuildSetupData() {
         // make an api call
@@ -15,7 +15,7 @@ function useBuildData() {
             [
                 {productCategory: "Case", chosenProducts: []},
                 {productCategory: "Cooler", chosenProducts: []},
-                {productCategory: "CPU", chosenProducts: []},
+                {productCategory: "CPU", chosenProducts: [{name: "Intel Core i9 14900k", imgSrc: "https://m.media-amazon.com/images/I/61jRMCAX4CL._AC_UY327_FMwebp_QL65_.jpg", basePrice: 520.99},{name: "Intel Core i9 14900k", imgSrc: "https://m.media-amazon.com/images/I/61jRMCAX4CL._AC_UY327_FMwebp_QL65_.jpg", basePrice: 520.99}]},
                 {productCategory: "GPU", chosenProducts: []},
                 {productCategory: "Keyboard", chosenProducts: []},
                 {productCategory: "Memory", chosenProducts: []},
