@@ -133,9 +133,10 @@ public class PartImageService {
                     imgUrl = apiService.getImgUrl(partName);
                     currentApiCallCount++;
                 }
+
                 catch(MaxCallsReachedException mcre)
                 {
-                    logger.info("Max calls reached while updating {}", table);
+                    logger.info("Max calls reached while updating {}. Delaying...", table);
 
                     delay(apiService.getResetTime());
                     currentApiCallCount = 0;
@@ -146,30 +147,30 @@ public class PartImageService {
 
                 catch(InvalidApiResponseException iare)
                 {
-                    logger.error("Halting...");
-                    return;
-                }
+                    logger.warn("Could not make request while updating images. Resetting API token...");
 
-                if(imgUrl == null)
-                    updateTable(table, partName, null);
-
-                else
-                {
-                    String fname = pid + ".jpg";
-                    ImageDownloader.downloadImage(imgUrl, fname, table);
-
-                    String pathName = table + "\\" + fname;
-
-                    updateTable(table, partName, pathName);
+                    apiService.refreshAPIToken();
+                    imgUrl = apiService.getImgUrl(partName);
+                    currentApiCallCount++;
                 }
 
                 if(currentApiCallCount > MAX_API_CALLS_PER_DAY)
                 {
-                    logger.info("Max calls exceeded while updating {}", table);
+                    logger.info("Max calls exceeded while updating {}. Delaying...", table);
 
                     currentApiCallCount = 0;
                     delay(apiService.getResetTime());
                 }
+
+                if(imgUrl != null)
+                {
+                    String fname = pid + ".jpg";
+                    ImageDownloader.downloadImage(imgUrl, fname, table);
+                    String pathName = table + "\\" + fname;
+                    updateTable(table, partName, pathName);
+                }
+                else
+                    updateTable(table, partName, null);
             }
         }
         logger.info("Finished updating product images");
