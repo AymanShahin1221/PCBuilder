@@ -23,7 +23,7 @@ import com.app.service.util.JsonUtils;
 @Qualifier("ebayApiService")
 public class EbayApiService implements ApiService {
 
-    private static final String API_TOKEN = "v^1.1#i^1#p^1#f^0#I^3#r^0#t^H4sIAAAAAAAAAOVYfWwURRS/u16LfBQMFCEFzbEF/qDZu9m92/vY9M5ce6U9vvpxpUBBy+zuXLuyt3vs7NEeGNPUCKQxaIwFxRjrB4FoEEMIiMZCBIMkkhA0oIQ/CAkIAU2UIJrwh7N3R7lWAkgvsYmXu1zmzZs37/eb92beDOgpGb9gc/3m26XWcbaBHtBjs1qZiWB8SXHl5CJbebEF5ClYB3rm9th7i65WYZhQknwzwklNxcjRnVBUzGeEQSqlq7wGsYx5FSYQ5g2Rj4WXLuFZJ+CTumZooqZQjmgkSAksEuN+TwC4yY/jBCJV79ps0YIU4jycFyDgBYIYB24v6cc4haIqNqBqBCkWsB4a+GjW28IEePIFnDPg5tooRyvSsaypRMUJqFDGXT4zVs/z9cGuQoyRbhAjVCgaXhhrCEcjtctaqlx5tkI5HmIGNFJ4eKtGk5CjFSop9OBpcEabj6VEEWFMuULZGYYb5cN3nXkM9zNUxzmRZRESPF4oIA/0F4TKhZqegMaD/TAlskTHM6o8Ug3ZSD+MUcKG8AISjVxrGTERjTjMv6YUVOS4jPQgVVsdXhVubKRC4XQCqrFOSDfWVKdkRUJ0Y3OE5hDnkwKSn6PdgiiyjAfmJspay9E8YqYaTZVkkzTsWKYZ1Yh4jUZyA/K4IUoNaoMejhumR3l6LHOXQzbQZi5qdhVTRqdqritKECIcmebDV2BotGHospAy0JCFkR0ZioIUTCZliRrZmYnFXPh04yDVaRhJ3uXq6upydrmdmt7hYgFgXCuXLomJnSgBKaJr5npWX374AFrOQBERGYll3kgniS/dJFaJA2oHFfIE/AzH5Hgf7lZopPQfgjzMruEZUagM8QDEMhKH3ALr9fj8vkJkSCgXpC7TDyTANJ2A+jpkJBUoIlokcZZKIF2WeDcXZ93+OKIlbyBOewLxOC1wkpdm4ggBkraCGPD/nxLlUUM9hkQdGQWJ9YLFedPGDqE6XNusN6fZbhSRcStKu2qhp823aMPi9atii1dtNNbjJYw3ioOPmg33BV+jyISZFjJ/IQgwc71wJNRr2EDSqODFRC2JGjVFFtNja4HdutQIdSMdQ4pCBKMCGU4mo4XZqwsG719uE4+Hu3Bn1H90Pt0XFTZDdmyhMsdjYgAmZad5AjlFLeEyc12DpPwwxe0Zr0eFWyaV65hCTUBm0cpStuR0ZuA68QbRqSOspXRSbTsbzAqsRVuHVHKeGbqmKEhvHV0EmPmcSKQMKChorCV2AQJchmPssGV8LKkmGHJRHBUuMXOUto+1LakQW7G97jHLatfwS37IkvkwvdavQa910Ga1giowj6kAc0qKltuLJpVj2UBOGcadWO5Qyd1VR851KJ2Esm6bZvn9g/76mvLahu0LNrWkT79zwjIp741h4Dkwc+iVYXwRMzHvyQHMvtdTzEyZUcp6gI/1MgEmALg2UHGv1848ZS87MHPb/M3n5AtXmNLpl6puTqnb+vwgKB1SslqLLfZeqyXEDYIdwatKEzev+KMtu8rqLz+796D30MXTZ26VRibMOPpmZcWJeTeeObn/zq/flYgvbXnVve/AT1PL1ff7/oKvh6TBM1XbbecDx/Yws44cvL7r1Ny+prLAFPXa7sovSo58svbKW4fTdfJv1Bs7L02tWDHh1p5J0yKT7yyCP1x/u7Su7NDOxLSL2yqalz992/+NyzJndXDr0tnhoqPHv5ou72+oexeePXyZGffa7v4vv+/rVz4+vGf+y5uOv/dk8c+TX3EvWnGh9/ztG+1PHKXP/FG52nFtHHXpw1Mv2o7dPP/L5wP2mkM/8t8iR1/TZ38O7Fw7cWV7fO+aSJfl2oJ+YcfJc2cHts7SbkT2fbrGkV3LvwGFkfMc/REAAA==";
+    private static final String API_TOKEN = System.getenv("API_TOKEN");
     private final RestTemplate restTemplate;
 
     private static final String BASE_URL = "https://open.api.ebay.com/shopping?";
@@ -119,8 +119,7 @@ public class EbayApiService implements ApiService {
         }
         return null;
     }
-
-
+    
     public int getRateLimit() { return 5000; }
 
     /**
