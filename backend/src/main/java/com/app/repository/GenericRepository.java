@@ -40,7 +40,7 @@ public class GenericRepository {
      * @return <T> list containing entities of specified class
      * @param <T> type of entity ---> must extend PCPart superclass
      */
-    public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass) {
+    public <T extends PCPart> String getAllPartsByCategory(Class<T> entityClass) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
@@ -50,7 +50,7 @@ public class GenericRepository {
         // SELECT * FROM entityClass (table)
         List<T> resultSet = entityManager.createQuery(all).getResultList();
 
-        // convert List<T> to JsonArray
+        // convert List<T> to String
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData;
         try
@@ -63,15 +63,7 @@ public class GenericRepository {
             throw new RuntimeException(e);
         }
 
-        // remove pid from resultset
-        JSONArray result = new JSONArray(jsonData);
-        for(int i = 0; i < result.length(); i++)
-        {
-            JSONObject jsonObject = result.getJSONObject(i);
-            jsonObject.remove("pid");
-        }
-
-        return result;
+        return jsonData;
     }
 }
 
