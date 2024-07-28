@@ -823,8 +823,11 @@ public class DBUpdateService {
     public void closeDBConnection() {
         try
         {
-            if (connection != null)
+            if (connection != null) {
+                logger.info("Closing database connection...");
                 connection.close();
+                logger.info("Closed database connection.");
+            }
         }
         catch (SQLException e)
         {
