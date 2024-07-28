@@ -29,4 +29,6 @@ public interface ApiService {
      * @return a LocalTime object representing the time of rate limit reset
      */
     LocalTime getResetTime();
+
+    void refreshAPIToken();
 }
