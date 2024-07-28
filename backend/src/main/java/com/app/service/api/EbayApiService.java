@@ -2,6 +2,7 @@ package com.app.service.api;
 
 import com.app.exception.InvalidApiResponseException;
 import com.app.exception.MaxCallsReachedException;
+import com.app.service.util.EbayApiUtils;
 import com.app.service.util.RequestUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,11 +24,10 @@ import com.app.service.util.JsonUtils;
 @Qualifier("ebayApiService")
 public class EbayApiService implements ApiService {
 
-    private static final String API_TOKEN = System.getenv("API_TOKEN");
     private final RestTemplate restTemplate;
 
+    private static String API_TOKEN = EbayApiUtils.getAccessToken();
     private static final String BASE_URL = "https://open.api.ebay.com/shopping?";
-
     private static final Logger logger = LoggerFactory.getLogger(EbayApiService.class);
 
     @Autowired
@@ -119,11 +119,13 @@ public class EbayApiService implements ApiService {
         }
         return null;
     }
-    
+
     public int getRateLimit() { return 5000; }
 
     /**
      * reset: T07:00:00.000Z
      */
     public LocalTime getResetTime() { return LocalTime.of(4, 0); }
+
+    public void refreshAPIToken() { API_TOKEN = EbayApiUtils.getAccessToken(); }
 }
