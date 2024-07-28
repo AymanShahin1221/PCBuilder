@@ -1,10 +1,13 @@
 package com.app.service.db;
 
+import com.app.entity.model.PCPart;
 import com.app.exception.InvalidApiResponseException;
 import com.app.exception.MaxCallsReachedException;
 import com.app.service.api.ApiService;
 import com.app.service.util.DBUtils;
 import com.app.service.util.ImageDownloader;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.app.service.util.DBUtils.getClassInstance;
 import static com.app.service.util.DelayUtils.delay;
 
 /**
@@ -29,17 +33,18 @@ import static com.app.service.util.DelayUtils.delay;
 public class PartImageService {
 
     private final Connection connection;
-
     private final ApiService apiService;
     private final int MAX_API_CALLS_PER_DAY;
+    private final PartService partService;
     private int currentApiCallCount = 0;
 
     private static final Logger logger = LoggerFactory.getLogger(PartImageService.class);
 
     @Autowired
-    public PartImageService(@Qualifier("ebayApiService") ApiService apiService) {
+    public PartImageService(@Qualifier("ebayApiService") ApiService apiService, PartService partService) {
         this.connection = DBUtils.initDBConnection();
         this.apiService = apiService;
+        this.partService = partService;
         this.MAX_API_CALLS_PER_DAY = apiService.getRateLimit();
     }
 
@@ -48,32 +53,18 @@ public class PartImageService {
      * @param table represents category table
      * @return a map of products where they key is the pid and value is the part name
      */
-    private Map<String, String> getParts(String table) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
+    public <T extends PCPart> Map<String, String> fetchPartIdsAndNames(Class<T> table) {
         Map<String, String> partsMap = new HashMap<>();
-        try
-        {
-            String query = "SELECT pid, name FROM " + table;
 
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+        JSONArray partsJsonArray = partService.getAllPartsByCategory(table);
 
-            while (resultSet.next())
-            {
-                String pid = resultSet.getString("pid");
-                String name = resultSet.getString("name");
-                partsMap.put(pid, name);
-            }
-        }
-        catch (SQLException e)
+        for(int i = 0; i < partsJsonArray.length(); i++)
         {
-            logger.error("Unable to retrieve parts from table {}", table);
-        }
-        finally
-        {
-            DBUtils.close(preparedStatement, resultSet);
+            JSONObject cpuJsonData = partsJsonArray.getJSONObject(i);
+            String pid = cpuJsonData.getString("pid");
+            String name = cpuJsonData.getString("name");
+
+            partsMap.put(pid, name);
         }
         return partsMap;
     }
@@ -122,7 +113,7 @@ public class PartImageService {
 
         for(String table : DBUtils.CATEGORY_TABLES)
         {
-            Map<String, String> partsMap = getParts(table);
+            Map<String, String> partsMap = fetchPartIdsAndNames(getClassInstance(table));
             for(String pid : partsMap.keySet())
             {
                 String partName = partsMap.get(pid);
