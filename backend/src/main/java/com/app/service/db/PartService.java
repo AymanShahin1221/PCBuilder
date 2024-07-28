@@ -24,12 +24,10 @@ public class PartService {
     }
 
     public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass, List<String> fieldsToFilter) {
-        String jsonData = genericRepository.getAllPartsByCategory(entityClass);
-        JSONArray filteredJsonData = new JSONArray(jsonData);
-
-        for(int i = 0; i < filteredJsonData.length(); i++)
+        JSONArray partsJsonArray = genericRepository.getAllPartsByCategory(entityClass);
+        for(int i = 0; i < partsJsonArray.length(); i++)
         {
-            JSONObject jsonObject = filteredJsonData.getJSONObject(i);
+            JSONObject jsonObject = partsJsonArray.getJSONObject(i);
             for(String field : fieldsToFilter)
             {
                 if (jsonObject.has(field))
@@ -39,11 +37,10 @@ public class PartService {
                     logger.warn("Field {} not found in JSON object", field);
             }
         }
-        return filteredJsonData;
+        return partsJsonArray;
     }
 
     public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass) {
-        String jsonData = genericRepository.getAllPartsByCategory(entityClass);
-        return new JSONArray(jsonData);
+        return genericRepository.getAllPartsByCategory(entityClass);
     }
 }

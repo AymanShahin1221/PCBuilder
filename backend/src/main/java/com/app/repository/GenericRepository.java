@@ -40,7 +40,7 @@ public class GenericRepository {
      * @return <T> list containing entities of specified class
      * @param <T> type of entity ---> must extend PCPart superclass
      */
-    public <T extends PCPart> String getAllPartsByCategory(Class<T> entityClass) {
+    public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
@@ -63,7 +63,7 @@ public class GenericRepository {
             throw new RuntimeException(e);
         }
 
-        return jsonData;
+        return new JSONArray(jsonData);
     }
 }
 
