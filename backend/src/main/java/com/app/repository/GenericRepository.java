@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,17 @@ public class GenericRepository {
 
     private static final Logger logger = LoggerFactory.getLogger(GenericRepository.class);
 
+
+    private  <T extends PCPart> int getTableSize(Class<T> entityClass) {
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+        Root<T> root = criteriaQuery.from(entityClass);
+        criteriaQuery.select(criteriaBuilder.count(root));
+
+        return entityManager.createQuery(criteriaQuery).getSingleResult().intValue();
+    }
 
     /**
      * Retrieves non-paginated entities of a specified class
@@ -76,7 +88,7 @@ public class GenericRepository {
      * @return <T> JSONArray containing entities of specified class
      * @param <T> type of entity ---> must extend PCPart superclass
      */
-    public <T extends PCPart> JSONArray getPartsByCategoryPaginated(Class<T> entityClass, int page, int size) {
+    public <T extends PCPart> JSONObject getPartsByCategoryPaginated(Class<T> entityClass, int page, int size) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
         Root<T> rootEntry = criteriaQuery.from(entityClass);
@@ -89,7 +101,7 @@ public class GenericRepository {
                 .setMaxResults(size)
                 .getResultList();
 
-        // convert List<T> to String
+        // Convert List<T> to String
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData;
         try
@@ -98,10 +110,36 @@ public class GenericRepository {
         }
         catch (JsonProcessingException e)
         {
-            logger.error("Could not convert entity resultset list to String. (Pagination)");
+            logger.error("Could not convert entity resultset list to String in getAllPartsByCategoryPaginated");
             throw new RuntimeException(e);
         }
 
-        return new JSONArray(jsonData);
+        int tableSize = getTableSize(entityClass);
+
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("products", new JSONArray(jsonData));
+        jsonResponse.put("totalEntries", tableSize);
+
+        return jsonResponse;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

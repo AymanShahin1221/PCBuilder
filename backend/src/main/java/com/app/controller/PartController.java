@@ -3,6 +3,7 @@ package com.app.controller;
 import com.app.entity.model.PCPart;
 import com.app.service.db.PartService;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,7 @@ public class PartController {
                                                  @RequestParam("page") int page,
                                                  @RequestParam("size") int size) {
         Class<T> partClass = getClassInstance(categoryName);
-        JSONArray jsonData = partService.getPartsByCategoryPaginated(partClass, List.of("pid"), page, size);
+        JSONObject jsonData = partService.getPartsByCategoryPaginated(partClass, List.of("pid"), page, size);
         return jsonData.toString();
     }
 }
