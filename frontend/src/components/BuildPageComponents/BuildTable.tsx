@@ -1,7 +1,7 @@
 import removeIcon from "../../assets/svgs/BuildPage/remove-icon.svg";
 import useBuildData from "../../hooks/BuildPageHooks/useBuildData";
 import GenericAddPartButton from "./GenericAddPartButton";
-import {BuildData, TableRowProps} from "../../types/BuildPageTypes/Types";
+import {BuildData, TableRowProps} from "../../types/BuildPageTypes/types";
 import {memo, ReactElement} from "react";
 
 function TableHeader() {
