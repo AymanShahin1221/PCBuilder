@@ -1,10 +1,11 @@
 interface PaginationProps {
     entriesPerPage: number
     totalEntries: number
-    paginate: (number: number) => void;
+    paginate: (number: number) => void
+    currentPage: number
 }
 
-function Pagination({ entriesPerPage, totalEntries, paginate }: PaginationProps) {
+function Pagination({ entriesPerPage, totalEntries, paginate, currentPage }: PaginationProps) {
 
     const pageNumbers = [];
     for(let i = 1; i <= Math.ceil(totalEntries / entriesPerPage); i++)
@@ -15,11 +16,11 @@ function Pagination({ entriesPerPage, totalEntries, paginate }: PaginationProps)
             <ul className="pagination">
                 {
                     pageNumbers.map(number =>
-                        <li key={number} className="page-item">
-                            <a href="#" onClick={() => paginate(number)} className="page-link">
-                                {number}
-                            </a>
-                        </li>
+                            <li key={number} className={currentPage === number ? "page-item active" : "page-item"}>
+                                <a href={"#page=" + number} onClick={() => paginate(number)} className="page-link">
+                                    {number}
+                                </a>
+                            </li>
                     )
                 }
             </ul>
