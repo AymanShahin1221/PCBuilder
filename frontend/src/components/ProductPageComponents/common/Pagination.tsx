@@ -1,14 +1,13 @@
-import useProducts from "../../../hooks/ProductsPageHooks/useProducts";
-
 interface PaginationProps {
-    postsPerPage: number
-    totalPosts: number
+    entriesPerPage: number
+    totalEntries: number
+    paginate: (number: number) => void;
 }
 
-function Pagination({ postsPerPage, totalPosts }: PaginationProps) {
+function Pagination({ entriesPerPage, totalEntries, paginate }: PaginationProps) {
 
     const pageNumbers = [];
-    for(let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++)
+    for(let i = 1; i <= Math.ceil(totalEntries / entriesPerPage); i++)
         pageNumbers.push(i);
 
     return (
@@ -17,7 +16,7 @@ function Pagination({ postsPerPage, totalPosts }: PaginationProps) {
                 {
                     pageNumbers.map(number =>
                         <li key={number} className="page-item">
-                            <a href="#" className="page-link">
+                            <a href="#" onClick={() => paginate(number)} className="page-link">
                                 {number}
                             </a>
                         </li>
@@ -26,7 +25,6 @@ function Pagination({ postsPerPage, totalPosts }: PaginationProps) {
             </ul>
         </nav>
     );
-
 }
 
 export default Pagination;

@@ -2,17 +2,32 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 function useProducts(category: string) {
-    const [products, setProducts] = useState([]);
+
+    const [productsData, setProductsData] = useState({"totalEntries": 0, "products": []});
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
-    const [entriesPerPage, setEntriesPerPage] = useState(10);
+    const [entriesPerPage] = useState(30);
+    const [totalEntries, setTotalEntries] = useState(0);
+
+    const BASE_API_ENDPOINT = "http://localhost:8081/api/v1/getAllParts/";
 
     async function fetchProducts() {
         try
         {
             setLoading(true);
-            const response = await axios.get("http://localhost:8081/api/v1/getAllParts/" + category + "?page=1&size=10");
-            setProducts(response.data);
+
+            const response = await axios
+                .get(
+                    BASE_API_ENDPOINT +
+                        category +
+                        "?page=" +
+                        currentPage +
+                        "&size=" +
+                        entriesPerPage
+                );
+
+            setProductsData(response.data);
+            setTotalEntries(response.data["totalEntries"])
             setLoading(false);
         }
         catch (error)
@@ -23,9 +38,9 @@ function useProducts(category: string) {
 
     useEffect(() => {
         fetchProducts();
-    }, [category]);
+    }, [currentPage]);
 
-    return { products, currentPage, loading, entriesPerPage };
+    return { productsData, currentPage, loading, entriesPerPage, totalEntries, setCurrentPage };
 }
 
 export default useProducts;
