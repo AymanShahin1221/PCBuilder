@@ -20,23 +20,23 @@ function NavBar() {
             </button>
             <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`}>
                 <ul className="items navbar-nav mx-3">
-                    <li className=" nav-item mx-3">
-                        <a className="home-link nav-link " href="/home"><img src={homeIcon} className="navbar-icon img-fluid mb-1 mx-2"/> Home</a>
-                    </li>
-                    <li className=" nav-item mx-3">
-                        <a className="home-link nav-link " href="/setup"><img src={gearIcon} className="navbar-icon img-fluid mb-1 mx-2"/>Builder</a>
+                    <li className="nav-item mx-3">
+                        <a className="home-link nav-link" href="/home"><img src={homeIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Home</a>
                     </li>
                     <li className="nav-item mx-3">
-                        <a className="nav-link " href="#"><img src={cpuIcon} className="navbar-icon img-fluid mb-1 mx-2"/>Saved Builds</a>
+                        <a className="home-link nav-link" href="/setup"><img src={gearIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Builder</a>
                     </li>
                     <li className="nav-item mx-3">
-                        <a className="nav-link " href="#"><img src={laptopIcon} className="navbar-icon img-fluid mb-1 mx-2"/>Products</a>
+                        <a className="nav-link" href="#"><img src={cpuIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Saved Builds</a>
                     </li>
                     <li className="nav-item mx-3">
-                        <a className="nav-link" href="#"><img src={linkIcon} className="navbar-icon img-fluid mb-1 mx-2"/>Resources</a>
+                        <a className="nav-link" href="#"><img src={laptopIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Products</a>
                     </li>
                     <li className="nav-item mx-3">
-                        <a className="nav-link" href="#"><img src={graphIcon} className="navbar-icon img-fluid mb-1 mx-2"/>Price Tracker</a>
+                        <a className="nav-link" href="#"><img src={linkIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Resources</a>
+                    </li>
+                    <li className="nav-item mx-3">
+                        <a className="nav-link" href="#"><img src={graphIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Price Tracker</a>
                     </li>
                 </ul>
             </div>
