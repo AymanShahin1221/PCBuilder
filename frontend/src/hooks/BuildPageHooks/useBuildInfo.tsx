@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
 
-/*
-TODO: Do not make API call here. Simply read from cookie.
- */
-
 function useBuildInfo(): {buildName: string, budget: string} {
     const [buildName, setBuildName] = useState<string>('');
     const [budget, setBudget] = useState<string>('');
