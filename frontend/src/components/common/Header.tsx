@@ -17,12 +17,12 @@ function Title() {
         <div className="site-title-container container-fluid p-4">
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
                 <div className="d-flex align-items-center mb-3 mb-md-0">
-                    <a href="http://localhost:3000/" className="d-flex flex-row main-header-href">
+                    <a href="http://localhost:3000/" className="d-flex flex-row main-header-href justify-content-center align-items-center">
                         <h1 className="display-4 fw-bold title m-0">
                             <span className="title-section1">PC</span>
                             <span className="title-section2">Builder</span>
                         </h1>
-                        <img className="logo img-fluid ms-3" src={logo} alt="Logo" />
+                        <img className="logo img-fluid ms-3 mt-2" src={logo} alt="Logo" />
                     </a>
                 </div>
                 <div className="d-flex justify-content-md-end">

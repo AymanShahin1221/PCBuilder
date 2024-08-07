@@ -39,17 +39,6 @@ body {
     height: 4.5rem;
 }
 
-@media (max-width: 768px) {
-    .logo {
-        width: 4rem;
-        height: 4rem;
-    }
-
-    .title-big {
-        font-size: 1.5rem;
-    }
-}
-
 .container-custom {
     width: 100%;
     top: 0;
@@ -75,20 +64,60 @@ body {
     text-decoration: none;
     color: white;
     font-weight: 300;
-    font-size: 0.55em;
+    font-size: 1rem;
 }
 
 .login-link:hover, .register-link:hover {
     color: #a5a5a5 !important;
 }
 
+.login-link, .register-link {
+    font-size: 1.5rem;
+}
+
 .navbar-icon {
-    width: 0.95em;
-    height: 0.95em;
+    width: 0.95rem;
+    height: 0.95rem;
 }
 
 .register-icon, .login-icon {
-    width: 1em;
-    height: 1em;
+    width: 1.5rem;
+    height: 1.5rem;
     margin-right: 1em !important;
+}
+
+@media (max-width: 768px) {
+    .logo {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .title-big {
+        font-size: 1.5rem;
+    }
+
+    .login-link, .register-link {
+        font-size: 1rem;
+    }
+}
+
+
+@media (max-width: 286px) {
+    .logo {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .title-big {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 267px) {
+    .register-icon {
+        margin-left: 1.2rem;
+    }
+    .login-icon {
+        margin-left: 1.5rem;
+    }
 }
