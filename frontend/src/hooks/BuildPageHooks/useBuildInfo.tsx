@@ -17,7 +17,7 @@ function useBuildInfo(): {buildName: string, budget: string} {
             })
             .then(data => {
                 setBuildName(data.buildName);
-                setBudget(data.budget === null ? " None" : " $" + data.budget.toLocaleString("en-us", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                setBudget(data.budget === null ? " None" : data.budget.toLocaleString("en-us", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
             })
             .catch(error => {
