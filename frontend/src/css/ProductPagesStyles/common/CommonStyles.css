@@ -1,0 +1,68 @@
+.info-container {
+    margin-top: 4em;
+    background: #151515 !important;
+    border-radius: 12px !important;
+    box-shadow: 1px 1px 2px rgb(20, 20, 20);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #121212;
+}
+
+.info-title-container {
+    background: #131313 !important;
+    padding: 1rem;
+    text-align: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.info-title-container h2 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: white;
+}
+
+.info-field {
+    margin: 1rem;
+}
+
+.current-info {
+    padding: 1rem !important;
+}
+
+.current-info h4 {
+    font-size: 1.165rem;
+    color: white;
+    font-weight: 650;
+}
+
+.budget-header-span {
+    color: #d2d2d2;
+    font-weight: 500;
+}
+
+.total-cost-header-span {
+    color: #d2d2d2;
+    font-weight: 500;
+}
+
+.remaining-header-span {
+    color: #00ff6f;
+    font-weight: 500;
+}
+
+@media screen and (max-width: 440px) {
+    .info-container {
+        width: 300px !important;
+        overflow-x: auto;
+    }
+
+    .info-container h2 {
+        font-size: 1.2rem;
+    }
+
+    .info-container h4 {
+        font-size: 1rem;
+    }
+}
