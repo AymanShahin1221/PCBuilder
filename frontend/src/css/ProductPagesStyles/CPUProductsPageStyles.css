@@ -1,3 +1,222 @@
-.CPUProductsPage_products-table {
+.CPUProductsPage_title-container {
+    background: #242424;
+}
 
+.CPUProductsPage_total-entries-container {
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.CPUProductsPage_total-entries-container h2 {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.CPUProductsPage_main-side-content {
+    width: 12%;
+}
+
+.CPUProductsPage_table-container {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    margin-top: 4em;
+    width: 88%;
+    overflow-x: auto;
+}
+
+.CPUProductsPage_products-table {
+    border-collapse: collapse;
+    border: 1px solid #2e2e2e !important;
+}
+
+.CPUProductsPage_products-table th {
+    background: #101010 !important;
+    color: white !important;
+    font-weight: 500;
+    padding: 1rem 1.2rem 1rem 1.2rem !important;
+    border-bottom-color: #222222;
+    font-size: 1.1rem;
+    text-align: center !important;
+}
+
+.CPUProductsPage_products-table td {
+    background: #151515 !important;
+    font-weight: 200;
+    padding: 0.35rem 1rem 0.35rem 1rem !important;
+    font-size: 0.985rem;
+    border-bottom-color: #2a2a2a;
+    color: white !important;
+    text-align: center;
+}
+
+.CPUProductsPage_products-table tr:nth-child(odd) td {
+    background: #171717 !important;
+}
+
+.CPUProductsPage_title {
+    color: white;
+}
+
+.CPUProductsPage_add-item-icon:hover {
+    cursor: pointer;
+}
+
+.CPUProductsPage_add-item-icon-container {
+    justify-content: center;
+}
+
+.CPUProductsPage_filter-header-container {
+    box-shadow: 1px 1px 2px rgb(20, 20, 20);
+    background: #151515;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border: 1px solid #121212;
+}
+
+.CPUProductsPage_filter-header-container h3 {
+    color: white;
+}
+
+.CPUProductsPage_price-filter-container {
+    box-shadow: 1px 1px 2px rgb(20, 20, 20);
+    border-bottom: 1px solid #343434;
+    background: #161616 !important;
+}
+
+.CPUProductsPage_price-filter-container label {
+    color: white;
+}
+
+@media screen and (max-width: 1762px) {
+    .CPUProductsPage_products-table th {
+        font-size: 0.9rem;
+    }
+
+    .CPUProductsPage_products-table td {
+        font-size: 0.85rem;
+    }
+}
+
+@media screen and (max-width: 1662px) {
+    .CPUProductsPage_products-table th {
+        font-size: 0.75rem;
+    }
+
+    .CPUProductsPage_add-item-icon img {
+        width: 30rem;
+        height: 30rem;
+    }
+}
+
+@media screen and (max-width: 1602px) {
+
+    .CPUProductsPage_products-table th {
+        font-size: 0.7rem;
+    }
+
+    .CPUProductsPage_products-table td {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 1488px) {
+    .CPUProductsPage_--wrapper-- {
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .CPUProductsPage_table-container {
+        width: auto;
+    }
+
+    .CPUProductsPage_products-table th {
+        font-size: 1.005rem;
+    }
+
+    .CPUProductsPage_products-table td {
+        font-size: 0.985rem;
+    }
+
+    .CPUProductsPage_table-container {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 1310px) {
+    .CPUProductsPage_products-table th {
+        padding: 0.5rem 1.2rem 0.5rem 1.2rem !important;
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 1288px) {
+    .CPUProductsPage_table-container {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}
+
+@media screen and (max-width: 1225px) {
+    .CPUProductsPage_products-table th {
+        font-size: 0.8rem;
+    }
+
+    .CPUProductsPage_products-table td {
+        font-size: 0.75rem;
+    }
+}
+
+
+@media screen and (max-width: 886px) {
+
+    .CPUProductsPage_--wrapper-- {
+        flex-direction: column;
+        width: auto;
+    }
+
+    .CPUProductsPage_products-table td {
+        display: grid !important;
+        padding: 0.8rem !important;
+    }
+
+    .CPUProductsPage_product-img-container {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .CPUProductsPage_products-table tr:not(:has(th)) {
+        border-bottom: 1px solid #858585;
+    }
+
+    .CPUProductsPage_products-table td::before {
+        content: attr(data-cell);
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    /*.CPUProductsPage_products-table tr:nth-child(odd) td {*/
+    /*    background: rgb(20, 20, 24) !important;*/
+    /*}*/
+    .CPUProductsPage_add-item-icon-container img {
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+
+    .CPUProductsPage_products-table th {
+        display: none;
+    }
+
+    .CPUProductsPage_products-table td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.6rem !important;
+    }
+
+    .CPUProductsPage_product-img-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }

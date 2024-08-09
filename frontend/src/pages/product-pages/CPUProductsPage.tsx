@@ -2,20 +2,31 @@ import Header from "../../components/common/Header";
 import NavBar from "../../components/common/NavBar";
 import ProductsTable from "../../components/ProductPageComponents/common/ProductsTable";
 
+import ProductsPageHeader from "../../components/ProductPageComponents/common/ProductsPageHeader";
+
+
 import "../../css/ProductPagesStyles/CPUProductsPageStyles.css";
+import "../../css/ProductPagesStyles/common/CommonStyles.css";
 
 function CPUProductsPage() {
+
     const data_columns = [
         "name", "price", "core_count",
         "core_clock", "boost_clock", "graphics",
-        "tdp", "smt", "imageLocation"
+        "tdp", "smt", "add_item", "imageLocation"
     ];
 
     const header_columns = [
-        "Name", "Price", "Core Count",
-        "Core Clock", "Boost Clock", "Graphics",
-        "TDO", "SMT"
+        "Item", "Price", "# of Cores",
+        "Core Clock (GHz)", "Boost Clock (GHz)", "Integrated Graphics",
+        "TDP", "SMT", "Add Item"
     ];
+
+    const unitsMap = {
+        "core_clock": "GHz",
+        "boost_clock": "GHz",
+        "tdp": "W"
+    };
 
     const pagePrefix = "CPUProductsPage_";
 
@@ -23,7 +34,8 @@ function CPUProductsPage() {
         <div>
             <Header/>
             <NavBar/>
-            <ProductsTable category={"CPU"} data_columns={data_columns} header_columns={header_columns} pagePrefix={pagePrefix}/>
+            <ProductsPageHeader title={"CPU"} pagePrefix={pagePrefix}/>
+            <ProductsTable category={"CPU"} data_columns={data_columns} header_columns={header_columns} pagePrefix={pagePrefix} unitsMap={unitsMap}/>
         </div>
     );
 }
