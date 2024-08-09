@@ -19,7 +19,6 @@ function PriceFilter({ pagePrefix, minPrice, maxPrice }: PriceFilterProps) {
 
 
     useEffect(() => {
-        console.log(rangeNumberArray);
     }, [rangeNumberArray]);
 
     const onSliderChange = (value: any) => {
