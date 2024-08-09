@@ -1,5 +1,5 @@
 .CPUProductsPage_title-container {
-    background: #242424;
+    background: #212121;
 }
 
 .CPUProductsPage_total-entries-container {
@@ -34,17 +34,17 @@
     background: #101010 !important;
     color: white !important;
     font-weight: 500;
-    padding: 1rem 1.2rem 1rem 1.2rem !important;
+    padding: 0.7rem 1.2rem 0.7rem 1.2rem !important;
     border-bottom-color: #222222;
-    font-size: 1.1rem;
+    font-size: 0.995rem;
     text-align: center !important;
 }
 
 .CPUProductsPage_products-table td {
     background: #151515 !important;
     font-weight: 200;
-    padding: 0.35rem 1rem 0.35rem 1rem !important;
-    font-size: 0.985rem;
+    padding: 0.25rem 1rem 0.25rem 1rem !important;
+    font-size: 0.94rem;
     border-bottom-color: #2a2a2a;
     color: white !important;
     text-align: center;
@@ -60,6 +60,10 @@
 
 .CPUProductsPage_add-item-icon:hover {
     cursor: pointer;
+}
+
+.CPUProductsPage_add-item-icon path:hover {
+    fill: #005e46;
 }
 
 .CPUProductsPage_add-item-icon-container {

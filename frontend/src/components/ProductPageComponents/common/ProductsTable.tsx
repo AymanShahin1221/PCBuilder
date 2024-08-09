@@ -1,9 +1,10 @@
 import useProducts from "../../../hooks/ProductsPageHooks/useProducts";
 import Pagination from "./Pagination";
 import ProductCount from "./ProductCount";
-import addItemIcon from "../../../assets/svgs/ProductPages/common/add-item-icon.svg"
 import CurrentBuildInfo from "./CurrentBuildInfo";
 import PriceFilter from "./PriceFilter";
+import {ReactComponent as AddItemIcon} from "../../../assets/svgs/ProductPages/common/add-item-icon.svg"
+import searchIcon from "../../../assets/svgs/ProductPages/common/search-icon.svg";
 
 interface ProductsTableProps {
     category: string
@@ -91,7 +92,7 @@ function ProductsTable({ category, data_columns, header_columns, pagePrefix, uni
             case "add_item":
                 return (
                     <div className={pagePrefix + "add-item-icon-container d-flex flex-row"}>
-                        <img onClick={() => addProductToBuild(product)} src={addItemIcon} width={"40rem"} height={"40rem"} className={pagePrefix + "add-item-icon me-4"}/>
+                        <AddItemIcon className={pagePrefix + "add-item-icon me-3"} width={"2rem"} height={"2rem"} onClick={() => addProductToBuild(product)}/>
                     </div>
                 );
 
@@ -121,33 +122,43 @@ function ProductsTable({ category, data_columns, header_columns, pagePrefix, uni
                             <h3 className="text-center">Filters</h3>
                         </div>
 
-                        <PriceFilter pagePrefix={pagePrefix}/>
+                        {/*this is hardcoded. make sure to change min and max price*/}
+                        <PriceFilter pagePrefix={pagePrefix} minPrice={0} maxPrice={4200}/>
                         {/* Next common filters go after this... */}
                     </div>
 
                 </div>
 
                 <div className={pagePrefix + "table-container"}>
-                    <ProductCount numberOfProducts={totalEntries} pagePrefix={pagePrefix}/>
+
+                    <div className={"table-container-top-wrapper container-fluid d-flex flex-row"}>
+                        <ProductCount numberOfProducts={totalEntries} pagePrefix={pagePrefix}/>
+                        <div className="searchbar-container d-flex flex-row justify-content-start h-25">
+                            <img src={searchIcon} className="img-fluid me-2"/>
+                            <input className="input-group" placeholder={" Search..."}/>
+                        </div>
+                    </div>
+
                     <table className={pagePrefix + "products-table table mb-5"} style={style}>
                         <tbody>
                         <TableHeader/>
                         {
                             productsList.map((product: any, index: number) =>
-                                    <tr key={index}>
-                                        {
-                                            data_columns.slice(0, -1).map((column, idx) => (
-                                                <td key={idx} data-cell={header_columns[idx]}>
-                                                    {renderColumnContent(product, column)}
-                                                </td>
-                                            ))
-                                        }
-                                    </tr>
+                                <tr key={index}>
+                                    {
+                                        data_columns.slice(0, -1).map((column, idx) => (
+                                            <td key={idx} data-cell={header_columns[idx]}>
+                                                {renderColumnContent(product, column)}
+                                            </td>
+                                        ))
+                                    }
+                                </tr>
                             )}
                         </tbody>
                     </table>
                     <div className="mt-3 mb-5">
-                        <Pagination entriesPerPage={entriesPerPage} totalEntries={totalEntries} paginate={paginate} currentPage={currentPage}/>
+                        <Pagination entriesPerPage={entriesPerPage} totalEntries={totalEntries} paginate={paginate}
+                                    currentPage={currentPage}/>
                     </div>
                 </div>
             </div>

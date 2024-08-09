@@ -35,7 +35,13 @@ function CPUProductsPage() {
             <Header/>
             <NavBar/>
             <ProductsPageHeader title={"CPU"} pagePrefix={pagePrefix}/>
-            <ProductsTable category={"CPU"} data_columns={data_columns} header_columns={header_columns} pagePrefix={pagePrefix} unitsMap={unitsMap}/>
+            <ProductsTable
+                category={"CPU"}
+                data_columns={data_columns}
+                header_columns={header_columns}
+                pagePrefix={pagePrefix}
+                unitsMap={unitsMap}
+            />
         </div>
     );
 }

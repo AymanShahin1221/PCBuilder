@@ -5,7 +5,7 @@ interface ProductCountProps {
 
 function ProductCount({ numberOfProducts, pagePrefix }: ProductCountProps) {
     return(
-        <div className={pagePrefix + "total-entries-container"}>
+        <div className={pagePrefix + "total-entries-container container-fluid"}>
             <h2>Browse {numberOfProducts} Products</h2>
         </div>
     );
