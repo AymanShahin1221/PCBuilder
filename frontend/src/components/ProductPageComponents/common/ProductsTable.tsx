@@ -116,12 +116,12 @@ function ProductsTable({ category, data_columns, header_columns, pagePrefix, uni
                 <div className={pagePrefix + "main-side-content w-auto d-flex flex-column mw-100 col-lg-2 align-items-center justify-content-center ms-3"}>
                     <CurrentBuildInfo/>
 
-                    <div className={pagePrefix + "filter-container d-flex flex-column align-items-center justify-content-center mt-4 container-fluid"}>
+                    <div className={pagePrefix + "filter-container d-flex flex-column align-items-center justify-content-center mt-4"}>
                         <div className={pagePrefix + "filter-header-container text-align-center p-2 container-fluid"}>
                             <h3 className="text-center">Filters</h3>
                         </div>
 
-                        <PriceFilter/>
+                        <PriceFilter pagePrefix={pagePrefix}/>
                         {/* Next common filters go after this... */}
                     </div>
 

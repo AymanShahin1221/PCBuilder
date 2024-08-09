@@ -79,13 +79,12 @@
 }
 
 .CPUProductsPage_price-filter-container {
-    box-shadow: 1px 1px 2px rgb(20, 20, 20);
-    border-bottom: 1px solid #343434;
-    background: #161616 !important;
+    background: #181818;
+    border: 1px solid #121212;
 }
 
-.CPUProductsPage_price-filter-container label {
-    color: white;
+.CPUProductsPage_slider-input {
+    width: 7rem;
 }
 
 @media screen and (max-width: 1762px) {
