@@ -58,18 +58,6 @@
     color: white;
 }
 
-.CPUProductsPage_add-item-icon:hover {
-    cursor: pointer;
-}
-
-.CPUProductsPage_add-item-icon path:hover {
-    fill: #005e46;
-}
-
-.CPUProductsPage_add-item-icon-container {
-    justify-content: center;
-}
-
 .CPUProductsPage_filter-header-container {
     box-shadow: 1px 1px 2px rgb(20, 20, 20);
     background: #151515;
@@ -199,9 +187,6 @@
         font-size: 1rem;
     }
 
-    /*.CPUProductsPage_products-table tr:nth-child(odd) td {*/
-    /*    background: rgb(20, 20, 24) !important;*/
-    /*}*/
     .CPUProductsPage_add-item-icon-container img {
         margin-top: 1rem;
         margin-left: 1rem;

@@ -91,8 +91,8 @@ function ProductsTable({ category, data_columns, header_columns, pagePrefix, uni
 
             case "add_item":
                 return (
-                    <div className={pagePrefix + "add-item-icon-container d-flex flex-row"}>
-                        <AddItemIcon className={pagePrefix + "add-item-icon me-3"} width={"2rem"} height={"2rem"} onClick={() => addProductToBuild(product)}/>
+                    <div className={pagePrefix + "add-item-icon-container add-item-icon-container d-flex flex-row"}>
+                        <AddItemIcon className={pagePrefix + "add-item-icon add-item-icon me-3"} width={"2rem"} height={"2rem"} onClick={() => addProductToBuild(product)}/>
                     </div>
                 );
 

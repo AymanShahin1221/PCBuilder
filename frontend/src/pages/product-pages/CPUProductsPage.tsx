@@ -1,9 +1,7 @@
 import Header from "../../components/common/Header";
 import NavBar from "../../components/common/NavBar";
 import ProductsTable from "../../components/ProductPageComponents/common/ProductsTable";
-
 import ProductsPageHeader from "../../components/ProductPageComponents/common/ProductsPageHeader";
-
 
 import "../../css/ProductPagesStyles/CPUProductsPageStyles.css";
 import "../../css/ProductPagesStyles/common/CommonStyles.css";
