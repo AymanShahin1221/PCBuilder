@@ -39,4 +39,8 @@ public class PartService {
         }
         return jsonData;
     }
+
+    public <T extends PCPart> JSONObject findProductsBySearchTerm(Class<T> entityClass, int page, int size, String searchTerm) {
+        return genericRepository.findProductsBySearchTerm(entityClass, page, size, searchTerm);
+    }
 }

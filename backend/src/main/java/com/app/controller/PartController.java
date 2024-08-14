@@ -31,4 +31,16 @@ public class PartController {
         JSONObject jsonData = partService.getPartsByCategoryPaginated(partClass, List.of("pid"), page, size);
         return jsonData.toString();
     }
+
+    @GetMapping("/api/v1/getAllPartsBySearchTerm/{categoryName}")
+    public <T extends PCPart> String findProductsBySearchTerm(@PathVariable("categoryName") String categoryName,
+                                                              @RequestParam("page") int page,
+                                                              @RequestParam("size") int size,
+                                                              @RequestParam("searchTerm") String searchTerm) {
+
+        Class<T> partClass = getClassInstance(categoryName);
+        JSONObject jsonData = partService.findProductsBySearchTerm(partClass, page, size, searchTerm);
+
+        return jsonData.toString();
+    }
 }
