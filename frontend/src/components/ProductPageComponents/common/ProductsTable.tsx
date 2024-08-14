@@ -6,6 +6,7 @@ import PriceFilter from "./PriceFilter";
 import {ReactComponent as AddItemIcon} from "../../../assets/svgs/ProductPages/common/add-item-icon.svg"
 import searchIcon from "../../../assets/svgs/ProductPages/common/search-icon.svg";
 import LoadingSpinner from "./LoadingSpinner";
+import useProductsSearch from "../../../hooks/ProductsPageHooks/useProductsSearch";
 
 interface ProductsTableProps {
     category: string
@@ -24,6 +25,15 @@ function ProductsTable({category, data_columns, header_columns, pagePrefix, unit
         setCurrentPage,
         currentPage
     } = useProducts(category);
+
+    // const {
+    //     productsResultSet,
+    //     currentResultsPage,
+    //     loadingSearchResults,
+    //     productsPerPage,
+    //     totalProducts,
+    //     setCurrentResultsPage
+    // } = useProductsSearch(category, searchTerm);
 
     const productsList = productsData["products"];
 
@@ -133,9 +143,9 @@ function ProductsTable({category, data_columns, header_columns, pagePrefix, unit
 
                     <div className={"table-container-top-wrapper container-fluid d-flex flex-row"}>
                         <ProductCount numberOfProducts={totalEntries} pagePrefix={pagePrefix}/>
-                        <div className="searchbar-container d-flex flex-row justify-content-start h-25">
+                        <div className="searchbar-container d-flex flex-row h-25">
                             <img src={searchIcon} className="img-fluid me-2"/>
-                            <input className="input-group" placeholder={" Search..."}/>
+                            <input placeholder={"Search..."}/>
                         </div>
                     </div>
 
