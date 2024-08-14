@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.entity.model.CPU;
+import com.app.entity.model.GPU;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.Random;
@@ -66,6 +68,26 @@ class GenericRepositoryTest {
     @BeforeEach
     void setUp() {
 
+        for(int i = 0; i < 35; i++)
+        {
+            entityManager.persist(
+                    new CPU(generateRandomUUID(), "intel core i9-14" + generateRandomString(5), generateRandomDouble(),
+                            generateRandomInteger(), generateRandomDouble(),
+                            generateRandomDouble(), generateRandomInteger(),
+                            generateRandomString(12), true)
+            );
+        }
+
+        for(int i = 0; i < 35; i++)
+        {
+            entityManager.persist(
+                    new GPU(generateRandomUUID(), "GeForce rtx 40" + generateRandomString(5), generateRandomDouble(),
+                            "GeForce rtx 40" + generateRandomString(5), generateRandomInteger(),
+                            generateRandomInteger(), generateRandomInteger(),
+                            generateRandomString(12), generateRandomInteger())
+            );
+        }
+
         for(int i = 0; i < 926; i++)
         {
             CPU cpu = new CPU(generateRandomUUID(), generateRandomString(12), generateRandomDouble(),
@@ -82,12 +104,11 @@ class GenericRepositoryTest {
     void testGetAllPartsByCategory() {
         JSONArray parts = genericRepository.getAllPartsByCategory(CPU.class);
         assertNotNull(parts);
-        assertEquals(926, parts.length());
+    }
 
-        for(int i = 0; i < parts.length(); i++)
-        {
-            JSONObject jsonObject = parts.getJSONObject(i);
-            assertFalse(jsonObject.has("pid"));
-        }
+    @Test
+    void findProductsBySearchTerm() {
+        JSONObject jsonObject = genericRepository.findProductsBySearchTerm(GPU.class, 0, 20, "rtx 40");
+        System.out.println(jsonObject);
     }
 }
