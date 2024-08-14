@@ -4,7 +4,7 @@ import axios from "axios";
 function useProducts(category: string) {
 
     const [productsData, setProductsData] = useState({"totalEntries": 0, "products": []});
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(false);
     const [entriesPerPage] = useState(30);
     const [totalEntries, setTotalEntries] = useState(0);
@@ -16,15 +16,14 @@ function useProducts(category: string) {
         {
             setLoading(true);
 
-            const response = await axios
-                .get(
-                    BASE_API_ENDPOINT +
-                        category +
-                        "?page=" +
-                        currentPage +
-                        "&size=" +
-                        entriesPerPage
-                );
+            const response = await axios.get(
+                BASE_API_ENDPOINT +
+                category +
+                "?page=" +
+                currentPage +
+                "&size=" +
+                entriesPerPage
+            );
 
             setProductsData(response.data);
             setTotalEntries(response.data["totalEntries"])
@@ -40,7 +39,14 @@ function useProducts(category: string) {
         fetchProducts();
     }, [currentPage]);
 
-    return { productsData, currentPage, loading, entriesPerPage, totalEntries, setCurrentPage };
+    return {
+        productsData,
+        currentPage,
+        loading,
+        entriesPerPage,
+        totalEntries,
+        setCurrentPage
+    };
 }
 
 export default useProducts;

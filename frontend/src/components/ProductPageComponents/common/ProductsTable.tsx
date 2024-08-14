@@ -5,6 +5,7 @@ import CurrentBuildInfo from "./CurrentBuildInfo";
 import PriceFilter from "./PriceFilter";
 import {ReactComponent as AddItemIcon} from "../../../assets/svgs/ProductPages/common/add-item-icon.svg"
 import searchIcon from "../../../assets/svgs/ProductPages/common/search-icon.svg";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface ProductsTableProps {
     category: string
@@ -14,7 +15,7 @@ interface ProductsTableProps {
     unitsMap: { [key: string]: string }
 }
 
-function ProductsTable({ category, data_columns, header_columns, pagePrefix, unitsMap }: ProductsTableProps) {
+function ProductsTable({category, data_columns, header_columns, pagePrefix, unitsMap}: ProductsTableProps) {
     const {
         productsData,
         loading,
@@ -27,12 +28,7 @@ function ProductsTable({ category, data_columns, header_columns, pagePrefix, uni
     const productsList = productsData["products"];
 
     function paginate(pageNumber: number) {
-        setCurrentPage(pageNumber)
-    }
-
-    const spinnerStyle = {
-        width: "3rem",
-        height: "3rem"
+        setCurrentPage(pageNumber);
     }
 
     const renderValue = (value: any) => {
@@ -69,13 +65,13 @@ function ProductsTable({ category, data_columns, header_columns, pagePrefix, uni
         const value = renderValue(product[dataAttribute]);
         const unit = value !== "-" && unitsMap[dataAttribute] ? unitsMap[dataAttribute] : "";
 
-        switch (dataAttribute)
-        {
+        switch (dataAttribute) {
             case "name":
                 return (
                     <div className={pagePrefix + "product-img-container d-flex flex-row"}>
                         {/*<img src={product[data_columns[data_columns.length - 1]]}/>*/}
-                        <img src="https://m.media-amazon.com/images/I/61jRMCAX4CL._AC_UY327_FMwebp_QL65_.jpg" width={"40rem"} height={"40rem"} className="me-4"/>
+                        <img src="https://m.media-amazon.com/images/I/61jRMCAX4CL._AC_UY327_FMwebp_QL65_.jpg"
+                             width={"40rem"} height={"40rem"} className="me-4"/>
                         <div className="mt-2">
                             {renderValue(value)}
                         </div>
@@ -85,14 +81,18 @@ function ProductsTable({ category, data_columns, header_columns, pagePrefix, uni
             case "price":
                 return (
                     <div className="mt-2">
-                        {value !== "-" ? "$" + value.toLocaleString("en-us", {minimumFractionDigits: 2, maximumFractionDigits: 2}) : value}
+                        {value !== "-" ? "$" + value.toLocaleString("en-us", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }) : value}
                     </div>
                 );
 
             case "add_item":
                 return (
                     <div className={pagePrefix + "add-item-icon-container add-item-icon-container d-flex flex-row"}>
-                        <AddItemIcon className={pagePrefix + "add-item-icon add-item-icon me-3"} width={"2rem"} height={"2rem"} onClick={() => addProductToBuild(product)}/>
+                        <AddItemIcon className={pagePrefix + "add-item-icon add-item-icon me-3"} width={"2rem"}
+                                     height={"2rem"} onClick={() => addProductToBuild(product)}/>
                     </div>
                 );
 
@@ -108,16 +108,16 @@ function ProductsTable({ category, data_columns, header_columns, pagePrefix, uni
     return (
         loading
             ?
-            <div className="d-flex flex-row justify-content-center mt-5">
-                <div style={spinnerStyle} className="spinner-border text-primary" role="status"></div>
-            </div>
+            <LoadingSpinner/>
             :
             <div className={pagePrefix + "--wrapper-- d-flex flex-row align-items-start"}>
 
-                <div className={pagePrefix + "main-side-content w-auto d-flex flex-column mw-100 col-lg-2 align-items-center justify-content-center ms-3"}>
+                <div
+                    className={pagePrefix + "main-side-content w-auto d-flex flex-column mw-100 col-lg-2 align-items-center justify-content-center ms-3"}>
                     <CurrentBuildInfo/>
 
-                    <div className={pagePrefix + "filter-container d-flex flex-column align-items-center justify-content-center mt-4"}>
+                    <div
+                        className={pagePrefix + "filter-container d-flex flex-column align-items-center justify-content-center mt-4"}>
                         <div className={pagePrefix + "filter-header-container text-align-center p-2 container-fluid"}>
                             <h3 className="text-center">Filters</h3>
                         </div>
@@ -157,8 +157,12 @@ function ProductsTable({ category, data_columns, header_columns, pagePrefix, uni
                         </tbody>
                     </table>
                     <div className="mt-3 mb-5">
-                        <Pagination entriesPerPage={entriesPerPage} totalEntries={totalEntries} paginate={paginate}
-                                    currentPage={currentPage}/>
+                        <Pagination
+                            entriesPerPage={entriesPerPage}
+                            totalEntries={totalEntries}
+                            paginate={paginate}
+                            currentPage={currentPage}
+                        />
                     </div>
                 </div>
             </div>
