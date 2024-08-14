@@ -24,7 +24,7 @@ function NavBar() {
                         <a className="home-link nav-link" href="/home"><img src={homeIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Home</a>
                     </li>
                     <li className="nav-item mx-3">
-                        <a className="home-link nav-link" href="/setup"><img src={gearIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Builder</a>
+                        <a className="home-link nav-link" href="/build"><img src={gearIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Builder</a>
                     </li>
                     <li className="nav-item mx-3">
                         <a className="nav-link" href="#"><img src={cpuIcon} className="navbar-icon img-fluid mb-1 mx-2" /> Saved Builds</a>
