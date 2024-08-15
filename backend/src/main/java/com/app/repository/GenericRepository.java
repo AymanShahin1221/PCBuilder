@@ -159,7 +159,7 @@ public class GenericRepository {
 
         JSONObject response = new JSONObject();
         response.put("totalEntries", totalEntries);
-        response.put("results", jsonProductsArray);
+        response.put("products", jsonProductsArray);
 
         return response;
     }
