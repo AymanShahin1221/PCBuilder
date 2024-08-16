@@ -2,12 +2,12 @@ import useProducts from "../../../hooks/ProductsPageHooks/useProducts";
 import Pagination from "./Pagination";
 import ProductCount from "./ProductCount";
 import CurrentBuildInfo from "./CurrentBuildInfo";
-import PriceFilter from "./PriceFilter";
 import { ReactComponent as AddItemIcon } from "../../../assets/svgs/ProductPages/common/add-item-icon.svg";
 import searchIcon from "../../../assets/svgs/ProductPages/common/search-icon.svg";
 import LoadingSpinner from "./LoadingSpinner";
 import useProductsSearch from "../../../hooks/ProductsPageHooks/useProductsSearch";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Filters from "./Filters";
 
 interface ProductsTableProps {
     category: string;
@@ -15,6 +15,7 @@ interface ProductsTableProps {
     header_columns: string[];
     pagePrefix: string;
     unitsMap: { [key: string]: string };
+    filters: React.ReactNode[];
 }
 
 function ProductsTable({
@@ -22,7 +23,8 @@ function ProductsTable({
                            data_columns,
                            header_columns,
                            pagePrefix,
-                           unitsMap
+                           unitsMap,
+                           filters
                        }: ProductsTableProps) {
     const {
         productsData,
@@ -160,17 +162,10 @@ function ProductsTable({
             : <div className={pagePrefix + "--wrapper-- d-flex flex-row align-items-start"}>
                 <div className={pagePrefix + "main-side-content w-auto d-flex flex-column mw-100 col-lg-2 align-items-center justify-content-center ms-3"}>
                     <CurrentBuildInfo/>
-
-                    <div
-                        className={pagePrefix + "filter-container d-flex flex-column align-items-center justify-content-center mt-4"}>
-                        <div className={pagePrefix + "filter-header-container text-align-center p-2 container-fluid"}>
-                            <h3 className="text-center">Filters</h3>
-                        </div>
-
-                        {/* maxPrice is currently hardcoded*/}
-                        <PriceFilter pagePrefix={pagePrefix} minPrice={0} maxPrice={4200}/>
-                        {/* Next common filters go after this... */}
-                    </div>
+                    <Filters
+                        pagePrefix={pagePrefix}
+                        filters={filters}
+                    />
                 </div>
 
                 <div className={pagePrefix + "table-container"}>

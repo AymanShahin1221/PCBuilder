@@ -5,6 +5,7 @@ import ProductsPageHeader from "../../components/ProductPageComponents/common/Pr
 
 import "../../css/ProductPagesStyles/CPUProductsPageStyles.css";
 import "../../css/ProductPagesStyles/common/CommonStyles.css";
+import PriceFilter from "../../components/ProductPageComponents/common/PriceFilter";
 
 function CPUProductsPage() {
 
@@ -28,6 +29,10 @@ function CPUProductsPage() {
 
     const pagePrefix = "CPUProductsPage_";
 
+    const filters = [
+        <PriceFilter pagePrefix={pagePrefix} minPrice={0} maxPrice={4200}/>
+    ];
+
     return (
         <div>
             <Header/>
@@ -39,6 +44,7 @@ function CPUProductsPage() {
                 header_columns={header_columns}
                 pagePrefix={pagePrefix}
                 unitsMap={unitsMap}
+                filters={filters}
             />
         </div>
     );
