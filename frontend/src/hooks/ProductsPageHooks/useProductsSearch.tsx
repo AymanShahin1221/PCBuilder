@@ -20,15 +20,15 @@ function useProductsSearch(category: string, searchTerm: string) {
         {
             setLoading(true);
 
-            const response = await axios.get(
-                BASE_API_ENDPOINT +
-                category +
-                "?page=" +
-                currentResultsPage +
-                "&size=" +
-                productsPerPage +
-                "&searchTerm=" + searchTerm
-            );
+            const endpoint = BASE_API_ENDPOINT +
+                                   category +
+                                   "?page=" +
+                                   currentResultsPage +
+                                   "&size=" +
+                                   productsPerPage +
+                                   "&searchTerm=" + searchTerm;
+
+            const response = await axios.get(endpoint);
 
             setProductsResultSet(response.data);
             setTotalEntries(response.data["totalEntries"])
