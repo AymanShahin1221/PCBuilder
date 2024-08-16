@@ -4,7 +4,7 @@ import axios from "axios";
 function useProductsSearch(category: string, searchTerm: string) {
 
     const [productsResultSet, setProductsResultSet] = useState({"totalEntries": 0, "products": []});
-    const [currentResultsPage, setCurrentResultsPage] = useState(1);
+    const [currentResultsPage, setCurrentResultsPage] = useState(0);
     const [loadingSearchResults, setLoading] = useState(false);
     const [productsPerPage] = useState(30);
     const [totalProducts, setTotalEntries] = useState(0);
@@ -12,6 +12,10 @@ function useProductsSearch(category: string, searchTerm: string) {
     const BASE_API_ENDPOINT = "http://localhost:8081/api/v1/getAllPartsBySearchTerm/";
 
     async function search() {
+
+        if (searchTerm.trim() === "")
+            return;
+
         try
         {
             setLoading(true);
@@ -22,7 +26,7 @@ function useProductsSearch(category: string, searchTerm: string) {
                 "?page=" +
                 currentResultsPage +
                 "&size=" +
-                totalProducts +
+                productsPerPage +
                 "&searchTerm=" + searchTerm
             );
 
@@ -38,7 +42,7 @@ function useProductsSearch(category: string, searchTerm: string) {
 
     useEffect(() => {
         search();
-    }, [currentResultsPage]);
+    }, [searchTerm, currentResultsPage]);
 
     return {
         productsResultSet,

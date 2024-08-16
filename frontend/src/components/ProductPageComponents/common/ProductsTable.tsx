@@ -3,20 +3,27 @@ import Pagination from "./Pagination";
 import ProductCount from "./ProductCount";
 import CurrentBuildInfo from "./CurrentBuildInfo";
 import PriceFilter from "./PriceFilter";
-import {ReactComponent as AddItemIcon} from "../../../assets/svgs/ProductPages/common/add-item-icon.svg"
+import { ReactComponent as AddItemIcon } from "../../../assets/svgs/ProductPages/common/add-item-icon.svg";
 import searchIcon from "../../../assets/svgs/ProductPages/common/search-icon.svg";
 import LoadingSpinner from "./LoadingSpinner";
 import useProductsSearch from "../../../hooks/ProductsPageHooks/useProductsSearch";
+import { useState, useEffect, useRef } from "react";
 
 interface ProductsTableProps {
-    category: string
-    data_columns: string[]
-    header_columns: string[]
-    pagePrefix: string
-    unitsMap: { [key: string]: string }
+    category: string;
+    data_columns: string[];
+    header_columns: string[];
+    pagePrefix: string;
+    unitsMap: { [key: string]: string };
 }
 
-function ProductsTable({category, data_columns, header_columns, pagePrefix, unitsMap}: ProductsTableProps) {
+function ProductsTable({
+                           category,
+                           data_columns,
+                           header_columns,
+                           pagePrefix,
+                           unitsMap
+                       }: ProductsTableProps) {
     const {
         productsData,
         loading,
@@ -26,19 +33,49 @@ function ProductsTable({category, data_columns, header_columns, pagePrefix, unit
         currentPage
     } = useProducts(category);
 
-    // const {
-    //     productsResultSet,
-    //     currentResultsPage,
-    //     loadingSearchResults,
-    //     productsPerPage,
-    //     totalProducts,
-    //     setCurrentResultsPage
-    // } = useProductsSearch(category, searchTerm);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const isSearching = searchTerm.trim().length > 0;
+
+
+    const {
+        productsResultSet,
+        currentResultsPage,
+        loadingSearchResults,
+        productsPerPage,
+        totalProducts,
+        setCurrentResultsPage
+    } = useProductsSearch(category, searchTerm);
 
     const productsList = productsData["products"];
+    const queriedProductsList = productsResultSet["products"];
+
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [wasFocused, setWasFocused] = useState(false);
+
+    useEffect(() => {
+        if (inputRef.current && wasFocused)
+            inputRef.current.focus();
+
+    }, [productsResultSet, productsData, wasFocused]);
+
+    const handleFocus = () => {
+        setWasFocused(true);
+    };
+
+    const handleBlur = () => {
+        setWasFocused(false);
+    };
+
+    const handleSearch = (searchTerm: string) => {
+        setSearchTerm(searchTerm);
+    };
 
     function paginate(pageNumber: number) {
-        setCurrentPage(pageNumber);
+        if (isSearching)
+            setCurrentResultsPage(pageNumber);
+        else
+            setCurrentPage(pageNumber);
     }
 
     const renderValue = (value: any) => {
@@ -54,17 +91,9 @@ function ProductsTable({category, data_columns, header_columns, pagePrefix, unit
     function TableHeader() {
         return (
             <tr>
-                {
-                    header_columns.map(
-                        header => <th>{header}</th>
-                    )
-                }
+                {header_columns.map(header => <th key={header}>{header}</th>)}
             </tr>
         );
-    }
-
-    const style = {
-        color: "white"
     }
 
     function addProductToBuild(product: any) {
@@ -79,9 +108,12 @@ function ProductsTable({category, data_columns, header_columns, pagePrefix, unit
             case "name":
                 return (
                     <div className={pagePrefix + "product-img-container d-flex flex-row"}>
-                        {/*<img src={product[data_columns[data_columns.length - 1]]}/>*/}
-                        <img src="https://m.media-amazon.com/images/I/61jRMCAX4CL._AC_UY327_FMwebp_QL65_.jpg"
-                             width={"40rem"} height={"40rem"} className="me-4"/>
+                        <img
+                            src="https://m.media-amazon.com/images/I/61jRMCAX4CL._AC_UY327_FMwebp_QL65_.jpg"
+                            width={"40rem"}
+                            height={"40rem"}
+                            className="me-4"
+                        />
                         <div className="mt-2">
                             {renderValue(value)}
                         </div>
@@ -91,18 +123,22 @@ function ProductsTable({category, data_columns, header_columns, pagePrefix, unit
             case "price":
                 return (
                     <div className="mt-2">
-                        {value !== "-" ? "$" + value.toLocaleString("en-us", {
+                        {value !== "-" && value !== undefined ? "$" + value.toLocaleString("en-us", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2
-                        }) : value}
+                        }) : "-"}
                     </div>
                 );
 
             case "add_item":
                 return (
                     <div className={pagePrefix + "add-item-icon-container add-item-icon-container d-flex flex-row"}>
-                        <AddItemIcon className={pagePrefix + "add-item-icon add-item-icon me-3"} width={"2rem"}
-                                     height={"2rem"} onClick={() => addProductToBuild(product)}/>
+                        <AddItemIcon
+                            className={pagePrefix + "add-item-icon add-item-icon me-3"}
+                            width={"2rem"}
+                            height={"2rem"}
+                            onClick={() => addProductToBuild(product)}
+                        />
                     </div>
                 );
 
@@ -115,15 +151,14 @@ function ProductsTable({category, data_columns, header_columns, pagePrefix, unit
         }
     }
 
-    return (
-        loading
-            ?
-            <LoadingSpinner/>
-            :
-            <div className={pagePrefix + "--wrapper-- d-flex flex-row align-items-start"}>
+    const productsToRender: any = isSearching ? queriedProductsList : productsList;
+    const isLoading = loading || loadingSearchResults;
 
-                <div
-                    className={pagePrefix + "main-side-content w-auto d-flex flex-column mw-100 col-lg-2 align-items-center justify-content-center ms-3"}>
+    return (
+        isLoading
+            ? <LoadingSpinner/>
+            : <div className={pagePrefix + "--wrapper-- d-flex flex-row align-items-start"}>
+                <div className={pagePrefix + "main-side-content w-auto d-flex flex-column mw-100 col-lg-2 align-items-center justify-content-center ms-3"}>
                     <CurrentBuildInfo/>
 
                     <div
@@ -132,53 +167,53 @@ function ProductsTable({category, data_columns, header_columns, pagePrefix, unit
                             <h3 className="text-center">Filters</h3>
                         </div>
 
-                        {/*this is hardcoded. make sure to change min and max price*/}
+                        {/* maxPrice is currently hardcoded*/}
                         <PriceFilter pagePrefix={pagePrefix} minPrice={0} maxPrice={4200}/>
                         {/* Next common filters go after this... */}
                     </div>
-
                 </div>
 
                 <div className={pagePrefix + "table-container"}>
-
                     <div className={"table-container-top-wrapper container-fluid d-flex flex-row"}>
-                        <ProductCount numberOfProducts={totalEntries} pagePrefix={pagePrefix}/>
+                        <ProductCount numberOfProducts={isSearching ? totalProducts : totalEntries} pagePrefix={pagePrefix}/>
                         <div className="searchbar-container d-flex flex-row h-25">
                             <img src={searchIcon} className="img-fluid me-2"/>
-                            <input placeholder={"Search..."}/>
+                            <input
+                                placeholder={"Search..."}
+                                onChange={(e) => handleSearch(e.target.value)}
+                                value={searchTerm}
+                                ref={inputRef}
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
+                            />
                         </div>
                     </div>
 
-                    <table className={pagePrefix + "products-table table mb-5"} style={style}>
+                    <table className={pagePrefix + "products-table table mb-5"}>
                         <tbody>
-                        <TableHeader/>
-                        {
-                            productsList.map((product: any, index: number) =>
+                            <TableHeader/>
+                            {productsToRender.map((product: any, index: number) =>
                                 <tr key={index}>
-                                    {
-                                        data_columns.slice(0, -1).map((column, idx) => (
-                                            <td key={idx} data-cell={header_columns[idx]}>
-                                                {renderColumnContent(product, column)}
-                                            </td>
-                                        ))
-                                    }
+                                    {data_columns.slice(0, -1).map((column, idx) => (
+                                        <td key={idx} data-cell={header_columns[idx]}>
+                                            {renderColumnContent(product, column)}
+                                        </td>
+                                    ))}
                                 </tr>
                             )}
                         </tbody>
                     </table>
                     <div className="mt-3 mb-5">
                         <Pagination
-                            entriesPerPage={entriesPerPage}
-                            totalEntries={totalEntries}
+                            entriesPerPage={isSearching ? productsPerPage : entriesPerPage}
+                            totalEntries={isSearching ? totalProducts : totalEntries}
                             paginate={paginate}
-                            currentPage={currentPage}
+                            currentPage={isSearching ? currentResultsPage : currentPage}
                         />
                     </div>
                 </div>
             </div>
     );
-
 }
 
 export default ProductsTable;
-
