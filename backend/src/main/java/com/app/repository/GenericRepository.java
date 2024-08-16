@@ -152,14 +152,11 @@ public class GenericRepository {
         queryProducts.setMaxResults(size);
 
         List<T> results = queryProducts.getResultList();
-
-        JSONArray jsonProductsArray = new JSONArray();
-        for (T entity : results)
-            jsonProductsArray.put(new JSONObject(entity));
+        String jsonData = listToString(results);
 
         JSONObject response = new JSONObject();
         response.put("totalEntries", totalEntries);
-        response.put("products", jsonProductsArray);
+        response.put("products", new JSONArray(jsonData));
 
         return response;
     }
