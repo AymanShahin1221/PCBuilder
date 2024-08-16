@@ -92,17 +92,17 @@
 }
 
 .rc-slider-rail {
-    background: #c0c0c0;
+    background: #c0c0c0 !important;
 }
 
 .rc-slider-track {
-    background: #0059ff;
+    background: #0059ff !important;
 }
 
 .rc-slider-handle {
-    background: #ffffff;
-    border: none;
-    opacity: 1;
+    background: #ffffff !important;
+    border: none !important;
+    opacity: 1 !important;
 }
 
 input[type="text"] {
