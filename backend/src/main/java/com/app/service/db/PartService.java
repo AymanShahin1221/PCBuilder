@@ -23,20 +23,24 @@ public class PartService {
         return genericRepository.getAllPartsByCategory(entityClass);
     }
 
-    public <T extends PCPart> JSONObject getPartsByCategoryPaginated(Class<T> entityClass, List<String> fieldsToFilter, int page, int size) {
-
-        JSONObject jsonData = genericRepository.getPartsByCategoryPaginated(entityClass, page, size);
-        JSONArray productsArray = jsonData.getJSONArray("products");
-
-        for (int i = 0; i < productsArray.length(); i++)
+    private void removeFields(JSONArray jsonArray, List<String> fieldsToRemove) {
+        for (int i = 0; i < jsonArray.length(); i++)
         {
-            JSONObject jsonObject = productsArray.getJSONObject(i);
-            for (String field : fieldsToFilter)
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            for (String field : fieldsToRemove)
             {
                 if (jsonObject.has(field))
                     jsonObject.remove(field);
             }
         }
+    }
+
+    public <T extends PCPart> JSONObject getPartsByCategoryPaginated(Class<T> entityClass, List<String> fieldsToFilter, int page, int size) {
+
+        JSONObject jsonData = genericRepository.getPartsByCategoryPaginated(entityClass, page, size);
+        JSONArray productsArray = jsonData.getJSONArray("products");
+
+        removeFields(productsArray, fieldsToFilter);
         return jsonData;
     }
 
