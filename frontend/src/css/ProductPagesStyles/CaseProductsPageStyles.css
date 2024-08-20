@@ -1,0 +1,202 @@
+.CaseProductsPage_total-entries-container {
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.CaseProductsPage_total-entries-container h2 {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.CaseProductsPage_main-side-content {
+    width: 12%;
+}
+
+.CaseProductsPage_table-container {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    margin-top: 4em;
+    width: 88%;
+    overflow-x: auto;
+}
+
+.CaseProductsPage_products-table {
+    border-collapse: collapse;
+    border: 1px solid #2e2e2e !important;
+}
+
+.CaseProductsPage_products-table th {
+    background: #101010 !important;
+    color: white !important;
+    font-weight: 500;
+    padding: 0.7rem 1.2rem 0.7rem 1.2rem !important;
+    border-bottom-color: #222222;
+    font-size: 0.995rem;
+    text-align: center !important;
+}
+
+.CaseProductsPage_products-table td {
+    background: #151515 !important;
+    font-weight: 200;
+    padding: 0.25rem 1rem 0.25rem 1rem !important;
+    font-size: 0.94rem;
+    border-bottom-color: #2a2a2a;
+    color: white !important;
+    text-align: center;
+}
+
+.CaseProductsPage_products-table tr:nth-child(odd) td {
+    background: #171717 !important;
+}
+
+.CaseProductsPage_filter-header-container {
+    box-shadow: 1px 1px 2px rgb(20, 20, 20);
+    background: #151515;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border: 1px solid #121212;
+}
+
+.CaseProductsPage_filter-header-container h3 {
+    color: white;
+}
+
+.CaseProductsPage_price-filter-container {
+    background: #181818;
+    border: 1px solid #121212;
+}
+
+.CaseProductsPage_slider-input {
+    width: 7rem;
+}
+
+@media screen and (max-width: 1762px) {
+    .CaseProductsPage_products-table th {
+        font-size: 0.9rem;
+    }
+
+    .CaseProductsPage_products-table td {
+        font-size: 0.85rem;
+    }
+}
+
+@media screen and (max-width: 1662px) {
+    .CaseProductsPage_products-table th {
+        font-size: 0.75rem;
+    }
+
+    .CaseProductsPage_add-item-icon img {
+        width: 30rem;
+        height: 30rem;
+    }
+}
+
+@media screen and (max-width: 1602px) {
+
+    .CaseProductsPage_products-table th {
+        font-size: 0.7rem;
+    }
+
+    .CaseProductsPage_products-table td {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 1488px) {
+    .CaseProductsPage_--wrapper-- {
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .CaseProductsPage_table-container {
+        width: auto;
+    }
+
+    .CaseProductsPage_products-table th {
+        font-size: 1.005rem;
+    }
+
+    .CaseProductsPage_products-table td {
+        font-size: 0.985rem;
+    }
+
+    .CaseProductsPage_table-container {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 1310px) {
+    .CaseProductsPage_products-table th {
+        padding: 0.5rem 1.2rem 0.5rem 1.2rem !important;
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 1288px) {
+    .CaseProductsPage_table-container {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}
+
+@media screen and (max-width: 1225px) {
+    .CaseProductsPage_products-table th {
+        font-size: 0.8rem;
+    }
+
+    .CaseProductsPage_products-table td {
+        font-size: 0.75rem;
+    }
+}
+
+
+@media screen and (max-width: 886px) {
+
+    .CaseProductsPage_--wrapper-- {
+        flex-direction: column;
+        width: auto;
+    }
+
+    .CaseProductsPage_products-table td {
+        display: grid !important;
+        padding: 0.8rem !important;
+    }
+
+    .CaseProductsPage_product-img-container {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .CaseProductsPage_products-table tr:not(:has(th)) {
+        border-bottom: 1px solid #858585;
+    }
+
+    .CaseProductsPage_products-table td::before {
+        content: attr(data-cell);
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    .CaseProductsPage_add-item-icon-container img {
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+
+    .CaseProductsPage_products-table th {
+        display: none;
+    }
+
+    .CaseProductsPage_products-table td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.6rem !important;
+    }
+
+    .CaseProductsPage_product-img-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

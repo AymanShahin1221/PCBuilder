@@ -1,7 +1,3 @@
-.CPUProductsPage_title-container {
-    background: #212121;
-}
-
 .CPUProductsPage_total-entries-container {
     margin-left: 2rem;
     margin-bottom: 1.5rem;
@@ -52,10 +48,6 @@
 
 .CPUProductsPage_products-table tr:nth-child(odd) td {
     background: #171717 !important;
-}
-
-.CPUProductsPage_title {
-    color: white;
 }
 
 .CPUProductsPage_filter-header-container {
