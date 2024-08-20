@@ -28,7 +28,7 @@ public class PartController {
                                                  @RequestParam("size") int size) {
 
         Class<T> partClass = getClassInstance(categoryName);
-        JSONObject jsonData = partService.getPartsByCategoryPaginated(partClass, List.of("pid"), page, size);
+        JSONObject jsonData = partService.getPartsByCategoryPaginated(partClass, List.of(), page, size);
         return jsonData.toString();
     }
 
@@ -39,7 +39,7 @@ public class PartController {
                                                               @RequestParam("searchTerm") String searchTerm) {
 
         Class<T> partClass = getClassInstance(categoryName);
-        JSONObject jsonData = partService.findProductsBySearchTerm(partClass, page, size, searchTerm);
+        JSONObject jsonData = partService.findProductsBySearchTerm(partClass, List.of(), page, size, searchTerm);
 
         return jsonData.toString();
     }

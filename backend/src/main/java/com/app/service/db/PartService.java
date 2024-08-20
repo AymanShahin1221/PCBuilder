@@ -40,11 +40,19 @@ public class PartService {
         JSONObject jsonData = genericRepository.getPartsByCategoryPaginated(entityClass, page, size);
         JSONArray productsArray = jsonData.getJSONArray("products");
 
-        removeFields(productsArray, fieldsToFilter);
+        if(!fieldsToFilter.isEmpty())
+            removeFields(productsArray, fieldsToFilter);
+
         return jsonData;
     }
 
-    public <T extends PCPart> JSONObject findProductsBySearchTerm(Class<T> entityClass, int page, int size, String searchTerm) {
+    public <T extends PCPart> JSONObject findProductsBySearchTerm(Class<T> entityClass, List<String> fieldsToFilter, int page, int size, String searchTerm) {
+        JSONObject jsonData = genericRepository.findProductsBySearchTerm(entityClass, page, size, searchTerm);
+        JSONArray productsArray = jsonData.getJSONArray("products");
+
+        if(!fieldsToFilter.isEmpty())
+            removeFields(productsArray, fieldsToFilter);
+
         return genericRepository.findProductsBySearchTerm(entityClass, page, size, searchTerm);
     }
 }
