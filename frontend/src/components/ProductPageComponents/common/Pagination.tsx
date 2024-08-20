@@ -1,5 +1,3 @@
-import React, {useEffect} from 'react';
-
 interface PaginationProps {
     entriesPerPage: number
     totalEntries: number
@@ -19,11 +17,6 @@ function Pagination({ entriesPerPage, totalEntries, paginate, currentPage, maxPa
     const endPage = Math.min(startPage + maxPageNumbersToShow - 1, totalPages);
 
     const visiblePageNumbers = pageNumbers.slice(startPage - 1, endPage);
-
-    // useEffect(() => {
-    //     let currentURL = window.location.href;
-    //     console.log(currentURL);
-    // }, []);
 
     return (
         <nav className="ms-5 mt-5">
