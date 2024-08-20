@@ -4,7 +4,7 @@ import axios from "axios";
 function useProductsSearch(category: string, searchTerm: string) {
 
     const [productsResultSet, setProductsResultSet] = useState({"totalEntries": 0, "products": []});
-    const [currentResultsPage, setCurrentResultsPage] = useState(0);
+    const [currentResultsPage, setCurrentResultsPage] = useState(1);
     const [loadingSearchResults, setLoading] = useState(false);
     const [productsPerPage] = useState(30);
     const [totalProducts, setTotalEntries] = useState(0);

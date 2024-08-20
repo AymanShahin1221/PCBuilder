@@ -6,7 +6,7 @@ function useProducts(category: string) {
 
     const [currentPage, setCurrentPage] = useState(() => {
         const savedPage = localStorage.getItem("currentPage_" + category);
-        return savedPage ? parseInt(savedPage) : 0;
+        return savedPage ? parseInt(savedPage) : 1;
     });
 
     const [loading, setLoading] = useState(false);

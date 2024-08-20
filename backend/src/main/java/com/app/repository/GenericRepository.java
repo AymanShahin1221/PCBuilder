@@ -101,7 +101,7 @@ public class GenericRepository {
         // Apply pagination
         List<T> resultSet = entityManager
                 .createQuery(all)
-                .setFirstResult(page * size)
+                .setFirstResult((page - 1) * size)
                 .setMaxResults(size)
                 .getResultList();
 
@@ -126,7 +126,7 @@ public class GenericRepository {
      * @param <T> <T> type of entity ---> must extend PCPart superclass
      */
     public <T extends PCPart> JSONObject findProductsBySearchTerm(Class<T> entityClass, int page, int size, String searchTerm) {
-        int offset = page * size;
+        int offset = (page - 1) * size;
 
         String countResultsQuery;
         String getProductsQuery;
