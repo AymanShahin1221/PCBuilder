@@ -19,7 +19,7 @@ function GenericAddPartButton(props : any) {
 
     return (
         <div className="BuildPage_add-part-button">
-            <a href={"build/" + props.category}>
+            <a href={"build/" + props.category + "#page=0"}>
                 <button type="button" className="BuildPage_add-item-button"> + {createPrefix(props.category)} {props.category}</button>
             </a>
         </div>
