@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
 function useProducts(category: string) {
-    const [productsData, setProductsData] = useState({"totalEntries": 0, "products": []});
+    const [productsData, setProductsData] = useState({ "totalEntries": 0, "products": [] });
 
     const [currentPage, setCurrentPage] = useState(() => {
-        const savedPage = localStorage.getItem("currentPage_" + category);
-        return savedPage ? parseInt(savedPage) : 1;
+        return parseInt(new URLSearchParams(window.location.hash.substring(1)).get('page') || "1");
     });
 
     const [loading, setLoading] = useState(false);
@@ -21,11 +20,11 @@ function useProducts(category: string) {
             setLoading(true);
 
             const endpoint = BASE_API_ENDPOINT +
-                                   category +
-                                   "?page=" +
-                                   currentPage +
-                                   "&size=" +
-                                   entriesPerPage;
+                category +
+                "?page=" +
+                currentPage +
+                "&size=" +
+                entriesPerPage;
 
             const response = await axios.get(endpoint);
 
@@ -42,10 +41,6 @@ function useProducts(category: string) {
     useEffect(() => {
         fetchProducts();
     }, [currentPage]);
-
-    useEffect(() => {
-        localStorage.setItem("currentPage_" + category, currentPage.toString());
-    }, [currentPage, category]);
 
     return {
         productsData,
