@@ -16,14 +16,14 @@ function useProducts(category: string) {
         {
             setLoading(true);
 
-            const response = await axios.get(
-                BASE_API_ENDPOINT +
-                category +
-                "?page=" +
-                currentPage +
-                "&size=" +
-                entriesPerPage
-            );
+            const endpoint = BASE_API_ENDPOINT +
+                                   category +
+                                   "?page=" +
+                                   currentPage +
+                                   "&size=" +
+                                   entriesPerPage;
+
+            const response = await axios.get(endpoint);
 
             setProductsData(response.data);
             setTotalEntries(response.data["totalEntries"])
