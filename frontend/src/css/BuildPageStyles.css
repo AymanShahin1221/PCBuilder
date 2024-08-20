@@ -16,9 +16,9 @@
     width: 100%;
 }
 
-.BuildPage_build-info-container h3 {
+.BuildPage_build-info-container h4 {
     color: #ffffff;
-    font-size: 2em;
+    font-size: 1.65em;
 }
 
 .BuildPage_table {

@@ -20,7 +20,7 @@ function GrandTotal() {
         <tr className="BuildPage_grand-total-container">
             <td className="BuildPage_grand-total-col" colSpan={5}>
                 <div
-                    className="BuildPage_grand-total-container d-flex flex-row justify-content-center mx-5">
+                    className="BuildPage_grand-total-container d-flex flex-row justify-content-center">
                     Grand Total: $
                 </div>
             </td>
