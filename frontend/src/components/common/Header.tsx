@@ -16,7 +16,7 @@ function Title() {
     return (
         <div className="site-title-container container-fluid p-4">
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <div className="d-flex align-items-center mb-3 mb-md-0">
+                <div className="d-flex align-items-center ms-3">
                     <a href="http://localhost:3000/" className="d-flex flex-row main-header-href justify-content-center align-items-center">
                         <h1 className="display-4 fw-bold title m-0">
                             <span className="title-section1">PC</span>
