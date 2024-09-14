@@ -15,6 +15,10 @@ function useProducts(category: string) {
     const BASE_API_ENDPOINT = "http://localhost:8081/api/v1/getAllParts/";
 
     async function fetchProducts() {
+        console.log("fetching...");
+        if(category == null)
+            return;
+
         try
         {
             setLoading(true);
