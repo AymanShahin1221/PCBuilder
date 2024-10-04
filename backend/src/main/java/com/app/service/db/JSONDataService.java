@@ -2,7 +2,8 @@ package com.app.service.db;
 
 import org.springframework.web.client.RestTemplate;
 
-public class JSONDataService {
+public class JSONDataService
+{
 
     /**
      * Service class that fetches JSON data using RestTemplate
@@ -10,7 +11,8 @@ public class JSONDataService {
 
     private static final RestTemplate restTemplate = new RestTemplate();
 
-    public enum ProductCategory {
+    public enum ProductCategory
+    {
 
         /**
          * Enum representing all categories and their corresponding JSON data URLs
@@ -28,13 +30,19 @@ public class JSONDataService {
         KEYBOARD("https://raw.githubusercontent.com/docyx/pc-part-dataset/main/data/json/keyboard.json");
 
         private final String url;
-        ProductCategory(String url) { this.url = url; }
+
+        ProductCategory(String url)
+        {
+            this.url = url;
+        }
 
         /**
-         *
          * @param category category enum representing the specified product category
          * @return a string containing the JSON data for the specified category
          */
-        public static String fetchJsonData(ProductCategory category) { return restTemplate.getForObject(category.url, String.class); }
+        public static String fetchJsonData(ProductCategory category)
+        {
+            return restTemplate.getForObject(category.url, String.class);
+        }
     }
 }

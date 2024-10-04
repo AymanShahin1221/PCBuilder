@@ -12,16 +12,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.sql.*;
+
 import com.app.service.util.JsonUtils;
+
 import java.util.List;
 import java.util.UUID;
 
 import static com.app.service.util.DBUtils.initDBConnection;
 
 @Service
-public class DBUpdateService {
+public class DBUpdateService
+{
 
     /**
      * Service class responsible for performing daily database update (currently set to update everyday at 12 am --> daily_db_update=0 0 0 * * *
@@ -35,21 +39,23 @@ public class DBUpdateService {
     private static final Logger logger = LoggerFactory.getLogger(DBUpdateService.class);
 
     @Autowired
-    public DBUpdateService(KafkaProducerService kafkaProducerService) throws SQLException {
+    public DBUpdateService(KafkaProducerService kafkaProducerService) throws SQLException
+    {
         connection.setAutoCommit(false);
         this.kafkaProducerService = kafkaProducerService;
     }
 
-    public void upsertCPUTable(CPU cpu) throws SQLException {
+    public void upsertCPUTable(CPU cpu) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO CPU (pid, boost_clock, core_clock, core_count, graphics, name, price, smt, tdp) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET boost_clock = EXCLUDED.boost_clock, core_clock = EXCLUDED.core_clock, " +
-                          "core_count = EXCLUDED.core_count, graphics = EXCLUDED.graphics, name = EXCLUDED.name, " +
-                          "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE CPU.price END, smt = EXCLUDED.smt, tdp = EXCLUDED.tdp";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET boost_clock = EXCLUDED.boost_clock, core_clock = EXCLUDED.core_clock, " +
+                    "core_count = EXCLUDED.core_count, graphics = EXCLUDED.graphics, name = EXCLUDED.name, " +
+                    "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE CPU.price END, smt = EXCLUDED.smt, tdp = EXCLUDED.tdp";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -64,27 +70,26 @@ public class DBUpdateService {
             preparedStatement.setObject(9, cpu.getTdp());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table CPU");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertGPUTable(GPU gpu) throws SQLException {
+    public void upsertGPUTable(GPU gpu) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO GPU (pid, boost_clock, chipset, color, core_clock, length, memory, name, price) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET boost_clock = EXCLUDED.boost_clock, chipset = EXCLUDED.chipset, " +
-                          "color = EXCLUDED.color, core_clock = EXCLUDED.core_clock, length = EXCLUDED.length, " +
-                          "memory = EXCLUDED.memory, name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE GPU.price END";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET boost_clock = EXCLUDED.boost_clock, chipset = EXCLUDED.chipset, " +
+                    "color = EXCLUDED.color, core_clock = EXCLUDED.core_clock, length = EXCLUDED.length, " +
+                    "memory = EXCLUDED.memory, name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE GPU.price END";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -99,27 +104,26 @@ public class DBUpdateService {
             preparedStatement.setObject(9, gpu.getPrice());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table GPU");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertCaseTable(Case case_) throws SQLException {
+    public void upsertCaseTable(Case case_) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO cases (pid, color, external_volume, internal_35_bays, name, price, psu, side_panel, type) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET color = EXCLUDED.color, external_volume = EXCLUDED.external_volume, " +
-                          "internal_35_bays = EXCLUDED.internal_35_bays, name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE cases.price END, " +
-                          "psu = EXCLUDED.psu, side_panel = EXCLUDED.side_panel, type = EXCLUDED.type";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET color = EXCLUDED.color, external_volume = EXCLUDED.external_volume, " +
+                    "internal_35_bays = EXCLUDED.internal_35_bays, name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE cases.price END, " +
+                    "psu = EXCLUDED.psu, side_panel = EXCLUDED.side_panel, type = EXCLUDED.type";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -134,27 +138,26 @@ public class DBUpdateService {
             preparedStatement.setObject(9, case_.getType());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table Case");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertCoolerTable(Cooler cooler) throws SQLException {
+    public void upsertCoolerTable(Cooler cooler) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO COOLER (pid, color, name, price, size) " +
-                          "VALUES (?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET color = EXCLUDED.color, name = EXCLUDED.name, " +
-                          "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE COOLER.price END, " +
-                          "size = EXCLUDED.size";
+                    "VALUES (?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET color = EXCLUDED.color, name = EXCLUDED.name, " +
+                    "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE COOLER.price END, " +
+                    "size = EXCLUDED.size";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -165,27 +168,26 @@ public class DBUpdateService {
             preparedStatement.setObject(5, cooler.getSize());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table Cooler");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertKeyboardTable(Keyboard keyboard) throws SQLException {
+    public void upsertKeyboardTable(Keyboard keyboard) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO KEYBOARD (pid, backlit, color, connection_type, name, price, style, switches, tenkeyless) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET backlit = EXCLUDED.backlit, color = EXCLUDED.color, " +
-                          "connection_type = EXCLUDED.connection_type, name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE KEYBOARD.price END, " +
-                          "style = EXCLUDED.style, switches = EXCLUDED.switches, tenkeyless = EXCLUDED.tenkeyless";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET backlit = EXCLUDED.backlit, color = EXCLUDED.color, " +
+                    "connection_type = EXCLUDED.connection_type, name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE KEYBOARD.price END, " +
+                    "style = EXCLUDED.style, switches = EXCLUDED.switches, tenkeyless = EXCLUDED.tenkeyless";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -200,27 +202,26 @@ public class DBUpdateService {
             preparedStatement.setObject(9, keyboard.isTenkeyless());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table Keyboard");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertMemoryTable(Memory memory) throws SQLException {
+    public void upsertMemoryTable(Memory memory) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO MEMORY (pid, cas_latency, color, first_word_latency, modules, name, price, price_per_gb, speed) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET cas_latency = EXCLUDED.cas_latency, color = EXCLUDED.color, " +
-                          "first_word_latency = EXCLUDED.first_word_latency, modules = EXCLUDED.modules, name = EXCLUDED.name, " +
-                          "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE MEMORY.price END, price_per_gb = EXCLUDED.price_per_gb, speed = EXCLUDED.speed";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET cas_latency = EXCLUDED.cas_latency, color = EXCLUDED.color, " +
+                    "first_word_latency = EXCLUDED.first_word_latency, modules = EXCLUDED.modules, name = EXCLUDED.name, " +
+                    "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE MEMORY.price END, price_per_gb = EXCLUDED.price_per_gb, speed = EXCLUDED.speed";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -239,27 +240,26 @@ public class DBUpdateService {
             preparedStatement.setObject(9, memory.getSpeed());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table Memory");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertMotherboardTable(Motherboard motherboard) throws SQLException {
+    public void upsertMotherboardTable(Motherboard motherboard) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO MOTHERBOARD (pid, color, form_factor, max_memory, memory_slots, name, price, socket) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET color = EXCLUDED.color, form_factor = EXCLUDED.form_factor, " +
-                          "max_memory = EXCLUDED.max_memory, memory_slots = EXCLUDED.memory_slots, name = EXCLUDED.name, " +
-                          "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE MOTHERBOARD.price END, socket = EXCLUDED.socket";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET color = EXCLUDED.color, form_factor = EXCLUDED.form_factor, " +
+                    "max_memory = EXCLUDED.max_memory, memory_slots = EXCLUDED.memory_slots, name = EXCLUDED.name, " +
+                    "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE MOTHERBOARD.price END, socket = EXCLUDED.socket";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -273,27 +273,26 @@ public class DBUpdateService {
             preparedStatement.setObject(8, motherboard.getSocket());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table Motherboard");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertMonitorTable(Monitor monitor) throws SQLException {
+    public void upsertMonitorTable(Monitor monitor) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO MONITOR (pid, aspect_ratio, name, panel_type, price, refresh_rate, resolution, response_time, screen_size) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET aspect_ratio = EXCLUDED.aspect_ratio, name = EXCLUDED.name, " +
-                          "panel_type = EXCLUDED.panel_type, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE MONITOR.price END, refresh_rate = EXCLUDED.refresh_rate, " +
-                          "resolution = EXCLUDED.resolution, response_time = EXCLUDED.response_time, screen_size = EXCLUDED.screen_size";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET aspect_ratio = EXCLUDED.aspect_ratio, name = EXCLUDED.name, " +
+                    "panel_type = EXCLUDED.panel_type, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE MONITOR.price END, refresh_rate = EXCLUDED.refresh_rate, " +
+                    "resolution = EXCLUDED.resolution, response_time = EXCLUDED.response_time, screen_size = EXCLUDED.screen_size";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -308,26 +307,25 @@ public class DBUpdateService {
             preparedStatement.setObject(9, monitor.getScreen_size());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table Monitor");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertOSTable(OS os) throws SQLException {
+    public void upsertOSTable(OS os) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO OS (pid, max_memory, name, price) " +
-                          "VALUES (?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET max_memory = EXCLUDED.max_memory, " +
-                          "name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE OS.price END";
+                    "VALUES (?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET max_memory = EXCLUDED.max_memory, " +
+                    "name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE OS.price END";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -337,27 +335,26 @@ public class DBUpdateService {
             preparedStatement.setObject(4, os.getPrice());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table OS");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertPowerSupplyTable(PowerSupply powerSupply) throws SQLException {
+    public void upsertPowerSupplyTable(PowerSupply powerSupply) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO POWER_SUPPLY (pid, color, efficiency, modular, name, price, type, wattage) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET color = EXCLUDED.color, efficiency = EXCLUDED.efficiency, " +
-                          "modular = EXCLUDED.modular, name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE POWER_SUPPLY.price END, " +
-                          "type = EXCLUDED.type, wattage = EXCLUDED.wattage";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET color = EXCLUDED.color, efficiency = EXCLUDED.efficiency, " +
+                    "modular = EXCLUDED.modular, name = EXCLUDED.name, price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE POWER_SUPPLY.price END, " +
+                    "type = EXCLUDED.type, wattage = EXCLUDED.wattage";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -371,27 +368,26 @@ public class DBUpdateService {
             preparedStatement.setObject(8, powerSupply.getWattage());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table Power_Supply");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    public void upsertStorageTable(Storage storage) throws SQLException {
+    public void upsertStorageTable(Storage storage) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "INSERT INTO STORAGE (pid, cache, capacity, form_factor, interface_, name, price, price_per_gb, type) " +
-                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                          "ON CONFLICT (name) DO UPDATE " +
-                          "SET cache = EXCLUDED.cache, capacity = EXCLUDED.capacity, " +
-                          "form_factor = EXCLUDED.form_factor, interface_ = EXCLUDED.interface_, name = EXCLUDED.name, " +
-                          "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE STORAGE.price END, price_per_gb = EXCLUDED.price_per_gb, type = EXCLUDED.type";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                    "ON CONFLICT (name) DO UPDATE " +
+                    "SET cache = EXCLUDED.cache, capacity = EXCLUDED.capacity, " +
+                    "form_factor = EXCLUDED.form_factor, interface_ = EXCLUDED.interface_, name = EXCLUDED.name, " +
+                    "price = CASE WHEN EXCLUDED.price IS NOT NULL THEN EXCLUDED.price ELSE STORAGE.price END, price_per_gb = EXCLUDED.price_per_gb, type = EXCLUDED.type";
 
             preparedStatement = connection.prepareStatement(stmt);
 
@@ -406,19 +402,18 @@ public class DBUpdateService {
             preparedStatement.setObject(9, storage.getType());
 
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating table Storage");
-        }
-        finally
+        } finally
         {
             DBUtils.close(preparedStatement);
         }
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processCPUData() {
+    @Scheduled(cron = "${daily_db_update}")
+    private void processCPUData()
+    {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.CPU);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
@@ -442,23 +437,23 @@ public class DBUpdateService {
                 CPU cpu = new CPU(pid, name, price, core_count, core_clock, boost_clock, tdp, graphics, stmt);
                 kafkaProducerService.send("cpuPartsTopic", cpu);
             }
-        }
-        catch (JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing CPU parts JSON Data");
         }
         logger.info("Successfully updated table CPU");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processGPUData() {
+    @Scheduled(cron = "${daily_db_update}")
+    private void processGPUData()
+    {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.GPU);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -475,23 +470,23 @@ public class DBUpdateService {
                 GPU gpu = new GPU(pid, name, price, chipset, memory, core_clock, boost_clock, color, length);
                 kafkaProducerService.send("gpuPartsTopic", gpu);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing GPU parts JSON Data");
         }
         logger.info("Successfully updated table GPU");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processCaseData() {
-        
+    @Scheduled(cron = "${daily_db_update}")
+    private void processCaseData()
+    {
+
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.CASE);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -508,23 +503,23 @@ public class DBUpdateService {
                 Case case_ = new Case(pid, name, price, type, color, psu, sidePanel, external_volume, internal_35_bays);
                 kafkaProducerService.send("casePartsTopic", case_);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing Case parts JSON Data");
         }
         logger.info("Successfully updated table Case");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processCoolerData() {
+    @Scheduled(cron = "${daily_db_update}")
+    private void processCoolerData()
+    {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.COOLER);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -533,27 +528,27 @@ public class DBUpdateService {
                 String name = jsonObject.isNull("name") ? null : jsonObject.getString("name");
                 Double price = jsonObject.isNull("price") ? null : jsonObject.getDouble("price");
                 Integer size = jsonObject.isNull("size") ? null : jsonObject.getInt("size");
-                
+
                 Cooler cooler = new Cooler(pid, name, price, color, size);
                 kafkaProducerService.send("coolerPartsTopic", cooler);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing Cooler parts JSON Data");
         }
         logger.info("Successfully updated table Cooler");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processKeyboardData() {
+    @Scheduled(cron = "${daily_db_update}")
+    private void processKeyboardData()
+    {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.KEYBOARD);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -570,23 +565,23 @@ public class DBUpdateService {
                 Keyboard keyboard = new Keyboard(pid, name, price, style, switches, backlit, tenkeyless, connection_type, color);
                 kafkaProducerService.send("keyboardPartsTopic", keyboard);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing Keyboard parts JSON Data");
         }
         logger.info("Successfully updated table Keyboard");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processMemoryData() {
+    @Scheduled(cron = "${daily_db_update}")
+    private void processMemoryData()
+    {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.MEMORY);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -610,31 +605,30 @@ public class DBUpdateService {
                             speeds[j] = speedArray.getInt(j);
 
                         speed = speeds[1];
-                    }
-                    else
+                    } else
                         speed = jsonObject.isNull("speed") ? null : jsonObject.getInt("speed");
                 }
 
                 Memory memory = new Memory(pid, name, price, speed, modules, price_per_gb, color, first_word_latency, cas_latency);
                 kafkaProducerService.send("memoryPartsTopic", memory);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing Memory parts JSON Data");
         }
         logger.info("Successfully updated table Memory");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processMonitorData() {
+    @Scheduled(cron = "${daily_db_update}")
+    private void processMonitorData()
+    {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.MONITOR);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -651,23 +645,23 @@ public class DBUpdateService {
                 Monitor monitor = new Monitor(pid, name, price, screen_size, resolution, refresh_rate, response_time, panel_type, aspect_ratio);
                 kafkaProducerService.send("monitorPartsTopic", monitor);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing Monitor parts JSON Data");
         }
         logger.info("Successfully updated table Monitor");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processMotherboardData() {
+    @Scheduled(cron = "${daily_db_update}")
+    private void processMotherboardData()
+    {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.MOTHERBOARD);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -683,23 +677,23 @@ public class DBUpdateService {
                 Motherboard motherboard = new Motherboard(pid, name, price, socket, form_factor, max_memory, memory_slots, color);
                 kafkaProducerService.send("motherboardPartsTopic", motherboard);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing Motherboard parts JSON Data");
         }
         logger.info("Successfully updated table Motherboard");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processOSData() {
-        
+    @Scheduled(cron = "${daily_db_update}")
+    private void processOSData()
+    {
+
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.OS);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -711,23 +705,23 @@ public class DBUpdateService {
                 OS os = new OS(pid, name, price, max_memory);
                 kafkaProducerService.send("osPartsTopic", os);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing OS parts JSON Data");
         }
         logger.info("Successfully updated table OS");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processPowerSupplyData() {
+    @Scheduled(cron = "${daily_db_update}")
+    private void processPowerSupplyData()
+    {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.POWER_SUPPLY);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -755,23 +749,23 @@ public class DBUpdateService {
                 PowerSupply powerSupply = new PowerSupply(pid, name, price, type, efficiency, wattage, modular, color);
                 kafkaProducerService.send("powerSupplyPartsTopic", powerSupply);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing Power Supply parts JSON Data");
         }
         logger.info("Successfully updated table Power_Supply");
     }
 
-    @Scheduled(cron="${daily_db_update}")
-    private void processStorageData() {
+    @Scheduled(cron = "${daily_db_update}")
+    private void processStorageData()
+    {
 
         String jsonData = JSONDataService.ProductCategory.fetchJsonData(JSONDataService.ProductCategory.STORAGE);
         JSONArray jsonArray = JsonUtils.stringToJSONArray(jsonData);
 
         try
         {
-            for(int i = 0; i < jsonArray.length(); i++)
+            for (int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -780,12 +774,12 @@ public class DBUpdateService {
                 Integer capacity = jsonObject.isNull("capacity") ? null : jsonObject.getInt("capacity");
 
                 String form_factor;
-                if(jsonObject.isNull("form_factor"))
+                if (jsonObject.isNull("form_factor"))
                     form_factor = null;
                 else
                 {
                     Object form_factor_value = jsonObject.get("form_factor");
-                    if(form_factor_value instanceof BigDecimal)
+                    if (form_factor_value instanceof BigDecimal)
                         form_factor = String.valueOf(form_factor_value);
                     else
                         form_factor = jsonObject.getString("form_factor");
@@ -797,12 +791,12 @@ public class DBUpdateService {
                 Double price_per_gb = jsonObject.isNull("price_per_gb") ? null : jsonObject.getDouble("price_per_gb");
 
                 String type;
-                if(jsonObject.isNull("type"))
+                if (jsonObject.isNull("type"))
                     type = null;
                 else
                 {
                     Object type_value = jsonObject.get("type");
-                    if(type_value instanceof Integer)
+                    if (type_value instanceof Integer)
                         type = String.valueOf(type_value);
                     else
                         type = jsonObject.getString("type");
@@ -811,8 +805,7 @@ public class DBUpdateService {
                 Storage storage = new Storage(pid, name, price, capacity, price_per_gb, type, cache, form_factor, interface_);
                 kafkaProducerService.send("storagePartsTopic", storage);
             }
-        }
-        catch(JSONException e)
+        } catch (JSONException e)
         {
             logger.error("Error parsing Storage parts JSON Data");
         }
@@ -820,16 +813,17 @@ public class DBUpdateService {
     }
 
     @PreDestroy
-    public void closeDBConnection() {
+    public void closeDBConnection()
+    {
         try
         {
-            if (connection != null) {
+            if (connection != null)
+            {
                 logger.info("Closing database connection...");
                 connection.close();
                 logger.info("Closed database connection.");
             }
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error closing database connection");
         }

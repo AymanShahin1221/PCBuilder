@@ -5,13 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PartImageServiceTest {
+class PartImageServiceTest
+{
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
     }
 
     @AfterEach
-    void tearDown() {
+    void tearDown()
+    {
     }
 }

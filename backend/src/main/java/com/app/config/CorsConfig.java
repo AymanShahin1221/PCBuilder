@@ -9,16 +9,18 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Arrays;
 
 @Configuration
-public class CorsConfig {
+public class CorsConfig
+{
 
     @Bean
-    public CorsFilter corsFilter() {
+    public CorsFilter corsFilter()
+    {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");
-        config.setAllowedMethods(Arrays.asList("GET","POST"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);

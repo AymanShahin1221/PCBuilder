@@ -8,7 +8,8 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class PowerSupply extends PCPart implements Upsertable {
+public class PowerSupply extends PCPart implements Upsertable
+{
 
     @Id
     private UUID pid;
@@ -24,12 +25,15 @@ public class PowerSupply extends PCPart implements Upsertable {
     private String color;
     private String imageLocation;
 
-    public PowerSupply() {  }
+    public PowerSupply()
+    {
+    }
 
     public PowerSupply(UUID pid, String name,
                        Double price, String type,
                        String efficiency, Integer wattage,
-                       String modular, String color) {
+                       String modular, String color)
+    {
         this.pid = pid;
         this.name = name;
         this.price = price;
@@ -43,7 +47,8 @@ public class PowerSupply extends PCPart implements Upsertable {
     public PowerSupply(String name, Double price,
                        String type, String efficiency,
                        Integer wattage, String modular,
-                       String color) {
+                       String color)
+    {
         this.name = name;
         this.price = price;
         this.type = type;
@@ -53,80 +58,99 @@ public class PowerSupply extends PCPart implements Upsertable {
         this.color = color;
     }
 
-    public UUID getPid() {
+    public UUID getPid()
+    {
         return pid;
     }
 
-    public void setPid(UUID pid) {
+    public void setPid(UUID pid)
+    {
         this.pid = pid;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public Double getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Double price)
+    {
         this.price = price;
     }
 
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(String type)
+    {
         this.type = type;
     }
 
-    public String getEfficiency() {
+    public String getEfficiency()
+    {
         return efficiency;
     }
 
-    public void setEfficiency(String efficiency) {
+    public void setEfficiency(String efficiency)
+    {
         this.efficiency = efficiency;
     }
 
-    public Integer getWattage() {
+    public Integer getWattage()
+    {
         return wattage;
     }
 
-    public void setWattage(Integer wattage) {
+    public void setWattage(Integer wattage)
+    {
         this.wattage = wattage;
     }
 
-    public String getModular() {
+    public String getModular()
+    {
         return modular;
     }
 
-    public void setModular(String modular) {
+    public void setModular(String modular)
+    {
         this.modular = modular;
     }
 
-    public String getColor() {
+    public String getColor()
+    {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(String color)
+    {
         this.color = color;
     }
 
-    public void setImageLocation(String imageLocation) {
+    public void setImageLocation(String imageLocation)
+    {
         this.imageLocation = imageLocation;
     }
 
-    public String getImageLocation() {
+    public String getImageLocation()
+    {
         return imageLocation;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "PowerSupply{" +
                 "pid=" + pid +
                 ", name='" + name + '\'' +
@@ -140,7 +164,8 @@ public class PowerSupply extends PCPart implements Upsertable {
     }
 
     @Override
-    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException
+    {
         dbUpdateService.upsertPowerSupplyTable(this);
     }
 }

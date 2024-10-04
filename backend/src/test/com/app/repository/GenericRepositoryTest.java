@@ -25,7 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ComponentScan("com.app.repository")
-class GenericRepositoryTest {
+class GenericRepositoryTest
+{
 
     @Autowired
     private GenericRepository genericRepository;
@@ -34,11 +35,13 @@ class GenericRepositoryTest {
     private EntityManager entityManager;
 
 
-    private UUID generateRandomUUID() {
+    private UUID generateRandomUUID()
+    {
         return UUID.randomUUID();
     }
 
-    private static String generateRandomString(int n) {
+    private static String generateRandomString(int n)
+    {
 
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
@@ -55,20 +58,23 @@ class GenericRepositoryTest {
         return sb.toString();
     }
 
-    private static Double generateRandomDouble() {
+    private static Double generateRandomDouble()
+    {
         Random random = new Random();
         return random.nextDouble();
     }
 
-    private static int generateRandomInteger() {
+    private static int generateRandomInteger()
+    {
         Random random = new Random();
         return random.nextInt();
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
 
-        for(int i = 0; i < 35; i++)
+        for (int i = 0; i < 35; i++)
         {
             entityManager.persist(
                     new CPU(generateRandomUUID(), "intel core i9-14" + generateRandomString(5), generateRandomDouble(),
@@ -78,7 +84,7 @@ class GenericRepositoryTest {
             );
         }
 
-        for(int i = 0; i < 35; i++)
+        for (int i = 0; i < 35; i++)
         {
             entityManager.persist(
                     new GPU(generateRandomUUID(), "GeForce rtx 40" + generateRandomString(5), generateRandomDouble(),
@@ -88,7 +94,7 @@ class GenericRepositoryTest {
             );
         }
 
-        for(int i = 0; i < 926; i++)
+        for (int i = 0; i < 926; i++)
         {
             CPU cpu = new CPU(generateRandomUUID(), generateRandomString(12), generateRandomDouble(),
                     generateRandomInteger(), generateRandomDouble(),
@@ -101,13 +107,15 @@ class GenericRepositoryTest {
     }
 
     @Test
-    void testGetAllPartsByCategory() {
+    void testGetAllPartsByCategory()
+    {
         JSONArray parts = genericRepository.getAllPartsByCategory(CPU.class);
         assertNotNull(parts);
     }
 
     @Test
-    void findProductsBySearchTerm() {
+    void findProductsBySearchTerm()
+    {
         JSONObject jsonObject = genericRepository.findProductsBySearchTerm(GPU.class, 0, 20, "rtx 40");
         System.out.println(jsonObject);
     }

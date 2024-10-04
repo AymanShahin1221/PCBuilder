@@ -10,20 +10,24 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PartService {
+public class PartService
+{
 
     private final GenericRepository genericRepository;
 
     @Autowired
-    public PartService(GenericRepository genericRepository) {
+    public PartService(GenericRepository genericRepository)
+    {
         this.genericRepository = genericRepository;
     }
 
-    public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass) {
+    public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass)
+    {
         return genericRepository.getAllPartsByCategory(entityClass);
     }
 
-    private void removeFields(JSONArray jsonArray, List<String> fieldsToRemove) {
+    private void removeFields(JSONArray jsonArray, List<String> fieldsToRemove)
+    {
         for (int i = 0; i < jsonArray.length(); i++)
         {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -35,22 +39,24 @@ public class PartService {
         }
     }
 
-    public <T extends PCPart> JSONObject getPartsByCategoryPaginated(Class<T> entityClass, List<String> fieldsToFilter, int page, int size) {
+    public <T extends PCPart> JSONObject getPartsByCategoryPaginated(Class<T> entityClass, List<String> fieldsToFilter, int page, int size)
+    {
 
         JSONObject jsonData = genericRepository.getPartsByCategoryPaginated(entityClass, page, size);
         JSONArray productsArray = jsonData.getJSONArray("products");
 
-        if(!fieldsToFilter.isEmpty())
+        if (!fieldsToFilter.isEmpty())
             removeFields(productsArray, fieldsToFilter);
 
         return jsonData;
     }
 
-    public <T extends PCPart> JSONObject findProductsBySearchTerm(Class<T> entityClass, List<String> fieldsToFilter, int page, int size, String searchTerm) {
+    public <T extends PCPart> JSONObject findProductsBySearchTerm(Class<T> entityClass, List<String> fieldsToFilter, int page, int size, String searchTerm)
+    {
         JSONObject jsonData = genericRepository.findProductsBySearchTerm(entityClass, page, size, searchTerm);
         JSONArray productsArray = jsonData.getJSONArray("products");
 
-        if(!fieldsToFilter.isEmpty())
+        if (!fieldsToFilter.isEmpty())
             removeFields(productsArray, fieldsToFilter);
 
         return genericRepository.findProductsBySearchTerm(entityClass, page, size, searchTerm);

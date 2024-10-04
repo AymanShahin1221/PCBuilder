@@ -27,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class EbayApiServiceTest {
+public class EbayApiServiceTest
+{
 
     @Mock
     private RestTemplate restTemplate;
@@ -35,11 +36,12 @@ public class EbayApiServiceTest {
     @InjectMocks
     private EbayApiService ebayApiService;
 
-    private static List<Arguments> provideMockExpectedImageUrls() {
+    private static List<Arguments> provideMockExpectedImageUrls()
+    {
         List<Arguments> arguments = new ArrayList<>();
         Random random = new Random();
         String baseExampleUrl = "http://example.com/";
-        for(int i = 0; i < 500; i++)
+        for (int i = 0; i < 500; i++)
             arguments.add(Arguments.of(baseExampleUrl + random.nextInt() + ".jpg"));
 
         return arguments;
@@ -47,7 +49,8 @@ public class EbayApiServiceTest {
 
     @ParameterizedTest
     @MethodSource("provideMockExpectedImageUrls")
-    void testGetImgUrl(String mockExpectedImageUrl) throws MaxCallsReachedException, InvalidApiResponseException {
+    void testGetImgUrl(String mockExpectedImageUrl) throws MaxCallsReachedException, InvalidApiResponseException
+    {
 
         try (var mockedStatic = Mockito.mockStatic(RequestUtils.class))
         {
@@ -65,8 +68,10 @@ public class EbayApiServiceTest {
     }
 
     @Test
-    void testGetImgUrl_InvalidApiResponse_Invalid_Token() {
-        try (var mockedStatic = Mockito.mockStatic(RequestUtils.class)) {
+    void testGetImgUrl_InvalidApiResponse_Invalid_Token()
+    {
+        try (var mockedStatic = Mockito.mockStatic(RequestUtils.class))
+        {
             String searchTerm = "intel core 19-14900k";
             String mockJsonResponse = "{\"Errors\":[{\"ErrorClassification\":\"RequestError\",\"ShortMessage\":\"Invalid token.\",\"SeverityCode\":\"Error\",\"LongMessage\":\"Invalid token. Please specify a valid token as HTTP header.\",\"ErrorCode\":\"1.32\"}],\"Version\":\"1157\",\"Build\":\"E1157_CORE_APILW2_19110892_R1\",\"Ack\":\"Failure\",\"Timestamp\":\"2024-07-25T22:12:26.757Z\"}";
 
@@ -75,15 +80,18 @@ public class EbayApiServiceTest {
                     .when(() -> RequestUtils.makeGetRequest(Mockito.anyString(), Mockito.any(HttpHeaders.class), Mockito.any(RestTemplate.class)))
                     .thenReturn(mockResponse);
 
-            assertThrows(InvalidApiResponseException.class, () -> {
+            assertThrows(InvalidApiResponseException.class, () ->
+            {
                 ebayApiService.getImgUrl(searchTerm);
             });
         }
     }
 
     @Test
-    void testGetImgUrl_InvalidApiResponse_Generic_Error() {
-        try (var mockedStatic = Mockito.mockStatic(RequestUtils.class)) {
+    void testGetImgUrl_InvalidApiResponse_Generic_Error()
+    {
+        try (var mockedStatic = Mockito.mockStatic(RequestUtils.class))
+        {
             String searchTerm = "intel core 19-14900k";
             String mockJsonResponse = "{\"Errors\":[{\"ErrorClassification\":\"RequestError\",\"ShortMessage\":\"This is a generic error.\",\"SeverityCode\":\"Error\",\"LongMessage\":\"Invalid token. Please specify a valid token as HTTP header.\",\"ErrorCode\":\"1.32\"}],\"Version\":\"1157\",\"Build\":\"E1157_CORE_APILW2_19110892_R1\",\"Ack\":\"Failure\",\"Timestamp\":\"2024-07-25T22:12:26.757Z\"}";
 
@@ -92,14 +100,16 @@ public class EbayApiServiceTest {
                     .when(() -> RequestUtils.makeGetRequest(Mockito.anyString(), Mockito.any(HttpHeaders.class), Mockito.any(RestTemplate.class)))
                     .thenReturn(mockResponse);
 
-            assertThrows(InvalidApiResponseException.class, () -> {
+            assertThrows(InvalidApiResponseException.class, () ->
+            {
                 ebayApiService.getImgUrl(searchTerm);
             });
         }
     }
 
     @Test
-    void testGetImgUrl_MaxCallsReached() {
+    void testGetImgUrl_MaxCallsReached()
+    {
         try (var mockedStatic = Mockito.mockStatic(RequestUtils.class))
         {
             String searchTerm = "intel core 19-14900k";
@@ -110,7 +120,8 @@ public class EbayApiServiceTest {
                     .when(() -> RequestUtils.makeGetRequest(Mockito.anyString(), Mockito.any(HttpHeaders.class), Mockito.any(RestTemplate.class)))
                     .thenReturn(mockResponse);
 
-            assertThrows(MaxCallsReachedException.class, () -> {
+            assertThrows(MaxCallsReachedException.class, () ->
+            {
                 ebayApiService.getImgUrl(searchTerm);
             });
         }

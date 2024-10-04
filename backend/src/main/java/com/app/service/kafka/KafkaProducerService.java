@@ -10,35 +10,37 @@ import org.springframework.stereotype.Service;
  * Configured to send messages with a string key and PCPart as the value
  */
 @Service
-public class KafkaProducerService {
+public class KafkaProducerService
+{
 
     private final KafkaTemplate<String, PCPart> kafkaTemplate;
 
     @Autowired
-    public KafkaProducerService(KafkaTemplate<String, PCPart> kafkaTemplate) {
+    public KafkaProducerService(KafkaTemplate<String, PCPart> kafkaTemplate)
+    {
         this.kafkaTemplate = kafkaTemplate;
     }
 
     /**
-     *
-     * @param topic name of the Kafka topic to send message to
+     * @param topic  name of the Kafka topic to send message to
      * @param pcPart object to be sent
-     * --
-     *  Relevant topics
-     * --
-     * casePartsTopic
-     * coolerPartsTopic
-     * cpuPartsTopic
-     * gpuPartsTopic
-     * keyboardPartsTopic
-     * memoryPartsTopic
-     * monitorPartsTopic
-     * motherboardPartsTopic
-     * osPartsTopic
-     * powerSupplyPartsTopic
-     * storagePartsTopic
+     *               --
+     *               Relevant topics
+     *               --
+     *               casePartsTopic
+     *               coolerPartsTopic
+     *               cpuPartsTopic
+     *               gpuPartsTopic
+     *               keyboardPartsTopic
+     *               memoryPartsTopic
+     *               monitorPartsTopic
+     *               motherboardPartsTopic
+     *               osPartsTopic
+     *               powerSupplyPartsTopic
+     *               storagePartsTopic
      */
-    public void send(String topic, PCPart pcPart) {
+    public void send(String topic, PCPart pcPart)
+    {
         kafkaTemplate.send(topic, pcPart);
     }
 }

@@ -8,10 +8,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Service
-public class BuildDataService {
+public class BuildDataService
+{
 
-    public void processBuildData(BuildSetupData buildSetupData) {
-        if(buildSetupData.getBuildId() == null)
+    public void processBuildData(BuildSetupData buildSetupData)
+    {
+        if (buildSetupData.getBuildId() == null)
         {
             UUID buildId = UUID.randomUUID();
             buildSetupData.setBuildId(buildId);
@@ -23,7 +25,8 @@ public class BuildDataService {
         }
     }
 
-    private String generateDefaultBuildName() {
+    private String generateDefaultBuildName()
+    {
         LocalDateTime currentDate = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-ss");
 

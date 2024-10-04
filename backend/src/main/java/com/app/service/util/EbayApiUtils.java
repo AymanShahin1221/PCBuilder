@@ -6,13 +6,15 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Base64;
 
-public class EbayApiUtils {
+public class EbayApiUtils
+{
 
     private static final String CLIENT_ID = System.getenv("CLIENT_ID");
     private static final String CLIENT_SECRET = System.getenv("CLIENT_SECRET");
     private static final String TOKEN_URL = "https://api.ebay.com/identity/v1/oauth2/token";
 
-    public static String getAccessToken() {
+    public static String getAccessToken()
+    {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -39,8 +41,7 @@ public class EbayApiUtils {
             JSONObject jsonObject = new JSONObject(responseBody);
 
             return jsonObject.getString("access_token");
-        }
-        else
+        } else
             throw new RuntimeException("Failed to get access token: " + response.getStatusCode());
     }
 }

@@ -8,7 +8,8 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class CPU extends PCPart implements Upsertable {
+public class CPU extends PCPart implements Upsertable
+{
 
     @Id
     private UUID pid;
@@ -25,13 +26,16 @@ public class CPU extends PCPart implements Upsertable {
     private Boolean smt;
     private String imageLocation;
 
-    public CPU() {  }
+    public CPU()
+    {
+    }
 
     public CPU(UUID pid, String name,
                Double price, Integer core_count,
                Double core_clock, Double boost_clock,
                Integer tdp, String graphics,
-               Boolean smt) {
+               Boolean smt)
+    {
         this.pid = pid;
         this.name = name;
         this.price = price;
@@ -46,7 +50,8 @@ public class CPU extends PCPart implements Upsertable {
     public CPU(String name, Double price,
                Integer core_count, Double core_clock,
                Double boost_clock, Integer tdp,
-               String graphics, Boolean smt) {
+               String graphics, Boolean smt)
+    {
         this.name = name;
         this.price = price;
         this.core_count = core_count;
@@ -57,88 +62,109 @@ public class CPU extends PCPart implements Upsertable {
         this.smt = smt;
     }
 
-    public UUID getPid() {
+    public UUID getPid()
+    {
         return pid;
     }
 
-    public void setPid(UUID pid) {
+    public void setPid(UUID pid)
+    {
         this.pid = pid;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public Double getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Double price)
+    {
         this.price = price;
     }
 
-    public Integer getCore_count() {
+    public Integer getCore_count()
+    {
         return core_count;
     }
 
-    public void setCore_count(int core_count) {
+    public void setCore_count(int core_count)
+    {
         this.core_count = core_count;
     }
 
-    public Double getCore_clock() {
+    public Double getCore_clock()
+    {
         return core_clock;
     }
 
-    public void setCore_clock(Double core_clock) {
+    public void setCore_clock(Double core_clock)
+    {
         this.core_clock = core_clock;
     }
 
-    public Double getBoost_clock() {
+    public Double getBoost_clock()
+    {
         return boost_clock;
     }
 
-    public void setBoost_clock(Double boost_clock) {
+    public void setBoost_clock(Double boost_clock)
+    {
         this.boost_clock = boost_clock;
     }
 
-    public Integer getTdp() {
+    public Integer getTdp()
+    {
         return tdp;
     }
 
-    public void setTdp(int tdp) {
+    public void setTdp(int tdp)
+    {
         this.tdp = tdp;
     }
 
-    public String getGraphics() {
+    public String getGraphics()
+    {
         return graphics;
     }
 
-    public void setGraphics(String graphics) {
+    public void setGraphics(String graphics)
+    {
         this.graphics = graphics;
     }
 
-    public void setSmt(Boolean smt) {
+    public void setSmt(Boolean smt)
+    {
         this.smt = smt;
     }
 
-    public Boolean getSmt() {
+    public Boolean getSmt()
+    {
         return smt;
     }
 
-    public void setImageLocation(String imageLocation) {
+    public void setImageLocation(String imageLocation)
+    {
         this.imageLocation = imageLocation;
     }
 
-    public String getImageLocation() {
+    public String getImageLocation()
+    {
         return imageLocation;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "CPU{" +
                 "pid=" + pid +
                 ", name='" + name + '\'' +
@@ -153,7 +179,8 @@ public class CPU extends PCPart implements Upsertable {
     }
 
     @Override
-    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException
+    {
         dbUpdateService.upsertCPUTable(this);
     }
 }

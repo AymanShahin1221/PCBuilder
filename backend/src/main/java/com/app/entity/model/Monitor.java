@@ -9,7 +9,8 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class Monitor extends PCPart implements Upsertable {
+public class Monitor extends PCPart implements Upsertable
+{
 
     @Id
     private UUID pid;
@@ -26,13 +27,16 @@ public class Monitor extends PCPart implements Upsertable {
     private String aspect_ratio;
     private String imageLocation;
 
-    public Monitor() {  }
+    public Monitor()
+    {
+    }
 
     public Monitor(UUID pid, String name,
                    Double price, Double screen_size,
                    List<Integer> resolution, Integer refresh_rate,
                    Double response_time, String panel_type,
-                   String aspect_ratio) {
+                   String aspect_ratio)
+    {
         this.pid = pid;
         this.name = name;
         this.price = price;
@@ -47,7 +51,8 @@ public class Monitor extends PCPart implements Upsertable {
     public Monitor(String name, Double price,
                    Double screen_size, List<Integer> resolution,
                    Integer refresh_rate, Double response_time,
-                   String panel_type, String aspect_ratio) {
+                   String panel_type, String aspect_ratio)
+    {
         this.name = name;
         this.price = price;
         this.screen_size = screen_size;
@@ -58,88 +63,109 @@ public class Monitor extends PCPart implements Upsertable {
         this.aspect_ratio = aspect_ratio;
     }
 
-    public UUID getPid() {
+    public UUID getPid()
+    {
         return pid;
     }
 
-    public void setPid(UUID pid) {
+    public void setPid(UUID pid)
+    {
         this.pid = pid;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public Double getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Double price)
+    {
         this.price = price;
     }
 
-    public Double getScreen_size() {
+    public Double getScreen_size()
+    {
         return screen_size;
     }
 
-    public void setScreen_size(Double screen_size) {
+    public void setScreen_size(Double screen_size)
+    {
         this.screen_size = screen_size;
     }
 
-    public List<Integer> getResolution() {
+    public List<Integer> getResolution()
+    {
         return resolution;
     }
 
-    public void setResolution(List<Integer> resolution) {
+    public void setResolution(List<Integer> resolution)
+    {
         this.resolution = resolution;
     }
 
-    public Integer getRefresh_rate() {
+    public Integer getRefresh_rate()
+    {
         return refresh_rate;
     }
 
-    public void setRefresh_rate(Integer refresh_rate) {
+    public void setRefresh_rate(Integer refresh_rate)
+    {
         this.refresh_rate = refresh_rate;
     }
 
-    public Double getResponse_time() {
+    public Double getResponse_time()
+    {
         return response_time;
     }
 
-    public void setResponse_time(Double response_time) {
+    public void setResponse_time(Double response_time)
+    {
         this.response_time = response_time;
     }
 
-    public String getPanel_type() {
+    public String getPanel_type()
+    {
         return panel_type;
     }
 
-    public void setPanel_type(String panel_type) {
+    public void setPanel_type(String panel_type)
+    {
         this.panel_type = panel_type;
     }
 
-    public String getAspect_ratio() {
+    public String getAspect_ratio()
+    {
         return aspect_ratio;
     }
 
-    public void setAspect_ratio(String aspect_ratio) {
+    public void setAspect_ratio(String aspect_ratio)
+    {
         this.aspect_ratio = aspect_ratio;
     }
 
-    public void setImageLocation(String imageLocation) {
+    public void setImageLocation(String imageLocation)
+    {
         this.imageLocation = imageLocation;
     }
 
-    public String getImageLocation() {
+    public String getImageLocation()
+    {
         return imageLocation;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Monitor{" +
                 "pid=" + pid +
                 ", name='" + name + '\'' +
@@ -154,7 +180,8 @@ public class Monitor extends PCPart implements Upsertable {
     }
 
     @Override
-    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException
+    {
         dbUpdateService.upsertMonitorTable(this);
     }
 }

@@ -6,20 +6,24 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RedisService {
+public class RedisService
+{
 
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    public RedisService(RedisTemplate<String, Object> redisTemplate) {
+    public RedisService(RedisTemplate<String, Object> redisTemplate)
+    {
         this.redisTemplate = redisTemplate;
     }
 
-    public void saveBuildSetupData(String key, BuildSetupData buildSetupData) {
+    public void saveBuildSetupData(String key, BuildSetupData buildSetupData)
+    {
         redisTemplate.opsForValue().set(key, buildSetupData);
     }
 
-    public BuildSetupData getBuildSetupData(String key) {
+    public BuildSetupData getBuildSetupData(String key)
+    {
         return (BuildSetupData) redisTemplate.opsForValue().get(key);
     }
 }

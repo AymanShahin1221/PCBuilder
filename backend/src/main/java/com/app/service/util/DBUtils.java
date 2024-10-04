@@ -16,7 +16,8 @@ import static com.app.service.util.PartCategory.*;
  * Overloaded methods for closing prepared statements and result sets
  */
 
-public class DBUtils {
+public class DBUtils
+{
 
     private static final Logger logger = LoggerFactory.getLogger(DBUtils.class);
 
@@ -28,7 +29,8 @@ public class DBUtils {
 
     private static final Map<PartCategory, Class<? extends PCPart>> categoryClassMap = new HashMap<>();
 
-    private DBUtils() {
+    private DBUtils()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -47,36 +49,38 @@ public class DBUtils {
         categoryClassMap.put(STORAGE, Storage.class);
     }
 
-    public static <T extends PCPart> Class<T> getClassInstance(String categoryName) {
+    public static <T extends PCPart> Class<T> getClassInstance(String categoryName)
+    {
         return (Class<T>) categoryClassMap.get(PartCategory.valueOf(categoryName.toUpperCase()));
     }
 
-    public static Connection initDBConnection() {
+    public static Connection initDBConnection()
+    {
         Connection conn = null;
         try
         {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Connection to PostgreSQL failed.");
         }
         return conn;
     }
 
-    public static void close(PreparedStatement preparedStatement) throws SQLException {
+    public static void close(PreparedStatement preparedStatement) throws SQLException
+    {
         try
         {
             if (preparedStatement != null)
                 preparedStatement.close();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Could not close prepared statement.");
         }
     }
 
-    public static void close(PreparedStatement preparedStatement, ResultSet resultSet) throws SQLException {
+    public static void close(PreparedStatement preparedStatement, ResultSet resultSet) throws SQLException
+    {
         try
         {
             if (resultSet != null)
@@ -84,8 +88,7 @@ public class DBUtils {
 
             if (preparedStatement != null)
                 preparedStatement.close();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Could not close prepared statement or resultset.");
         }

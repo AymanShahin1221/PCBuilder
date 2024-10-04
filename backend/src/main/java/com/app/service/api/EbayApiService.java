@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import java.time.LocalTime;
+
 import com.app.service.util.JsonUtils;
 
 /**
@@ -22,7 +24,8 @@ import com.app.service.util.JsonUtils;
 
 @Service
 @Qualifier("ebayApiService")
-public class EbayApiService implements ApiService {
+public class EbayApiService implements ApiService
+{
 
     private final RestTemplate restTemplate;
 
@@ -31,11 +34,13 @@ public class EbayApiService implements ApiService {
     private static final Logger logger = LoggerFactory.getLogger(EbayApiService.class);
 
     @Autowired
-    public EbayApiService(RestTemplate restTemplate) {
+    public EbayApiService(RestTemplate restTemplate)
+    {
         this.restTemplate = restTemplate;
     }
 
-    private HttpHeaders createHeadersForRequest() {
+    private HttpHeaders createHeadersForRequest()
+    {
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("X-EBAY-API-IAF-TOKEN", "Bearer" + API_TOKEN);
@@ -47,27 +52,28 @@ public class EbayApiService implements ApiService {
         return headers;
     }
 
-    private String constructApiEndpoint(String searchTerm) {
+    private String constructApiEndpoint(String searchTerm)
+    {
         String encodedSearchTerm = searchTerm.replace(' ', '+');
 
         return BASE_URL + "callname=FindProducts&" +
-                          "responseencoding=JSON&" +
-                          "siteid=0&" +
-                          "version=967&" +
-                          "QueryKeywords=" + encodedSearchTerm + "&" +
-                          "AvailableItemsOnly=false&" +
-                          "MaxEntries=1&";
+                "responseencoding=JSON&" +
+                "siteid=0&" +
+                "version=967&" +
+                "QueryKeywords=" + encodedSearchTerm + "&" +
+                "AvailableItemsOnly=false&" +
+                "MaxEntries=1&";
     }
 
     /**
-     *
      * @param jsonObject json response object
      * @return a boolean representing whether the JSON response is valid
      * @throws MaxCallsReachedException if the response indicates max call limit has been exceeded
      */
-    private boolean validateJSONResponse(JSONObject jsonObject) throws MaxCallsReachedException, InvalidApiResponseException {
+    private boolean validateJSONResponse(JSONObject jsonObject) throws MaxCallsReachedException, InvalidApiResponseException
+    {
 
-        if(jsonObject.has("Errors"))
+        if (jsonObject.has("Errors"))
         {
 
             JSONArray errors = jsonObject.getJSONArray("Errors");
@@ -88,9 +94,11 @@ public class EbayApiService implements ApiService {
 
     /**
      * Returns a string url of a product image
+     *
      * @param searchTerm search term for product
      */
-    public String getImgUrl(String searchTerm) throws MaxCallsReachedException, InvalidApiResponseException {
+    public String getImgUrl(String searchTerm) throws MaxCallsReachedException, InvalidApiResponseException
+    {
 
         logger.info("Fetching image url for \"{}\"", searchTerm);
 
@@ -101,7 +109,7 @@ public class EbayApiService implements ApiService {
         if (response.getStatusCode().is2xxSuccessful())
         {
             JSONObject jsonData = JsonUtils.stringToJsonObject(response.getBody());
-            if(!validateJSONResponse(jsonData))
+            if (!validateJSONResponse(jsonData))
             {
                 logger.info("No match found for \"{}\"", searchTerm);
                 return null;
@@ -111,7 +119,7 @@ public class EbayApiService implements ApiService {
             JSONObject product = products.getJSONObject(0);
             boolean hasImage = product.getBoolean("DisplayStockPhotos");
 
-            if(hasImage)
+            if (hasImage)
             {
                 logger.info("Image URL found for search term \"{}\"", searchTerm);
                 return product.getString("StockPhotoURL");
@@ -120,12 +128,21 @@ public class EbayApiService implements ApiService {
         return null;
     }
 
-    public int getRateLimit() { return 5000; }
+    public int getRateLimit()
+    {
+        return 5000;
+    }
 
     /**
      * reset: T07:00:00.000Z
      */
-    public LocalTime getResetTime() { return LocalTime.of(4, 0); }
+    public LocalTime getResetTime()
+    {
+        return LocalTime.of(4, 0);
+    }
 
-    public void refreshAPIToken() { API_TOKEN = EbayApiUtils.getAccessToken(); }
+    public void refreshAPIToken()
+    {
+        API_TOKEN = EbayApiUtils.getAccessToken();
+    }
 }

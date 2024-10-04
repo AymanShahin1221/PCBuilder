@@ -8,7 +8,8 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class Storage extends PCPart implements Upsertable {
+public class Storage extends PCPart implements Upsertable
+{
 
     @Id
     private UUID pid;
@@ -25,13 +26,16 @@ public class Storage extends PCPart implements Upsertable {
     private String interface_;
     private String imageLocation;
 
-    public Storage() {  }
+    public Storage()
+    {
+    }
 
     public Storage(UUID pid, String name,
                    Double price, Integer capacity,
                    Double price_per_gb, String type,
                    Integer cache, String form_factor,
-                   String interface_) {
+                   String interface_)
+    {
         this.pid = pid;
         this.name = name;
         this.price = price;
@@ -47,7 +51,8 @@ public class Storage extends PCPart implements Upsertable {
                    Double price, Integer capacity,
                    Double price_per_gb, String type,
                    Integer cache, String form_factor,
-                   String interface_) {
+                   String interface_)
+    {
         this.name = name;
         this.price = price;
         this.capacity = capacity;
@@ -58,88 +63,109 @@ public class Storage extends PCPart implements Upsertable {
         this.interface_ = interface_;
     }
 
-    public UUID getPid() {
+    public UUID getPid()
+    {
         return pid;
     }
 
-    public void setPid(UUID pid) {
+    public void setPid(UUID pid)
+    {
         this.pid = pid;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public Double getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Double price)
+    {
         this.price = price;
     }
 
-    public Integer getCapacity() {
+    public Integer getCapacity()
+    {
         return capacity;
     }
 
-    public void setCapacity(Integer capacity) {
+    public void setCapacity(Integer capacity)
+    {
         this.capacity = capacity;
     }
 
-    public Double getPrice_per_gb() {
+    public Double getPrice_per_gb()
+    {
         return price_per_gb;
     }
 
-    public void setPrice_per_gb(Double price_per_gb) {
+    public void setPrice_per_gb(Double price_per_gb)
+    {
         this.price_per_gb = price_per_gb;
     }
 
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(String type)
+    {
         this.type = type;
     }
 
-    public Integer getCache() {
+    public Integer getCache()
+    {
         return cache;
     }
 
-    public void setCache(Integer cache) {
+    public void setCache(Integer cache)
+    {
         this.cache = cache;
     }
 
-    public String getForm_factor() {
+    public String getForm_factor()
+    {
         return form_factor;
     }
 
-    public void setForm_factor(String form_factor) {
+    public void setForm_factor(String form_factor)
+    {
         this.form_factor = form_factor;
     }
 
-    public String getInterface_() {
+    public String getInterface_()
+    {
         return interface_;
     }
 
-    public void setInterface_(String interface_) {
+    public void setInterface_(String interface_)
+    {
         this.interface_ = interface_;
     }
 
-    public void setImageLocation(String imageLocation) {
+    public void setImageLocation(String imageLocation)
+    {
         this.imageLocation = imageLocation;
     }
 
-    public String getImageLocation() {
+    public String getImageLocation()
+    {
         return imageLocation;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Storage{" +
                 "pid=" + pid +
                 ", name='" + name + '\'' +
@@ -154,7 +180,8 @@ public class Storage extends PCPart implements Upsertable {
     }
 
     @Override
-    public void insertPart(DBUpdateService dbUpdateService) throws SQLException {
+    public void insertPart(DBUpdateService dbUpdateService) throws SQLException
+    {
         dbUpdateService.upsertStorageTable(this);
     }
 }

@@ -14,13 +14,16 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DelayUtilsTest {
+class DelayUtilsTest
+{
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
     }
 
-    private LocalDateTime getResetTime() throws InterruptedException {
+    private LocalDateTime getResetTime() throws InterruptedException
+    {
 
         LocalTime currentTime = LocalTime.now();
         LocalTime endTime = LocalTime.of(4, 0);
@@ -38,7 +41,8 @@ class DelayUtilsTest {
         }
     }
 
-    private LocalDateTime getResetTime(LocalDateTime mockCurrentTime) throws InterruptedException {
+    private LocalDateTime getResetTime(LocalDateTime mockCurrentTime) throws InterruptedException
+    {
 
         LocalTime currentTime = LocalTime.from(mockCurrentTime);
         LocalTime endTime = LocalTime.of(4, 0);
@@ -59,7 +63,8 @@ class DelayUtilsTest {
      * The reset time must be synchronized to the nearest 4 AM
      */
     @Test
-    void testResetTimeIfCalledNow() throws InterruptedException {
+    void testResetTimeIfCalledNow() throws InterruptedException
+    {
 
         LocalDateTime actualResetTime = getResetTime();
         LocalDateTime expectedResetTime = LocalDateTime.of(2024, Month.JULY, 13, 4, 0);
@@ -67,7 +72,8 @@ class DelayUtilsTest {
         assertEquals(expectedResetTime, actualResetTime);
     }
 
-    private static List<Arguments> provideMockCurrentTimes() {
+    private static List<Arguments> provideMockCurrentTimes()
+    {
         return List.of(
                 Arguments.of(LocalDateTime.of(2024, Month.JULY, 13, 2, 0), LocalDateTime.of(2024, Month.JULY, 13, 4, 0)),
                 Arguments.of(LocalDateTime.of(2024, Month.JULY, 12, 14, 0), LocalDateTime.of(2024, Month.JULY, 13, 4, 0)),
@@ -77,7 +83,8 @@ class DelayUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideMockCurrentTimes")
-    void testResetTimeWithMockCurrentTime(LocalDateTime mockCurrentTime, LocalDateTime expectedResetTime) throws InterruptedException {
+    void testResetTimeWithMockCurrentTime(LocalDateTime mockCurrentTime, LocalDateTime expectedResetTime) throws InterruptedException
+    {
         LocalDateTime actualResetTime = getResetTime(mockCurrentTime);
         assertEquals(expectedResetTime, actualResetTime);
     }

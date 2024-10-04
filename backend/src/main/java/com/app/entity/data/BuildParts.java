@@ -1,11 +1,13 @@
 package com.app.entity.data;
 
 import jakarta.persistence.*;
+
 import java.util.UUID;
 
 @Entity
 @Table
-public class BuildParts {
+public class BuildParts
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,36 +21,44 @@ public class BuildParts {
     @Column(name = "component_type", length = 50, nullable = false)
     private String partType;
 
-    public BuildParts() {
+    public BuildParts()
+    {
     }
 
-    public BuildParts(UUID componentId, PCBuild pcBuild, String partType) {
+    public BuildParts(UUID componentId, PCBuild pcBuild, String partType)
+    {
         this.componentId = componentId;
         this.pcBuild = pcBuild;
         this.partType = partType;
     }
 
-    public UUID getComponentId() {
+    public UUID getComponentId()
+    {
         return componentId;
     }
 
-    public void setComponentId(UUID componentId) {
+    public void setComponentId(UUID componentId)
+    {
         this.componentId = componentId;
     }
 
-    public PCBuild getPcBuild() {
+    public PCBuild getPcBuild()
+    {
         return pcBuild;
     }
 
-    public void setPcBuild(PCBuild pcBuild) {
+    public void setPcBuild(PCBuild pcBuild)
+    {
         this.pcBuild = pcBuild;
     }
 
-    public String getPartType() {
+    public String getPartType()
+    {
         return partType;
     }
 
-    public void setPartType(String partType) {
+    public void setPartType(String partType)
+    {
         this.partType = partType;
     }
 }

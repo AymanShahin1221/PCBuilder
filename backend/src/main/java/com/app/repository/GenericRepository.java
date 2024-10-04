@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 /**
@@ -24,27 +25,29 @@ import java.util.List;
 
 @Component
 @Transactional
-public class GenericRepository {
+public class GenericRepository
+{
 
     @PersistenceContext
     private final EntityManager entityManager;
 
     @Autowired
-    public GenericRepository(EntityManager entityManager) {
+    public GenericRepository(EntityManager entityManager)
+    {
         this.entityManager = entityManager;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(GenericRepository.class);
 
-    private <T> String listToString(List<T> list) {
+    private <T> String listToString(List<T> list)
+    {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String listAsString;
         try
         {
             listAsString = objectMapper.writeValueAsString(list);
-        }
-        catch (JsonProcessingException e)
+        } catch (JsonProcessingException e)
         {
             logger.error("Could not convert entity resultset list to String.");
             throw new RuntimeException(e);
@@ -53,7 +56,8 @@ public class GenericRepository {
         return listAsString;
     }
 
-    private  <T extends PCPart> int getTableSize(Class<T> entityClass) {
+    private <T extends PCPart> int getTableSize(Class<T> entityClass)
+    {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
@@ -66,11 +70,13 @@ public class GenericRepository {
 
     /**
      * Retrieves non-paginated entities of a specified class
+     *
      * @param entityClass class of entities to retrieve
+     * @param <T>         type of entity ---> must extend PCPart superclass
      * @return JSONArray containing entities of specified class
-     * @param <T> type of entity ---> must extend PCPart superclass
      */
-    public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass) {
+    public <T extends PCPart> JSONArray getAllPartsByCategory(Class<T> entityClass)
+    {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
@@ -86,13 +92,15 @@ public class GenericRepository {
 
     /**
      * Retrieves paginated entities of a specified class
+     *
      * @param entityClass class of entities to retrieve
-     * @param page the page number to retrieve
-     * @param size number of items per page
+     * @param page        the page number to retrieve
+     * @param size        number of items per page
+     * @param <T>         type of entity ---> must extend PCPart superclass
      * @return <T> JSONArray containing entities of specified class
-     * @param <T> type of entity ---> must extend PCPart superclass
      */
-    public <T extends PCPart> JSONObject getPartsByCategoryPaginated(Class<T> entityClass, int page, int size) {
+    public <T extends PCPart> JSONObject getPartsByCategoryPaginated(Class<T> entityClass, int page, int size)
+    {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
         Root<T> rootEntry = criteriaQuery.from(entityClass);
@@ -119,24 +127,24 @@ public class GenericRepository {
 
     /**
      * Retrieves paginated entities which match a search term
+     *
      * @param entityClass class of entities to retrieve
-     * @param page the page number to retrieve
-     * @param size number of items per page
+     * @param page        the page number to retrieve
+     * @param size        number of items per page
+     * @param <T>         <T> type of entity ---> must extend PCPart superclass
      * @return <T> JSONArray containing entities of specified class
-     * @param <T> <T> type of entity ---> must extend PCPart superclass
      */
-    public <T extends PCPart> JSONObject findProductsBySearchTerm(Class<T> entityClass, int page, int size, String searchTerm) {
+    public <T extends PCPart> JSONObject findProductsBySearchTerm(Class<T> entityClass, int page, int size, String searchTerm)
+    {
         int offset = (page - 1) * size;
 
         String countResultsQuery;
         String getProductsQuery;
-        if(entityClass.getSimpleName().equalsIgnoreCase("gpu"))
+        if (entityClass.getSimpleName().equalsIgnoreCase("gpu"))
         {
             countResultsQuery = "SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e WHERE e.chipset ILIKE :searchTerm or e.name ILIKE :searchTerm";
             getProductsQuery = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e.chipset ILIKE :searchTerm or e.name ILIKE :searchTerm";
-        }
-
-        else
+        } else
         {
             countResultsQuery = "SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e WHERE e.name ILIKE :searchTerm";
             getProductsQuery = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e.name ILIKE :searchTerm";

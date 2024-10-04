@@ -3,56 +3,69 @@ package com.app.entity.data;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class BuildSetupData implements Serializable {
+public class BuildSetupData implements Serializable
+{
     private UUID buildId;
     private String buildName;
     private Double budget;
     private String description;
 
-    public BuildSetupData() {  }
+    public BuildSetupData()
+    {
+    }
 
-    public BuildSetupData(String buildName, Double budget, String description) {
+    public BuildSetupData(String buildName, Double budget, String description)
+    {
         this.buildName = buildName;
         this.budget = budget;
         this.description = description;
     }
 
-    public BuildSetupData(UUID buildId, String buildName, Double budget, String description) {
+    public BuildSetupData(UUID buildId, String buildName, Double budget, String description)
+    {
         this.buildId = buildId;
         this.buildName = buildName;
         this.budget = budget;
         this.description = description;
     }
 
-    public String getBuildName() {
+    public String getBuildName()
+    {
         return buildName;
     }
 
-    public void setBuildName(String buildName) {
+    public void setBuildName(String buildName)
+    {
         this.buildName = buildName;
     }
 
-    public UUID getBuildId() {
+    public UUID getBuildId()
+    {
         return buildId;
     }
 
-    public void setBuildId(UUID buildId) {
+    public void setBuildId(UUID buildId)
+    {
         this.buildId = buildId;
     }
 
-    public Double getBudget() {
+    public Double getBudget()
+    {
         return budget;
     }
 
-    public void setBudget(Double budget) {
+    public void setBudget(Double budget)
+    {
         this.budget = budget;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 }

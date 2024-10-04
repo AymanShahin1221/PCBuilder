@@ -31,7 +31,8 @@ import static com.app.service.util.DelayUtils.delay;
  * Format of image name: <product_id>.jpg
  */
 @Service
-public class PartImageService {
+public class PartImageService
+{
 
     private final Connection connection;
     private final ApiService apiService;
@@ -42,7 +43,8 @@ public class PartImageService {
     private static final Logger logger = LoggerFactory.getLogger(PartImageService.class);
 
     @Autowired
-    public PartImageService(@Qualifier("ebayApiService") ApiService apiService, PartService partService) {
+    public PartImageService(@Qualifier("ebayApiService") ApiService apiService, PartService partService)
+    {
         this.connection = DBUtils.initDBConnection();
         this.apiService = apiService;
         this.partService = partService;
@@ -50,16 +52,16 @@ public class PartImageService {
     }
 
     /**
-     *
      * @param table represents category table
      * @return a map of products where they key is the pid and value is the part name
      */
-    public <T extends PCPart> Map<String, String> fetchPartIdsAndNames(Class<T> table) {
+    public <T extends PCPart> Map<String, String> fetchPartIdsAndNames(Class<T> table)
+    {
         Map<String, String> partsMap = new HashMap<>();
 
         JSONArray partsJsonArray = partService.getAllPartsByCategory(table);
 
-        for(int i = 0; i < partsJsonArray.length(); i++)
+        for (int i = 0; i < partsJsonArray.length(); i++)
         {
             JSONObject cpuJsonData = partsJsonArray.getJSONObject(i);
             String pid = cpuJsonData.getString("pid");
@@ -71,30 +73,28 @@ public class PartImageService {
     }
 
     /**
-     *
-     * @param table represents category table
-     * @param part part name
-     * @param imageLocation  corresponding image associated with product
+     * @param table         represents category table
+     * @param part          part name
+     * @param imageLocation corresponding image associated with product
      */
-    private void updateTable(String table, String part, String imageLocation) throws SQLException {
+    private void updateTable(String table, String part, String imageLocation) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         try
         {
             String stmt = "UPDATE " + table + " " +
-                          "SET image_location = ? " +
-                          "WHERE name = ?";
+                    "SET image_location = ? " +
+                    "WHERE name = ?";
 
             preparedStatement = connection.prepareStatement(stmt);
             preparedStatement.setObject(1, imageLocation);
             preparedStatement.setObject(2, part);
 
             preparedStatement.execute();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             logger.error("Error while updating image locations in table {}", table);
-        }
-        finally
+        } finally
         {
             if (preparedStatement != null)
                 preparedStatement.close();
@@ -106,16 +106,17 @@ public class PartImageService {
      * Ex. If a fetched image has url https://i.ebayimg.com/images/g/Cr0AAOSwaLZiiL2N/s-l1600.jpg then it would be downloaded and stored in its respective category:
      * <category_name>/<pid>.jpg
      * In the database, each product image name is in the form <pid>.jpg
-     *
+     * <p>
      * Also keeps track of current API call count
      * If this limit is exceed, the delay will be invoked
      */
-    public void updateImagesInTables() throws SQLException, InterruptedException, IOException, MaxCallsReachedException, InvalidApiResponseException {
+    public void updateImagesInTables() throws SQLException, InterruptedException, IOException, MaxCallsReachedException, InvalidApiResponseException
+    {
 
-        for(String table : DBUtils.CATEGORY_TABLES)
+        for (String table : DBUtils.CATEGORY_TABLES)
         {
             Map<String, String> partsMap = fetchPartIdsAndNames(getClassInstance(table));
-            for(String pid : partsMap.keySet())
+            for (String pid : partsMap.keySet())
             {
                 String partName = partsMap.get(pid);
 
@@ -124,9 +125,7 @@ public class PartImageService {
                 {
                     imgUrl = apiService.getImgUrl(partName);
                     currentApiCallCount++;
-                }
-
-                catch(MaxCallsReachedException mcre)
+                } catch (MaxCallsReachedException mcre)
                 {
                     logger.info("Max calls reached while updating {}. Delaying...", table);
 
@@ -135,9 +134,7 @@ public class PartImageService {
 
                     imgUrl = apiService.getImgUrl(partName);
                     currentApiCallCount++;
-                }
-
-                catch(InvalidApiResponseException iare)
+                } catch (InvalidApiResponseException iare)
                 {
                     logger.warn("Could not make request while updating images. Resetting API token...");
 
@@ -146,7 +143,7 @@ public class PartImageService {
                     currentApiCallCount++;
                 }
 
-                if(currentApiCallCount > MAX_API_CALLS_PER_DAY)
+                if (currentApiCallCount > MAX_API_CALLS_PER_DAY)
                 {
                     logger.info("Max calls exceeded while updating {}. Delaying...", table);
 
@@ -154,14 +151,13 @@ public class PartImageService {
                     delay(apiService.getResetTime());
                 }
 
-                if(imgUrl != null)
+                if (imgUrl != null)
                 {
                     String fname = pid + ".jpg";
                     ImageDownloader.downloadImage(imgUrl, fname, table);
                     String pathName = table + "\\" + fname;
                     updateTable(table, partName, pathName);
-                }
-                else
+                } else
                     updateTable(table, partName, null);
             }
         }

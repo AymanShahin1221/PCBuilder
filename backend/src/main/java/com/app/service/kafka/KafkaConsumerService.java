@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 
 @Service
-public class KafkaConsumerService {
+public class KafkaConsumerService
+{
 
     private final DBUpdateService dbUpdateService;
 
     @Autowired
-    public KafkaConsumerService(DBUpdateService dbUpdateService) {
+    public KafkaConsumerService(DBUpdateService dbUpdateService)
+    {
         this.dbUpdateService = dbUpdateService;
     }
 
@@ -35,7 +37,8 @@ public class KafkaConsumerService {
             },
             groupId = "consumerGroup1"
     )
-    public void topicListener(PCPart pcPart) throws SQLException {
+    public void topicListener(PCPart pcPart) throws SQLException
+    {
         ((Upsertable) pcPart).insertPart(dbUpdateService);
     }
 }

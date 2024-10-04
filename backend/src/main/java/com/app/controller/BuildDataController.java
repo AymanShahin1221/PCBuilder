@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class BuildDataController {
+public class BuildDataController
+{
 
     private final RedisService redisService;
     private final BuildDataService buildDataService;
@@ -17,13 +18,15 @@ public class BuildDataController {
     private static final String BUILD_DATA_KEY = "currentBuildInfo";
 
     @Autowired
-    public BuildDataController(RedisService redisService, BuildDataService buildDataService) {
+    public BuildDataController(RedisService redisService, BuildDataService buildDataService)
+    {
         this.redisService = redisService;
         this.buildDataService = buildDataService;
     }
 
     @PostMapping("/api/storeBuildData")
-    public void storeBuildSetupData(@RequestBody BuildSetupData buildData, HttpServletResponse response) {
+    public void storeBuildSetupData(@RequestBody BuildSetupData buildData, HttpServletResponse response)
+    {
         buildDataService.processBuildData(buildData);
         redisService.saveBuildSetupData(BUILD_DATA_KEY, buildData);
 
@@ -33,7 +36,8 @@ public class BuildDataController {
     }
 
     @GetMapping("/api/getBuildData")
-    public BuildSetupData getBuildSetupData() {
+    public BuildSetupData getBuildSetupData()
+    {
         return redisService.getBuildSetupData(BUILD_DATA_KEY);
     }
 }

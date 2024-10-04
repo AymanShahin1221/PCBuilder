@@ -8,11 +8,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class DelayUtils {
+public class DelayUtils
+{
 
     private static final Logger logger = LoggerFactory.getLogger(DelayUtils.class);
 
-    private DelayUtils() {
+    private DelayUtils()
+    {
         throw new IllegalStateException("Utility class");
     }
 
@@ -21,7 +23,8 @@ public class DelayUtils {
      * If delay occurs before time of reset, delay will occur until that time
      * If not, delay will occur until the next day, same time
      */
-    public static void delay(LocalTime resetTime) throws InterruptedException {
+    public static void delay(LocalTime resetTime) throws InterruptedException
+    {
 
         logger.info("Delaying...");
 
@@ -36,8 +39,7 @@ public class DelayUtils {
             long delayDuration = duration.toMillis();
 
             Thread.sleep(delayDuration);
-        }
-        else
+        } else
         {
             LocalDateTime nextDayEndDateTime = LocalDateTime.of(LocalDate.now().plusDays(1), resetTime);
 

@@ -1,6 +1,7 @@
 package com.app.service.util;
 
-public enum PartCategory {
+public enum PartCategory
+{
     CASE,
     COOLER,
     CPU,

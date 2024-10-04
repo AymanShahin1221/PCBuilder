@@ -8,7 +8,8 @@ import java.util.UUID;
 
 @Entity
 @Table
-public class PCBuild {
+public class PCBuild
+{
 
     @Id
     @Column(updatable = false, nullable = false)
@@ -30,10 +31,12 @@ public class PCBuild {
     @OneToMany(mappedBy = "pcBuild", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BuildParts> buildParts;
 
-    public PCBuild() {
+    public PCBuild()
+    {
     }
 
-    public PCBuild(UUID buildId, String buildName, BigDecimal budget, String description, User user, List<BuildParts> buildParts) {
+    public PCBuild(UUID buildId, String buildName, BigDecimal budget, String description, User user, List<BuildParts> buildParts)
+    {
         this.buildId = buildId;
         this.buildName = buildName;
         this.budget = budget;
@@ -43,7 +46,8 @@ public class PCBuild {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "PCBuild{" +
                 "buildId=" + buildId +
                 ", buildName='" + buildName + '\'' +
@@ -54,51 +58,63 @@ public class PCBuild {
                 '}';
     }
 
-    public UUID getBuildId() {
+    public UUID getBuildId()
+    {
         return buildId;
     }
 
-    public void setBuildId(UUID buildId) {
+    public void setBuildId(UUID buildId)
+    {
         this.buildId = buildId;
     }
 
-    public String getBuildName() {
+    public String getBuildName()
+    {
         return buildName;
     }
 
-    public void setBuildName(String buildName) {
+    public void setBuildName(String buildName)
+    {
         this.buildName = buildName;
     }
 
-    public BigDecimal getBudget() {
+    public BigDecimal getBudget()
+    {
         return budget;
     }
 
-    public void setBudget(BigDecimal budget) {
+    public void setBudget(BigDecimal budget)
+    {
         this.budget = budget;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public User getUser() {
+    public User getUser()
+    {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(User user)
+    {
         this.user = user;
     }
 
-    public List<BuildParts> getBuildParts() {
+    public List<BuildParts> getBuildParts()
+    {
         return buildParts;
     }
 
-    public void setBuildParts(List<BuildParts> buildParts) {
+    public void setBuildParts(List<BuildParts> buildParts)
+    {
         this.buildParts = buildParts;
     }
 }
